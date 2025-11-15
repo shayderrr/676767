@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1v1 LOL - The Game Vault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --purple-900: #1a0033;
+            --purple-800: #2d0052;
+            --purple-700: #4a0080;
+            --purple-600: #6b21a8;
+            --purple-500: #8b5cf6;
+            --purple-400: #a78bfa;
+            --purple-300: #c4b5fd;
+            --purple-200: #e9d5ff;
+            --purple-100: #f3e8ff;
+            --black: #000000;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .background-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #0a0015 50%, #000000 100%);
+            z-index: 0;
+        }
+
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, white, transparent),
+                radial-gradient(2px 2px at 60px 70px, white, transparent),
+                radial-gradient(1px 1px at 50px 50px, white, transparent),
+                radial-gradient(1px 1px at 130px 80px, white, transparent),
+                radial-gradient(2px 2px at 90px 150px, white, transparent);
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.4;
+            animation: starsMove 100s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes starsMove {
+            from { transform: translateY(0); }
+            to { transform: translateY(-200px); }
+        }
+
+        /* Purple glow orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.1;
+            z-index: 2;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--purple-600), transparent);
+            top: -100px;
+            left: -100px;
+            animation-duration: 25s;
+        }
+
+        .orb-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--purple-700), transparent);
+            bottom: -100px;
+            right: -100px;
+            animation-duration: 30s;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-50px, 50px) scale(0.9); }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+        }
+
+        .time-display {
+            display: inline-block;
+            font-size: 0.875rem;
+            color: var(--purple-300);
+            background: rgba(139, 92, 246, 0.1);
+            padding: 0.5rem 1.25rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* Page title */
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            text-align: center;
+        }
+
+        .page-title .title-text {
+            background: linear-gradient(135deg, var(--white) 0%, var(--purple-300) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.25rem;
+            color: var(--purple-200);
+            margin-bottom: 3rem;
+            font-weight: 400;
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--purple-500), transparent);
+            margin: 2.5rem 0;
+            opacity: 0.3;
+        }
+
+        /* Content card */
+        .content-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                0 0 100px rgba(139, 92, 246, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, var(--purple-600), var(--purple-700));
+            border-radius: 0.75rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .tutorial-text {
+            font-size: 1.0625rem;
+            line-height: 1.8;
+            color: var(--purple-100);
+            margin-bottom: 1.5rem;
+        }
+
+        .tutorial-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+
+        .tutorial-list li {
+            font-size: 1.0625rem;
+            line-height: 1.8;
+            color: var(--purple-100);
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .tutorial-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--purple-400);
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        /* Warning box */
+        .warning-box {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-left: 4px solid var(--purple-500);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .warning-box-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .warning-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--purple-400);
+        }
+
+        .warning-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--purple-200);
+        }
+
+        /* Status badge */
+        .status-badge {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.2));
+            color: #6ee7b7;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            display: flex;
+            justify-content: center;
+            font-size: 0.875rem;
+            max-width: 250px;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            margin: 0 auto 2rem;
+        }
+
+        /* Play button - centered */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .play-button {
+            font-size: 24px;
+            padding: 20px 40px;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--purple-600), var(--purple-700));
+            color: var(--white);
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 10px 40px rgba(139, 92, 246, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 15px 50px rgba(139, 92, 246, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .play-button:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .content-card {
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .page-subtitle {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .tutorial-text,
+            .tutorial-list li {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.75rem;
+            }
+
+            .content-card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background elements -->
+    <div class="background-gradient"></div>
+    <div class="stars"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <!-- Main content -->
+    <div class="container">
+        <header class="header">
+            <div class="time-display" id="currentTime"></div>
+        </header>
+
+        <main>
+            <h1 class="page-title"><span class="title-text">1v1 LOL</span> 🎮</h1>
+            <p class="page-subtitle">
+                Battle royale, build fight, box fight, zone wars and more game modes to enjoy!
+            </p>
+            <div class="button-container">
+                <button class="play-button" id="fullscreenBtn">
+                    Click Me to Open in Fullscreen
+                </button>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- About Section -->
+            <div class="content-card">
+                <h2 class="section-title">
+                    <span class="section-number">ℹ️</span>
+                    About the Game
+                </h2>
+                <p class="tutorial-text">
+                    Discover 1v1 LOL, the online building simulator & third person shooting game. Battle royale, build fight, box fight, zone wars and more game modes to enjoy!
+                </p>
+
+                <ul class="tutorial-list">
+                    <li>Practice your building skills in creative mode</li>
+                    <li>Battle royale with up to 8 players</li>
+                    <li>Box fights and zone wars</li>
+                    <li>Multiple game modes to master</li>
+                    <li>Competitive ranked matches</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toUTCString();
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // Update time immediately and then every second
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Game launcher functionality
+        document.getElementById('fullscreenBtn').addEventListener('click', function() {
+            const childWindow = window.open('about:blank', '_blank');
+            if (!childWindow) {
+                alert('Please allow pop-ups to launch the game!');
+                return;
+            }
+
+            const childHTML = `
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8" />
+<title>Dashboard</title>
+<meta name="robots" content="noindex,nofollow" />
+<link rel="icon" type="image/png" href="https://instructure-uploads.s3.amazonaws.com/account_30000000002042/attachments/80746393/favicon-16x16.png" />
+<meta property="og:title" content="Dashboard" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Discover 1v1, the online building simulator & third person shooting game. Battle royale, build fight, box fight, zone wars and more game modes to enjoy!" />
+<link rel="stylesheet" href="https://1v1-lol-online.github.io/file/css/style.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta name="description" content="Discover 1v1, the online building simulator & third person shooting game. Battle royale, build fight, box fight, zone wars and more game modes to enjoy!" />
+<meta name="keywords" content="just,build,simulator,practice,free,online,battle,royale" />
+
+<script src="https://1v1-lol-online.github.io/file/lib/jquery.min.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/js/IronSourceRV.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/js/mobileRedirect.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/js/fullscreen.js"><\/script>
+<script type="text/javascript" src="https://1v1-lol-online.github.io/file/js/sdkloader/ima3.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/js/cpmstar.js"><\/script>
+
+<script src="https://1v1-lol-online.github.io/file/firebase/firebase-app.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/firebase/firebase-analytics.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/firebase/firebase-auth.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/firebase/firebase-firestore.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/firebase/firebase-remote-config.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/js/firebase.js?v=147"><\/script>
+<script src="https://1v1-lol-online.github.io/file/js/login.js?v=147"><\/script>
+<script src="https://1v1-lol-online.github.io/file/js/firebase-config.js?v=147"><\/script>
+<script src="https://1v1-lol-online.github.io/file/js/windowResize.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/js/adblockManager.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/js/macUserAgent.js"><\/script>
+<script src="https://1v1-lol-online.github.io/file/js/visibilityChangeListener.js"><\/script>
+
+</head>
+<body>
+<div id="gameContainer"></div>
+<div id="loader">
+  <img class="logo" src="https://1v1-lol-online.github.io/file/logo.png" />
+  <div class="spinner"></div>
+  <div class="progress"><div class="full"></div></div>
+</div>
+
+<script id="unity-loader" src="https://1v1-lol-online.github.io/file/UnityLoader.js"><\/script>
+
+<script>
+var gameJsonUrl = "https://1v1-lol-online.github.io/file/WebGL.json";
+var hostname = window.location.hostname;
+var gameInstance = UnityLoader.instantiate("gameContainer", gameJsonUrl, { onProgress: UnityProgress });
+window.unityInstance = gameInstance;
+var gameLoaded = false;
+var lockedOccured = false;
+
+function UnityProgress(gameInstance, progress) {
+    const loader = document.querySelector("#loader");
+    if (!gameInstance.progress) {
+        const progressEl = loader.querySelector(".progress .full");
+        gameInstance.progress = progressEl;
+        loader.querySelector(".spinner").style.display = "none";
+    }
+    gameInstance.progress.style.transform = "scaleX(" + progress + ")";
+    if (progress === 1 && !gameInstance.removeTimeout) {
+        loader.style.display = "none";
+        gameLoaded = true;
+    }
+}
+
+window.addEventListener("beforeunload", function(e){
+    if(!gameLoaded) return;
+    var confirmationMessage = "Are you sure you want to leave?";
+    (e || window.event).returnValue = confirmationMessage;
+    return confirmationMessage;
+});
+
+document.addEventListener("pointerlockchange", lockChangeAlert, false);
+document.addEventListener("mozpointerlockchange", lockChangeAlert, false);
+function lockChangeAlert(){
+    if(!lockedOccured && document.pointerLockElement) lockedOccured = true;
+    if(!document.pointerLockElement && lockedOccured){
+        lockedOccured = false;
+        gameInstance.SendMessage("Pause Menu","OnCursorUnlocked");
+    }
+}
+<\/script>
+
+</body>
+</html>
+`;
+
+            // Write child page safely
+            childWindow.document.open();
+            childWindow.document.write(childHTML);
+            childWindow.document.close();
+
+            // Attempt fullscreen
+            setTimeout(function() {
+                if(childWindow.document.documentElement.requestFullscreen){
+                    childWindow.document.documentElement.requestFullscreen();
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
