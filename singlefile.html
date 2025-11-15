@@ -1,0 +1,2425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Void Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --p9:#1a0033;--p8:#2d0052;--p7:#4a0080;--p6:#6b21a8;--p5:#8b5cf6; 
+      --p4:#a78bfa;--p3:#c4b5fd;--p2:#e9d5ff;--p1:#f3e8ff;--black:#000;--white:#fff; }
+    html,body{width:100%;height:100%;background:var(--black);font-family:'Inter',sans-serif;color:var(--white);}
+    .bg{position:fixed;inset:0;background:linear-gradient(135deg,#000 0%,#0a0015 50%,#000 100%);z-index:-3;}
+    .stars{position:fixed;inset:0;background-image: 
+      radial-gradient(2px 2px at 20px 30px,white,transparent), 
+      radial-gradient(2px 2px at 60px 70px,white,transparent), 
+      radial-gradient(1px 1px at 50px 50px,white,transparent), 
+      radial-gradient(1px 1px at 130px 80px,white,transparent), 
+      radial-gradient(2px 2px at 90px 150px,white,transparent); 
+      background-repeat:repeat;background-size:200px 200px;opacity:.4; animation:s 100s linear infinite;z-index:-2;}
+    @keyframes s{from{transform:translateY(0)}to{transform:translateY(-200px)}}
+    .orb{position:fixed;border-radius:50%;filter:blur(60px);opacity:.1;z-index:-1;animation:f 20s ease-in-out infinite;}
+    .orb-1{width:400px;height:400px;background:radial-gradient(circle,var(--p6),transparent);top:-100px;left:-100px;animation-duration:25s;}
+    .orb-2{width:350px;height:350px;background:radial-gradient(circle,var(--p7),transparent);bottom:-100px;right:-100px;animation-duration:30s;animation-delay:-10s;}
+    @keyframes f{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-50px) scale(1.1)}66%{transform:translate(-50px,50px) scale(.9)}}
+    header{position:fixed;top:0;left:0;right:0;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;z-index:1000;pointer-events:none;}
+    .logo{font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;background:linear-gradient(135deg,var(--white),var(--p3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;pointer-events:auto;}
+    .hamburger{display:block;width:36px;height:36px;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);border-radius:50%;position:relative;cursor:pointer;pointer-events:auto;transition:.3s;box-shadow:0 0 15px rgba(139,92,246,.3);}
+    .hamburger:hover{background:rgba(139,92,246,.3);box-shadow:0 0 25px rgba(139,92,246,.5);transform:scale(1.05);}
+    .hamburger span{position:absolute;left:50%;top:50%;width:18px;height:2px;background:var(--p3);border-radius:2px;transform:translate(-50%,-50%);transition:.3s;box-shadow:0 0 8px rgba(139,92,246,.6);}
+    .hamburger span:nth-child(1){transform:translate(-50%,-6px);}
+    .hamburger span:nth-child(2){transform:translate(-50%,0);}
+    .hamburger span:nth-child(3){transform:translate(-50%,6px);}
+    .hamburger.active span:nth-child(1){transform:translate(-50%,0) rotate(45deg);}
+    .hamburger.active span:nth-child(2){opacity:0;}
+    .hamburger.active span:nth-child(3){transform:translate(-50%,0) rotate(-45deg);}
+    .menu{position:fixed;top:0;left:-100%;width:100%;max-width:360px;height:100vh;background:rgba(10,0,21,.98);backdrop-filter:blur(30px);border-right:1px solid rgba(139,92,246,.2);padding:6rem 2rem 2rem;transition:left .5s cubic-bezier(.25,.8,.25,1);z-index:999;overflow-y:auto;}
+    .menu.open{left:0;}
+    .close-btn{position:absolute;top:1.5rem;right:1.5rem;width:40px;height:40px;background:rgba(139,92,246,.2);border:1px solid rgba(139,92,246,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.3s;}
+    .close-btn:hover{background:rgba(139,92,246,.4);transform:rotate(90deg);}
+    .close-btn svg{width:20px;height:20px;stroke:var(--p3);}
+    .menu { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgb(24, 0, 34) transparent; }
+    .menu::-webkit-scrollbar { width: 6px; }
+    .menu::-webkit-scrollbar-track { background: transparent; }
+    .menu::-webkit-scrollbar-thumb { background-color: rgba(10,0,21,.98); border-radius: 3px; }
+    .menu::-webkit-scrollbar-thumb:hover { background-color: rgba(15,6,25,.98); }
+    .nav-list{list-style:none;}
+    .nav-category{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:600;color:var(--p3);margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid rgba(139,92,246,.2);}
+    .nav-link{display:block;padding:.8rem 1rem;color:var(--p1);text-decoration:none;border-radius:.75rem;transition:all .3s;position:relative;overflow:hidden;cursor:pointer;}
+    .nav-link:hover{color:var(--white);background:rgba(139,92,246,.15);transform:translateX(8px);box-shadow:0 0 20px rgba(139,92,246,.2);}
+    #container{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;overflow-y:auto;overflow-x:hidden;padding-top:80px;}
+    #content-display{min-height:100%;width:100%;}
+    @media(max-width:768px){.menu{max-width:100%;}.logo{font-size:1.4rem;}}
+    /* ---------- Theme / layout (adapted from your theme) ---------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    :root {
+      --bg: #000;
+      --panel: rgba(255, 255, 255, 0.03);
+      --accent1: #6b21a8;
+      --accent2: #8b5cf6;
+      --accent3: #a78bfa;
+      --muted: #c4b5fd;
+      --purple-200: #e9d5ff;
+      --purple-100: #f3e8ff;
+      --white: #fff;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --danger: #ff5c5c;
+      --gold: #fbbf24;
+      --online: #34d399;
+      --offline: rgba(255,255,255,0.06);
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      background: linear-gradient(135deg, #000000 0%, #0a0015 50%, #000000 100%);
+      color: var(--white);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      min-height: 100vh;
+      align-items: stretch;
+      gap: 18px;
+      padding: 18px;
+      overflow: hidden;
+    }
+    /* animated orbs/stars */
+    .stars {
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.85), transparent),
+        radial-gradient(2px 2px at 60px 70px, rgba(255, 255, 255, 0.75), transparent),
+        radial-gradient(1px 1px at 50px 50px, rgba(255, 255, 255, 0.65), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(2px 2px at 90px 150px, rgba(255, 255, 255, 0.8), transparent);
+      background-repeat: repeat;
+      background-size: 200px 200px;
+      opacity: 0.4;
+      animation: starsMove 100s linear infinite;
+      z-index: 0;
+    }
+    @keyframes starsMove {
+      from { transform: translateY(0); }
+      to { transform: translateY(-200px); }
+    }
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.1;
+      z-index: 0;
+      animation: float 20s ease-in-out infinite;
+    }
+    .orb.a {
+      width: 400px;
+      height: 400px;
+      left: -100px;
+      top: -100px;
+      background: radial-gradient(circle, var(--accent1), transparent);
+      animation-duration: 25s;
+    }
+    .orb.b {
+      width: 350px;
+      height: 350px;
+      right: -100px;
+      bottom: -100px;
+      background: radial-gradient(circle, var(--accent2), transparent);
+      animation-duration: 30s;
+      animation-delay: -10s;
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(50px, -50px) scale(1.1); }
+      66% { transform: translate(-50px, 50px) scale(0.9); }
+    }
+    /* Main container layout */
+    .app {
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 72px 1fr 300px;
+      gap: 18px;
+      width: 100%;
+      align-items: stretch;
+      animation: fadeIn 1s ease-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* ------------- Left side: servers list ------------- */
+    .servers {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(139, 92, 246, 0.1);
+      border-radius: 1.5rem;
+      padding: 12px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      height: calc(100vh - 36px);
+      position: relative;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    #serverList {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      width: 100%;
+    }
+    .servers::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+      border-radius: 1.5rem;
+      pointer-events: none;
+    }
+    .servers > div:first-child {
+      font-size: 0.7rem;
+      color: var(--accent3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      opacity: 0.8;
+      z-index: 1;
+      position: relative;
+    }
+    .server-btn {
+      width: 52px;
+      height: 52px;
+      min-width: 52px;
+      min-height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.02);
+      cursor: pointer;
+      border: 1px solid rgba(139, 92, 246, 0.08);
+      font-weight: 700;
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--muted);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .server-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent2), transparent);
+      transition: width 0.3s ease, height 0.3s ease;
+      transform: translate(-50%, -50%);
+    }
+    .server-btn:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.25);
+      border-color: rgba(139, 92, 246, 0.3);
+      background: rgba(139, 92, 246, 0.08);
+    }
+    .server-btn:hover::before {
+      width: 100px;
+      height: 100px;
+    }
+    .server-btn.active {
+      background: var(--accent1);
+      color: white;
+      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.35);
+      border-color: transparent;
+    }
+    .add-server {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent3);
+      background: rgba(139, 92, 246, 0.05);
+      border-style: dashed;
+      border-width: 2px;
+    }
+    .add-server:hover {
+      color: var(--white);
+      border-style: solid;
+      background: rgba(139, 92, 246, 0.15);
+    }
+    /* Profile mini section (includes sign-in button when logged out) */
+    #profileMini {
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px solid rgba(139, 92, 246, 0.1);
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    #profileMini .server-btn {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05));
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: var(--purple-100);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    #profileMini .server-btn:hover {
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: white;
+      border-color: transparent;
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+    }
+    /* Scrollbar styling for servers */
+    .servers::-webkit-scrollbar {
+      width: 4px;
+    }
+    .servers::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .servers::-webkit-scrollbar-thumb {
+      background: rgba(139, 92, 246, 0.3);
+      border-radius: 2px;
+    }
+    .servers::-webkit-scrollbar-thumb:hover {
+      background: rgba(139, 92, 246, 0.5);
+    }
+    /* ------------- Middle: channels & chat ------------- */
+    .main-panel {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1.5rem;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 36px);
+      overflow: hidden;
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+      background: rgba(139, 92, 246, 0.02);
+      border-radius: 12px 12px 0 0;
+      margin: -12px -12px 0 -12px;
+      flex-shrink: 0;
+    }
+    .server-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--white) 0%, var(--muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .small-btn {
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      padding: 8px 14px;
+      border-radius: 10px;
+      color: var(--purple-100);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+    }
+    .small-btn:hover {
+      background: rgba(139, 92, 246, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+      color: var(--white);
+    }
+    .channels-and-chat {
+      display: flex;
+      flex: 1;
+      gap: 12px;
+      overflow: hidden;
+      padding-top: 16px;
+      min-height: 0;
+    }
+    .channels {
+      width: 230px;
+      flex-shrink: 0;
+      border-right: 1px solid rgba(139, 92, 246, 0.05);
+      padding-right: 12px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .channels h4 {
+      font-size: 0.75rem;
+      color: var(--accent3);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    .channel-item {
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .channel-item:hover {
+      background: rgba(139, 92, 246, 0.05);
+      color: var(--purple-100);
+      transform: translateX(4px);
+    }
+    .channel-item.active {
+      color: var(--white);
+      background: rgba(139, 92, 246, 0.15);
+      border-left: 3px solid var(--accent2);
+      padding-left: 9px;
+    }
+    .chat {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      height: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent2) transparent;
+    }
+    .messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    .messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .messages::-webkit-scrollbar-thumb {
+      background: var(--accent2);
+      border-radius: 3px;
+    }
+    .msg {
+      max-width: 70%;
+      padding: 12px 16px;
+      padding-top: 20px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      color: var(--purple-100);
+      font-size: 0.95rem;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.2s ease;
+      line-height: 1.6;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    .msg:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1);
+    }
+    .msg.me {
+      margin-left: auto;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
+    }
+    .msg.deleted {
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.01);
+      border-color: rgba(255, 255, 255, 0.02);
+    }
+    .msg .meta {
+      font-size: 0.75rem;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .msg.me .meta {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .msg .meta .edited {
+      font-size: 0.7rem;
+      color: var(--muted);
+      opacity: 0.7;
+      text-transform: lowercase;
+    }
+    .msg .controls {
+      position: absolute;
+      top: -12px;
+      right: 12px;
+      display: flex;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      background: rgba(10, 0, 20, 0.9);
+      padding: 4px;
+      border-radius: 8px;
+      backdrop-filter: blur(10px);
+    }
+    .msg:hover .controls {
+      opacity: 1;
+    }
+    .ctrl-btn {
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      padding: 6px 12px;
+      border-radius: 8px;
+      color: var(--purple-100);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    .ctrl-btn:hover {
+      background: rgba(139, 92, 246, 0.2);
+      color: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+    }
+    .composer {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      border-top: 1px solid rgba(139, 92, 246, 0.05);
+      background: rgba(139, 92, 246, 0.02);
+      border-radius: 0 0 12px 12px;
+      margin: 0 -12px -12px -12px;
+      flex-shrink: 0;
+    }
+    .composer input {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(139, 92, 246, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--white);
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    .composer input:focus {
+      outline: none;
+      border-color: var(--accent2);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+    }
+    .composer input::placeholder {
+      color: var(--muted);
+      opacity: 0.7;
+    }
+    .composer button {
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: var(--accent1);
+      border: none;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    .composer button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+    }
+    /* ------------- Right: member / friends panel ------------- */
+    .right-panel {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1.5rem;
+      padding: 16px;
+      height: calc(100vh - 36px);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 0.75rem;
+      color: var(--accent3);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      margin-bottom: 4px;
+      position: relative;
+    }
+    .user-row:hover {
+      background: rgba(139, 92, 246, 0.05);
+      transform: translateX(4px);
+    }
+    /* Fix for avatar class to ensure consistent width */
+    .avatar {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      background: var(--accent1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-family: 'Space Grotesk', sans-serif;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      position: relative; /* so status dot can be absolutely positioned */
+    }
+    /* status dot */
+    .status {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      border: 2px solid rgba(10,0,20,0.9);
+      box-sizing: content-box;
+    }
+    .status.online {
+      background: var(--online);
+      box-shadow: 0 0 6px rgba(52,211,153,0.35);
+    }
+    .status.offline {
+      background: var(--offline);
+    }
+    /* small text columns in user row */
+    .user-row > div:nth-child(2) {
+      flex: 1;
+      min-width: 0;
+    }
+    .user-row > div:nth-child(2) > div:first-child {
+      font-weight: 700;
+      color: var(--white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .user-row > div:nth-child(2) > div:last-child {
+      font-size: 0.75rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .friend-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    /* Input styling in right panel */
+    .right-panel input {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(139, 92, 246, 0.1);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--white);
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    .right-panel input:focus {
+      outline: none;
+      border-color: var(--accent2);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .right-panel input::placeholder {
+      color: var(--muted);
+      opacity: 0.6;
+    }
+    /* Modal */
+    .modal {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 480px;
+      max-width: 90vw;
+      background: rgba(10, 0, 20, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 1.5rem;
+      padding: 28px;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+      color: #fff;
+      z-index: 999;
+      animation: modalFadeIn 0.3s ease;
+    }
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -45%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+    .modal input {
+      width: 100%;
+      padding: 12px 16px;
+      margin: 8px 0;
+      border-radius: 10px;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--white);
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    .modal input:focus {
+      outline: none;
+      border-color: var(--accent2);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+    }
+    .modal input::placeholder {
+      color: var(--muted);
+      opacity: 0.6;
+    }
+    .modal label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 500;
+      display: block;
+      margin-top: 12px;
+    }
+    .form-row {
+      margin-bottom: 16px;
+    }
+    .auth-actions {
+      display: flex;
+      gap: 8px;
+    }
+    #authMsg {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    .hidden {
+      display: none !important;
+    }
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .app {
+        grid-template-columns: 72px 1fr 280px;
+      }
+      .right-panel {
+        width: 280px;
+      }
+    }
+    @media (max-width: 1000px) {
+      .app {
+        grid-template-columns: 64px 1fr;
+      }
+      .right-panel {
+        display: none;
+      }
+      .channels {
+        width: 180px;
+      }
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+        gap: 10px;
+      }
+      .app {
+        grid-template-columns: 60px 1fr;
+        gap: 10px;
+      }
+      .servers {
+        padding: 8px;
+        border-radius: 1rem;
+      }
+      .server-btn {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+      }
+      .main-panel {
+        border-radius: 1rem;
+      }
+      .server-title {
+        font-size: 1.2rem;
+      }
+      .small-btn {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .header-row {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .msg {
+        max-width: 85%;
+      }
+      .modal {
+        width: 95vw;
+        padding: 20px;
+      }
+    }
+    /* Ensure proper scrolling */
+    .servers,
+    .channels,
+    .messages,
+    .right-panel {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+    }
+    .servers::-webkit-scrollbar,
+    .channels::-webkit-scrollbar,
+    .messages::-webkit-scrollbar,
+    .right-panel::-webkit-scrollbar {
+      width: 6px;
+    }
+    .servers::-webkit-scrollbar-track,
+    .channels::-webkit-scrollbar-track,
+    .messages::-webkit-scrollbar-track,
+    .right-panel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .servers::-webkit-scrollbar-thumb,
+    .channels::-webkit-scrollbar-thumb,
+    .messages::-webkit-scrollbar-thumb,
+    .right-panel::-webkit-scrollbar-thumb {
+      background: rgba(139, 92, 246, 0.3);
+      border-radius: 3px;
+    }
+    .servers::-webkit-scrollbar-thumb:hover,
+    .channels::-webkit-scrollbar-thumb:hover,
+    .messages::-webkit-scrollbar-thumb:hover,
+    .right-panel::-webkit-scrollbar-thumb:hover {
+      background: rgba(139, 92, 246, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="stars"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <header>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </header>
+  <nav class="menu" id="menu">
+    <div class="close-btn" id="closeBtn" style="display: none;"> </div>
+    <ul class="nav-list">
+      <li><div class="nav-link nav-home">Home</div></li>
+      <li><div class="nav-category">Home Pages</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/annoucements.html">Annoucements</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/guidelines.html">Guidelines</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/tac.html">Terms & Conditions</div>
+        <div class="nav-link" id="chatRoomLink">Chat Room 💬</div>
+      </li>
+      <li><div class="nav-category">Games</div>
+        <div class="nav-link" id="htmlGamesLocalLink">HTML Games</div>
+        <div class="nav-link" id="moreGamesLink">More Games</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/owner.html">Owner Games</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@0ab64b002583e7aecf6b0521fa313423ca0b7224/ug.html">Classroom UG</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@f2d077c7644d2ba8cc16fe70292f8d2a65f27d3e/selenite.html">Selenite</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@05dfa6e3fbca86e33f53be243447ef53d4606ee3/s3.html">UBS3</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@cd44279172f58f038dd085f00cf47c22a1cf33cb/wouter.html">Wouter Planet</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/roblox.html">Roblox Tutorial</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@a5e8fa761ca9c2e3e09ffecef6e922f52287f606/only.html">Only Games</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/1v1lol.html">1V1 LOL (New!)</div>
+      </li>
+      <li><div class="nav-category">AI Games</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/snake.html">Snake</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/tetris.html">Tetris</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/2048.html">2048</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/mines.html">Mines</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/break.html">Breakout</div>
+      </li>
+      <li><div class="nav-category">Tools</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/zen.html">Zen Browser</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/viewer.html">HTML Viewer</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/text.html">Text Encryptor</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/mp3.html">MP3 Downloader</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/youtube.html">YouTube 📺</div>
+      </li>
+      <li><div class="nav-category">Movies</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@befa172b2d7d5530d224617b9b4b2a696e86eebf/crunchy.html">CrunchyRoll</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@3701cd9a5927c8d0716f5a9ef1e88301326754a4/disney.html">Disney</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@7bf5723a65805accb00d8e61ec3cd3e02ea54b7f/netflix.html">Netflix</div>
+        <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@4ce306e7fa821189265bf22632292598e715c3f4/para.html">Paramount</div>
+      </li>
+      <li><div class="nav-category">Networks</div>
+       <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@9318dbe582dc8a91e97746dff301cb0e97c5bc2c/freddy.html">Freddies Internet</div>
+      <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@508ec33ace5bb2cbc3dbc5ee85ee3f8c817f6da6/lb.html">Lebron Networks</div>
+            <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@c1aea70bc188155d5d15ca78aa0aca071eb788e8/seed.html">Seed Networks</div>
+    </ul>
+  </nav>
+  <div id="container">
+    <div id="content-display"></div>
+  </div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const menu = document.getElementById('menu');
+    const closeBtn = document.getElementById('closeBtn');
+    const links = document.querySelectorAll('.nav-link[data-src]');
+    const homeLink = document.querySelector('.nav-home');
+    const contentDisplay = document.getElementById('content-display');
+    const chatRoomLink = document.getElementById('chatRoomLink');
+    const homePageHTML = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <audio src="https://cdn.jsdelivr.net/gh/shayderrr/Static@main/Ambient-BreakcoreDnB-Mix-02.mp3" autoplay loop></audio>
+        <title>The Game Vault | 🕹️👾</title>
+        <audio src="https://cdn.jsdelivr.net/gh/shayderrr/Static@main/Ambient-BreakcoreDnB-Mix-02.mp3" autoplay loop hidden></audio>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          :root { --purple-900: #1a0033; --purple-800: #2d0052; --purple-700: #4a0080; --purple-600: #6b21a8; --purple-500: #8b5cf6; --purple-400: #a78bfa; --purple-300: #c4b5fd; --purple-200: #e9d5ff; --purple-100: #f3e8ff; --black: #000000; --white: #ffffff; --gold: #fbbf24; }
+          body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; position: relative; overflow-x: hidden; }
+          /* Animated background */
+          .background-gradient { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #000000 0%, #0a0015 50%, #000000 100%); z-index: 0; }
+          .stars { position: fixed; width: 100%; height: 100%; background-image: radial-gradient(2px 2px at 20px 30px, white, transparent), radial-gradient(2px 2px at 60px 70px, white, transparent), radial-gradient(1px 1px at 50px 50px, white, transparent), radial-gradient(1px 1px at 130px 80px, white, transparent), radial-gradient(2px 2px at 90px 150px, white, transparent); background-repeat: repeat; background-size: 200px 200px; opacity: 0.4; animation: starsMove 100s linear infinite; z-index: 1; }
+          @keyframes starsMove { from { transform: translateY(0); } to { transform: translateY(-200px); } }
+          /* Purple glow orbs */
+          .orb { position: fixed; border-radius: 50%; filter: blur(60px); opacity: 0.1; z-index: 2; animation: float 20s ease-in-out infinite; }
+          .orb-1 { width: 400px; height: 400px; background: radial-gradient(circle, var(--purple-600), transparent); top: -100px; left: -100px; animation-duration: 25s; }
+          .orb-2 { width: 350px; height: 350px; background: radial-gradient(circle, var(--purple-700), transparent); bottom: -100px; right: -100px; animation-duration: 30s; animation-delay: -10s; }
+          @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(50px, -50px) scale(1.1); } 66% { transform: translate(-50px, 50px) scale(0.9); } }
+          /* Main container */
+          .container { position: relative; z-index: 10; max-width: 1200px; margin: 0 auto; padding: 2rem; min-height: 100vh; animation: fadeIn 1s ease-out; }
+          @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+          /* Header */
+          .header { text-align: center; padding: 3rem 0 2rem; }
+         
+          /* Page title */
+          .page-title { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: -0.02em; text-align: center; }
+          .page-title .title-text { background: linear-gradient(135deg, var(--white) 0%, var(--purple-300) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+          .page-subtitle { font-size: 1.125rem; color: var(--purple-200); margin-bottom: 3rem; font-weight: 400; text-align: center; line-height: 1.8; max-width: 900px; margin-left: auto; margin-right: auto; }
+          .page-subtitle a { text-decoration: none; color: var(--purple-200); }
+          /* Divider */
+          .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--purple-500), transparent); margin: 3rem 0; opacity: 0.3; }
+          /* Games section */
+          .games-section { max-width: 900px; margin: 0 auto 3rem; }
+          .game-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.5rem; padding: 2rem; margin-bottom: 2rem; transition: all 0.3s ease; }
+          .game-card:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(139, 92, 246, 0.3); transform: translateY(-5px); box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2); }
+          .game-header { display: flex; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.5rem; }
+          .game-image-placeholder { width: 200px; height: 150px; background: rgba(139, 92, 246, 0.1); border: 2px dashed rgba(139, 92, 246, 0.3); border-radius: 1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--purple-300); font-size: 0.875rem; text-align: center; padding: 1rem; }
+          .game-image { width: 200px; height: 150px; border-radius: 1rem; object-fit: cover; flex-shrink: 0; }
+          .game-info { flex: 1; }
+          .game-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; font-weight: 700; color: var(--white); margin-bottom: 0.75rem; }
+          .game-rating { font-size: 1.25rem; color: var(--gold); margin-bottom: 0.5rem; letter-spacing: 0.1em; }
+          .game-description { font-size: 1rem; line-height: 1.8; color: var(--purple-100); margin-bottom: 1rem; }
+          .game-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+          .game-tag { background: rgba(139, 92, 246, 0.2); color: var(--purple-200); padding: 0.4rem 1rem; border-radius: 1rem; font-size: 0.875rem; font-weight: 500; border: 1px solid rgba(139, 92, 246, 0.3); }
+          /* Footer section */
+          .footer-section { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.5rem; padding: 2.5rem; max-width: 900px; margin: 3rem auto; text-align: center; }
+          .footer-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 600; color: var(--white); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+          .contributor { display: inline-flex; align-items: center; gap: 0.5rem; }
+          .star-icon { display: inline-block; font-size: 1.25rem; animation: rotateStar 3s linear infinite; filter: drop-shadow(0 0 8px #fbbf24); color: #fbbf24; }
+          @keyframes rotateStar { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+          .dizzy-icon { display: inline-block; position: relative; width: 1.5rem; height: 1.5rem; margin-left: 0.25rem; }
+          .dizzy-icon svg { width: 100%; height: 100%; }
+          /* Sequential reveal animation for shield parts */
+          .badge-outline { stroke-dasharray: 100; stroke-dashoffset: 100; animation: drawOutline 2s ease-in-out infinite; }
+          .badge-fill { opacity: 0; animation: fadeInBadge 2s ease-in-out infinite; animation-delay: 0.5s; }
+          .badge-star { opacity: 0; transform: scale(0); transform-origin: center; animation: popInStar 2s ease-in-out infinite; animation-delay: 1s; }
+          @keyframes drawOutline { 0% { stroke-dashoffset: 100; opacity: 0; } 25% { stroke-dashoffset: 0; opacity: 1; } 75% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 100; opacity: 0; } }
+          @keyframes fadeInBadge { 0% { opacity: 0; } 25% { opacity: 0; } 50% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; } }
+          @keyframes popInStar { 0% { opacity: 0; transform: scale(0); } 50% { opacity: 0; transform: scale(0); } 62.5% { opacity: 1; transform: scale(1.2); } 75% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
+          .footer-message { font-size: 1rem; line-height: 1.8; color: var(--purple-100); margin-bottom: 1.5rem; }
+          .footer-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+          .footer-link { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, var(--purple-600), var(--purple-700)); color: var(--white); padding: 0.75rem 1.5rem; border-radius: 0.75rem; font-size: 0.9375rem; font-weight: 600; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); transition: all 0.3s ease; }
+          .footer-link:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4); }
+          /* Responsive design */
+          @media (max-width: 768px) { .container { padding: 1rem; } .page-title { font-size: 2.5rem; } .page-subtitle { font-size: 1rem; } .game-header { flex-direction: column; } .game-image-placeholder, .game-image { width: 100%; height: 200px; } .game-title { font-size: 1.5rem; } .footer-title { font-size: 1.25rem; flex-direction: column; gap: 0.5rem; } }
+          @media (max-width: 480px) { .page-title { font-size: 2rem; } .game-card { padding: 1.5rem; } .footer-section { padding: 2rem 1.5rem; } .footer-links { flex-direction: column; } .footer-link { width: 100%; justify-content: center; } }
+        </style>
+      </head>
+      <body>
+        <!-- Background elements -->
+        <div class="background-gradient"></div>
+        <div class="stars"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <!-- Main content -->
+        <div class="container">
+          <header class="header">
+          </header>
+          <main>
+            <h1 class="page-title"><span class="title-text">The Game Vault</span> | 🕹️👾</h1>
+            <p class="page-subtitle"> Discover and play hundreds of fun, free online games — all in one place. Over 5,000 games are here! Join us on this exciting adventure. Games aren't for you? No need to fret, as this doesn't just have games, but exciting tools like Chat Room, LSB Stegography, and way more! Join us on this exciting adventure as we traverse school in a fun way. <a href="https://forms.gle/g6GjUZYHRLpRway36" target="_blank">Want to suggest games? Click here!</a> </p>
+            <div class="footer-links">
+              <a href="https://sites.google.com/student.allenisd.org/the-game-vault/games/html-games" class="footer-link" target="_blank"> <span>HTML Games</span> </a>
+              <a href="https://sites.google.com/student.allenisd.org/the-game-vault/games/more-games" class="footer-link"> <span>More Games</span> </a>
+            </div>
+            <div class="divider"></div>
+            <!-- Games Section -->
+            <section class="games-section">
+              <!-- Game 1: Wrestle Bros -->
+              <div class="game-card">
+                <div class="game-header">
+                  <div class="game-image-placeholder">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB7dT1-RPks-APl8EqwfGw_hW7G0ayB24QrQ&s" alt="Wrestle bros" width="210px" height="150px" style="border-radius: 4px;">
+                  </div>
+                  <div class="game-info">
+                    <h2 class="game-title">Wrestle Bros</h2>
+                    <div class="game-rating">⭐⭐⭐⭐☆</div>
+                  </div>
+                </div>
+                <p class="game-description"> Fun, fast-paced browser wrestling game where you battle as cartoonish "bros" in over-the-top matches. You can play solo, locally with a friend, or online against others. The controls are simple, the action is chaotic and funny, and the goal is to slam, flip, and out-wrestle your opponents to become the ultimate champ. </p>
+                <div class="game-tags"> <span class="game-tag">HTML Games</span> </div>
+              </div>
+              <!-- Game 2: 1v1.LOL -->
+              <div class="game-card">
+                <div class="game-header">
+                  <div class="game-image-placeholder">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5e6EOAkvWDDrhDWLROtmsFOJwMjhAYYVF4g&s" alt="Wrestle bros" width="210px" height="150px" style="border-radius: 4px;">
+                  </div>
+                  <div class="game-info">
+                    <h2 class="game-title">1v1.LOL</h2>
+                    <div class="game-rating">⭐⭐⭐⭐⭐</div>
+                  </div>
+                </div>
+                <p class="game-description"> An online third-person shooter and building game where players battle each other in fast-paced 1v1 duels. You can build structures like ramps and walls (similar to Fortnite), choose from different weapons, and test your aim and strategy in team modes. It's free to play in your browser, focuses on matches and skill. </p>
+                <div class="game-tags"> <span class="game-tag">HTML Games</span> <span class="game-tag">More Games</span> </div>
+              </div>
+            </section>
+            <div class="divider"></div>
+            <!-- Footer Section -->
+            <section class="footer-section">
+              <div class="footer-title">
+                <span>Made by:</span>
+                <span class="contributor"> <span>anon</span> <span class="star-icon">★</span> </span>
+                <span>|</span>
+                <span>Other contributors:</span>
+                <span class="contributor"> <span>? & Sebbie</span> <span class="dizzy-icon"> <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <!-- Shield/Badge outline (draws first) --> <path class="badge-outline" d="M12 2L4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6l-8-4z" stroke="#8b5cf6" stroke-width="1.5" fill="none"/> <!-- Shield fill (appears second) --> <path class="badge-fill" d="M12 2L4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6l-8-4z" fill="#8b5cf6" opacity="0.3"/> <!-- Checkmark/Star in center (pops in last) --> <path class="badge-star" d="M9 12l2 2 4-4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> </svg> </span> </span>
+              </div>
+              <p class="footer-message"> I have a lot of motivation and enthusiasm for this project. I will try my best to keep up with the progress on this website! Trust me, this will be an epic adventure for all of the people in this group, especially since this is risk-free from trouble. </p>
+              <div class="footer-links">
+                <a href="https://sites.google.com/student.allenisd.org/the-game-vault/home-page/guidelines" class="footer-link" target="_blank"> <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path> </svg> <span>Guidelines</span> </a>
+                <a href="https://sites.google.com/student.allenisd.org/the-game-vault/home-page/announcements" class="footer-link"> <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path> </svg> <span>Announcements</span> </a>
+              </div>
+            </section>
+          </main>
+        </div>
+        <script>
+          function updateTime() { const now = new Date(); const timeString = now.toUTCString(); document.getElementById('currentTime').textContent = timeString; }
+          updateTime(); setInterval(updateTime, 1000);
+        <\/script>
+      </body>
+      </html>
+    `;
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      menu.classList.toggle('open');
+    });
+    closeBtn.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      menu.classList.remove('open');
+    });
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target) && menu.classList.contains('open')) {
+        hamburger.classList.remove('active');
+        menu.classList.remove('open');
+      }
+    });
+    function loadContent(url) {
+      fetch(url)
+        .then(response => response.text())
+        .then(html => {
+          contentDisplay.innerHTML = html;
+          const scripts = contentDisplay.querySelectorAll('script');
+          scripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+            Array.from(oldScript.attributes).forEach(attr => {
+              newScript.setAttribute(attr.name, attr.value);
+            });
+            newScript.textContent = oldScript.textContent;
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+          });
+        })
+        .catch(err => {
+          contentDisplay.innerHTML = '<div style="padding:2rem;color:var(--p3);">Error loading content</div>';
+        });
+    }
+    function loadHomePage() {
+      contentDisplay.innerHTML = homePageHTML;
+      const scripts = contentDisplay.querySelectorAll('script');
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement('script');
+        Array.from(oldScript.attributes).forEach(attr => {
+          newScript.setAttribute(attr.name, attr.value);
+        });
+        newScript.textContent = oldScript.textContent;
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+      });
+    }
+    homeLink.addEventListener('click', e => {
+      e.preventDefault();
+      loadHomePage();
+      if(window.innerWidth <= 768){
+        hamburger.classList.remove('active');
+        menu.classList.remove('open');
+      }
+    });
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const url = link.getAttribute('data-src');
+        loadContent(url);
+        if(window.innerWidth <= 768){
+          hamburger.classList.remove('active');
+          menu.classList.remove('open');
+        }
+      });
+    });
+    // Load chat room
+    chatRoomLink.addEventListener('click', e => {
+      e.preventDefault();
+      contentDisplay.innerHTML = `
+        <div class="app" id="app">
+          <div class="servers" id="servers">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">SERVERS</div>
+            <div id="serverList"></div>
+            <div style="flex:1"></div>
+            <div title="Add server" class="server-btn add-server" id="createServerBtn">＋</div>
+            <div id="profileMini" style="margin-top:8px"></div>
+          </div>
+          <div class="main-panel">
+            <div class="header-row">
+              <div style="display:flex;gap:12px;align-items:center">
+                <div class="server-title" id="serverTitle">Welcome</div>
+                <button class="small-btn" id="openGlobalBtn">General Chat</button>
+              </div>
+              <div>
+                <button class="small-btn" id="btnNewChannel">+ Channel</button>
+                <button class="small-btn" id="btnLogout">Log out</button>
+              </div>
+            </div>
+            <div class="channels-and-chat">
+              <div class="channels">
+                <h4>Channels</h4>
+                <div id="channelList"></div>
+              </div>
+              <div class="chat">
+                <div class="messages" id="messages"></div>
+                <div class="composer">
+                  <input id="messageInput" placeholder="Message" autocomplete="off" />
+                  <button id="sendBtn">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right-panel">
+            <div class="section">
+              <div class="section-title">Members</div>
+              <div id="memberList"></div>
+            </div>
+            <div style="height:14px"></div>
+            <div class="section">
+              <div class="section-title">Friends</div>
+              <div id="friendList"></div>
+              <div style="height:8px"></div>
+              <div style="display:flex;gap:8px">
+                <input id="friendEmail" placeholder="friend (email or display name)" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:var(--white)" />
+                <button id="sendRequestBtn" class="small-btn">Send</button>
+              </div>
+              <div style="height:12px"></div>
+              <div class="section-title">Requests</div>
+              <div id="requestList"></div>
+            </div>
+          </div>
+        </div>
+        <div id="authModal" class="modal hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div style="font-family:'Space Grotesk';font-weight:700;font-size:1.1rem">Sign in / Sign up</div>
+            <div id="authClose" style="cursor:pointer;color:var(--muted)">✕</div>
+          </div>
+          <div class="form-row">
+            <label style="font-size:0.85rem;color:var(--muted)">Display name</label>
+            <input id="dispName" type="text" placeholder="nickname (shown to friends)" />
+          </div>
+          <div class="form-row">
+            <label style="font-size:0.85rem;color:var(--muted)">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="form-row">
+            <label style="font-size:0.85rem;color:var(--muted)">Password</label>
+            <input id="password" type="password" placeholder="password (min 6)" />
+          </div>
+          <div style="display:flex;gap:8px;justify-content:space-between;align-items:center">
+            <div style="font-size:0.85rem;color:var(--muted)">Already have an account? <a href="#" id="toLogin" style="text-decoration: none; color: white;">Log in</a></div>
+            <div class="auth-actions">
+              <button id="signupBtn" class="small-btn">Sign up</button>
+              <button id="loginBtn" class="small-btn">Log in</button>
+            </div>
+          </div>
+          <div id="authMsg" style="margin-top:10px;color:var(--muted);font-size:0.9rem"></div>
+        </div>
+      `;
+      if(window.innerWidth <= 768){
+        hamburger.classList.remove('active');
+        menu.classList.remove('open');
+      }
+      // Run the chat script
+      const script = document.createElement('script');
+      script.textContent = `
+        const firebaseConfig = {
+          apiKey: "AIzaSyAeU8eUerKxRSo4T_3Fc9uC9SnHeF-qZrI",
+          authDomain: "my-chat-project-112b9.firebaseapp.com",
+          databaseURL: "https://my-chat-project-112b9-default-rtdb.firebaseio.com",
+          projectId: "my-chat-project-112b9",
+          storageBucket: "my-chat-project-112b9.appspot.com",
+          messagingSenderId: "159419697275",
+          appId: "1:159419697275:web:c0c7c1555466aad80afade",
+          measurementId: "G-705X5D246R"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+        let currentUser = null;
+        let currentServerId = null;
+        let currentChannelId = null;
+        let currentMode = { type: 'server', id: null }; // {type: 'server'|'dm'|'global', id: id}
+        let serverSnapshot = {};
+        let usersCache = {};
+        let presenceSnapshot = {}; // holds presence/{uid}
+        let messagesRef = null;
+        const serverListEl = document.getElementById('serverList');
+        const serverTitleEl = document.getElementById('serverTitle');
+        const channelListEl = document.getElementById('channelList');
+        const messagesEl = document.getElementById('messages');
+        const memberListEl = document.getElementById('memberList');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const createServerBtn = document.getElementById('createServerBtn');
+        const btnNewChannel = document.getElementById('btnNewChannel');
+        const btnLogout = document.getElementById('btnLogout');
+        const profileMini = document.getElementById('profileMini');
+        const friendListEl = document.getElementById('friendList');
+        const requestListEl = document.getElementById('requestList');
+        const friendEmailInput = document.getElementById('friendEmail');
+        const sendRequestBtn = document.getElementById('sendRequestBtn');
+        const openGlobalBtn = document.getElementById('openGlobalBtn');
+        const authModal = document.getElementById('authModal');
+        const signupBtn = document.getElementById('signupBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const authClose = document.getElementById('authClose');
+        const authMsg = document.getElementById('authMsg');
+        const dispNameInput = document.getElementById('dispName');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        function el(tag, props={}, ...children){
+          const e = document.createElement(tag);
+          for(const k in props) {
+            if(k.startsWith('on')) {
+              const ev = k.substring(2).toLowerCase();
+              e.addEventListener(ev, props[k]);
+            } else if(k === 'html') e.innerHTML = props[k];
+            else e.setAttribute(k, props[k]);
+          }
+          for(const c of children) {
+            if(typeof c === 'string') e.appendChild(document.createTextNode(c));
+            else if(c) e.appendChild(c);
+          }
+          return e;
+        }
+        function uidShort(uid){ return uid ? uid.substring(0,6) : '' }
+        function getDisplayNameFromUser(u){
+          if(!u) return 'unknown';
+          const dn = (u.displayName || '').toString().trim();
+          if(!dn) return 'unknown';
+          return dn === 'Unknown' ? 'unknown' : dn;
+        }
+        function formatLastSeen(ts){
+          if(!ts) return '';
+          const diff = Date.now() - ts;
+          const s = Math.floor(diff/1000);
+          if(s < 60) return 'last seen just now';
+          const m = Math.floor(s/60);
+          if(m < 60) return \`last seen \${m}m ago\`;
+          const h = Math.floor(m/60);
+          if(h < 24) return \`last seen \${h}h ago\`;
+          const d = Math.floor(h/24);
+          return \`last seen \${d}d ago\`;
+        }
+        const GLOBAL_GENERAL_ID = "server_general";
+        const GLOBAL_CHAT_ID = "global_chat_general";
+        function ensureGlobalNodes(){
+          db.ref('servers/' + GLOBAL_GENERAL_ID).once('value').then(snap => {
+            if(!snap.exists()){
+              db.ref('servers/' + GLOBAL_GENERAL_ID).set({
+                name: "general",
+                createdAt: Date.now(),
+                channels: { general: { name: "general", createdAt: Date.now() } },
+                members: {}
+              });
+            }
+          });
+          db.ref('globalChats/' + GLOBAL_CHAT_ID + '/meta').once('value').then(snap => {
+            if(!snap.exists()){
+              db.ref('globalChats/' + GLOBAL_CHAT_ID + '/meta').set({ name: "General Chat", createdAt: Date.now() });
+            }
+          });
+        }
+        ensureGlobalNodes();
+        function showAuthModal(show=true){ authModal.classList.toggle('hidden', !show); }
+        authClose.addEventListener('click', ()=> showAuthModal(false));
+        document.getElementById('toLogin').addEventListener('click', (e)=>{
+          e.preventDefault();
+          authMsg.textContent = 'Use Log in to sign in if you have account.';
+        });
+        signupBtn.addEventListener('click', async ()=>{
+          const email = emailInput.value.trim();
+          const pass = passwordInput.value;
+          const displayName = dispNameInput.value.trim() || email.split('@')[0];
+          if(!email || pass.length < 6) { authMsg.textContent = 'Enter valid email and password (min 6).'; return; }
+          authMsg.textContent = 'Signing up...';
+          try{
+            const res = await auth.createUserWithEmailAndPassword(email, pass);
+            const user = res.user;
+            await user.updateProfile({ displayName });
+            const uref = db.ref('users/' + user.uid);
+            await uref.set({
+              displayName,
+              email,
+              createdAt: Date.now(),
+              lastSeen: Date.now()
+            });
+            await db.ref(\`servers/\${GLOBAL_GENERAL_ID}/members/\${user.uid}\`).set({ joinedAt: Date.now() });
+            await db.ref(\`userServers/\${user.uid}/\${GLOBAL_GENERAL_ID}\`).set(true);
+            authMsg.textContent = 'Sign up complete! Joined general server and global chat.';
+            showAuthModal(false);
+          }catch(err){
+            authMsg.textContent = 'Error: ' + err.message;
+          }
+        });
+        loginBtn.addEventListener('click', async ()=>{
+          const email = emailInput.value.trim();
+          const pass = passwordInput.value;
+          if(!email || !pass) { authMsg.textContent = 'Enter email and password.'; return; }
+          authMsg.textContent = 'Logging in...';
+          try{
+            await auth.signInWithEmailAndPassword(email, pass);
+            authMsg.textContent = 'Logged in!';
+            showAuthModal(false);
+          }catch(err){
+            authMsg.textContent = 'Error: ' + err.message;
+          }
+        });
+        db.ref('presence').on('value', snap => {
+          presenceSnapshot = snap.val() || {};
+          renderMemberList();
+          renderFriends((document.querySelector('#friendList')) ? {} : {}); // safe noop - we call actual renderFriends when friend data changes too
+          renderRequests((document.querySelector('#requestList')) ? {} : {});
+          updateProfileMiniStatus();
+        });
+        function isOnline(uid){
+          return presenceSnapshot[uid] && presenceSnapshot[uid].state === 'online';
+        }
+        auth.onAuthStateChanged(async user => {
+          currentUser = user;
+          setAuthDependentUI(!!user);
+          if(user){
+            db.ref('users/' + user.uid + '/lastSeen').set(Date.now());
+            const uref = db.ref('users/' + user.uid);
+            const snap = await uref.once('value');
+            if(!snap.exists()){
+              await uref.set({
+                displayName: user.displayName || user.email.split('@')[0],
+                email: user.email,
+                createdAt: Date.now(),
+                lastSeen: Date.now()
+              });
+              await db.ref(\`servers/\${GLOBAL_GENERAL_ID}/members/\${user.uid}\`).set({ joinedAt: Date.now() });
+              await db.ref(\`userServers/\${user.uid}/\${GLOBAL_GENERAL_ID}\`).set(true);
+            }
+            const conRef = db.ref('.info/connected');
+            conRef.on('value', snapConn => {
+              if(snapConn.exists() && snapConn.val() === true){
+                const userPresenceRef = db.ref(\`presence/\${user.uid}\`);
+                userPresenceRef.onDisconnect().set({ state: 'offline', lastChanged: Date.now() }).catch(()=>{});
+                userPresenceRef.set({ state: 'online', lastChanged: Date.now() }).catch(()=>{});
+              } else {
+                db.ref(\`presence/\${user.uid}\`).set({ state: 'offline', lastChanged: Date.now() }).catch(()=>{});
+              }
+            });
+            window.addEventListener('offline', ()=> {
+              if(currentUser) db.ref(\`presence/\${currentUser.uid}\`).set({ state: 'offline', lastChanged: Date.now() }).catch(()=>{});
+            });
+            window.addEventListener('online', ()=> {
+              if(currentUser) db.ref(\`presence/\${currentUser.uid}\`).set({ state: 'online', lastChanged: Date.now() }).catch(()=>{});
+            });
+            initAppForUser();
+          } else {
+            showAuthModal(true);
+            renderSignedOutView();
+          }
+        });
+        function setAuthDependentUI(signedIn){
+          if(signedIn){
+            btnLogout.style.display = '';
+          } else {
+            btnLogout.style.display = 'none';
+          }
+        }
+        function renderSignedOutView(){
+          serverListEl.innerHTML = '';
+          channelListEl.innerHTML = '';
+          messagesEl.innerHTML = '<div style="color:var(--muted);padding:12px">Sign in to start chatting.</div>';
+          profileMini.innerHTML = \`<div class="server-btn" title="Sign in" onclick="document.getElementById('authModal').classList.remove('hidden')">Sign in</div>\`;
+        }
+        async function initAppForUser(){
+          profileMini.innerHTML = '';
+          const initials = (currentUser.displayName || currentUser.email[0]).substring(0,2).toUpperCase();
+          const avatar = el('div',{class:'server-btn', title:'Profile'}, initials);
+          const status = el('div',{class:'status ' + (isOnline(currentUser.uid) ? 'online' : 'offline')});
+          avatar.style.position = 'relative';
+          avatar.appendChild(status);
+          profileMini.appendChild(avatar);
+          avatar.addEventListener('click', ()=> {
+            alert(\`Signed in as \${currentUser.displayName || currentUser.email}\\nUID: \${currentUser.uid}\\nEmail: \${currentUser.email}\`);
+          });
+          db.ref('userServers/' + currentUser.uid).on('value', snap => {
+            const data = snap.val() || {};
+            if(!data[GLOBAL_GENERAL_ID]) {
+              db.ref(\`userServers/\${currentUser.uid}/\${GLOBAL_GENERAL_ID}\`).set(true);
+              db.ref(\`servers/\${GLOBAL_GENERAL_ID}/members/\${currentUser.uid}\`).set({ joinedAt: Date.now() });
+            }
+            renderServerList(Object.keys(data));
+          });
+          db.ref('servers').on('value', snap => {
+            serverSnapshot = snap.val() || {};
+            if(!currentServerId) {
+              if(serverSnapshot[GLOBAL_GENERAL_ID]) currentServerId = GLOBAL_GENERAL_ID;
+              else {
+                currentServerId = Object.keys(serverSnapshot)[0] || null;
+              }
+            }
+            renderServerList(Object.keys(serverSnapshot || {}), currentServerId);
+            if(currentServerId && currentMode.type === 'server') selectServer(currentServerId);
+          });
+          db.ref(\`friendRequests/\${currentUser.uid}\`).on('value', snap => {
+            const reqs = snap.val() || {};
+            renderRequests(reqs);
+          });
+          db.ref(\`friends/\${currentUser.uid}\`).on('value', snap => {
+            const friends = snap.val() || {};
+            renderFriends(friends);
+          });
+          updateUsersCache();
+          currentMode = { type: 'server', id: GLOBAL_GENERAL_ID };
+          currentServerId = GLOBAL_GENERAL_ID;
+          selectServer(GLOBAL_GENERAL_ID);
+        }
+        function updateUsersCache(){
+          db.ref('users').on('value', snap => {
+            usersCache = snap.val() || {};
+            renderMemberList();
+            renderFriends((document.querySelector('#friendList')) ? {} : {}); // safe noop to avoid unused variable
+          });
+        }
+        function renderServerList(serverIds=[], activeId){
+          serverListEl.innerHTML = '';
+          if(!serverIds.includes(GLOBAL_GENERAL_ID)) serverIds.unshift(GLOBAL_GENERAL_ID);
+          serverIds = Array.from(new Set(serverIds));
+          for(const sid of serverIds){
+            const s = serverSnapshot[sid] || { name: sid === GLOBAL_GENERAL_ID ? 'general' : sid };
+            const btn = el('div',{class:'server-btn ' + (sid === activeId ? 'active' : ''), title: s.name}, s.name[0].toUpperCase());
+            btn.addEventListener('click', ()=> {
+              currentMode = { type: 'server', id: sid };
+              currentServerId = sid;
+              selectServer(sid);
+            });
+            serverListEl.appendChild(btn);
+          }
+        }
+        function selectServer(sid){
+          currentServerId = sid;
+          currentMode = { type: 'server', id: sid };
+          const s = serverSnapshot[sid] || { name: 'Server' };
+          serverTitleEl.textContent = s.name || 'Server';
+          const channels = s.channels || { general: { name: "general" } };
+          renderChannels(channels);
+          const chId = Object.keys(channels)[0];
+          if(chId) selectChannel(chId);
+          renderMemberList();
+          setupSendForServer();
+        }
+        function renderChannels(channels){
+          channelListEl.innerHTML = '';
+          for(const chId in channels){
+            const ch = channels[chId];
+            const elCh = el('div',{class:'channel-item ' + (chId===currentChannelId?'active':'')}, '# ' + (ch.name || chId));
+            elCh.addEventListener('click', ()=> {
+              currentMode = { type: 'server', id: currentServerId };
+              selectChannel(chId);
+            });
+            channelListEl.appendChild(elCh);
+          }
+        }
+        function selectChannel(chId){
+          currentChannelId = chId;
+          const items = channelListEl.querySelectorAll('.channel-item');
+          items.forEach(it => it.classList.remove('active'));
+          const found = Array.from(items).find(it => it.textContent.trim().toLowerCase().includes(chId));
+          if(found) found.classList.add('active');
+          if(messagesRef) messagesRef.off();
+          messagesEl.innerHTML = '';
+          if(!currentServerId || !currentChannelId) return;
+          messagesRef = db.ref(\`servers/\${currentServerId}/channels/\${currentChannelId}/messages\`);
+          messagesRef.limitToLast(200).on('child_added', snap => { appendMessage(snap.key, snap.val()); });
+          messagesRef.on('child_changed', snap => {
+            const msgEl = document.getElementById('m_' + snap.key);
+            if(msgEl) replaceMessageDOM(msgEl, snap.key, snap.val());
+          });
+          messagesRef.on('child_removed', snap => {
+            const msgEl = document.getElementById('m_' + snap.key);
+            if(msgEl) msgEl.remove();
+          });
+          setupSendForServer();
+        }
+        openGlobalBtn.addEventListener('click', ()=>{
+          openGlobalChat();
+        });
+        function openGlobalChat(){
+          if(messagesRef) messagesRef.off();
+          currentMode = { type: 'global', id: GLOBAL_CHAT_ID };
+          serverTitleEl.textContent = 'General Chat';
+          channelListEl.innerHTML = \`<div style="color:var(--muted);padding:6px">Global Chat (everyone)</div>\`;
+          messagesEl.innerHTML = '';
+          messagesRef = db.ref(\`globalChats/\${GLOBAL_CHAT_ID}/messages\`);
+          messagesRef.limitToLast(400).on('child_added', snap => appendMessage(snap.key, snap.val()));
+          messagesRef.on('child_changed', snap => {
+            const msgEl = document.getElementById('m_' + snap.key);
+            if(msgEl) replaceMessageDOM(msgEl, snap.key, snap.val());
+          });
+          setupSendForGlobal();
+        }
+        async function openDMWith(uid){
+          if(!currentUser) return alert('Sign in first to send DMs.');
+          if(uid === currentUser.uid) return;
+          const ids = [currentUser.uid, uid].sort();
+          const dmId = \`dm_\${ids.join('_')}\`;
+          const dmRef = db.ref(\`dms/\${dmId}\`);
+          const snap = await dmRef.once('value');
+          if(!snap.exists()){
+            await dmRef.set({ participants: { [ids[0]]: true, [ids[1]]: true }, createdAt: Date.now() });
+          }
+          if(messagesRef) messagesRef.off();
+          messagesEl.innerHTML = '';
+          messagesRef = db.ref(\`dms/\${dmId}/messages\`);
+          messagesRef.limitToLast(200).on('child_added', snap => appendMessage(snap.key, snap.val()));
+          messagesRef.on('child_changed', snap => {
+            const msgEl = document.getElementById('m_' + snap.key);
+            if(msgEl) replaceMessageDOM(msgEl, snap.key, snap.val());
+          });
+          serverTitleEl.textContent = 'Direct Message';
+          channelListEl.innerHTML = \`<div style="color:var(--muted);padding:6px">DM with \${(usersCache[uid] && getDisplayNameFromUser(usersCache[uid])) || 'unknown'}</div>\`;
+          currentMode = { type: 'dm', id: dmId, target: uid };
+          setupSendForDM(dmId);
+        }
+        function appendMessage(key, m){
+          if(!m) return;
+          const mine = currentUser && m.uid === currentUser.uid;
+          const wrapper = el('div',{class:'msg ' + (mine ? 'me' : '') + (m.deleted ? ' deleted' : ''), id:'m_' + key});
+          const name = (m.uid && usersCache[m.uid]) ? getDisplayNameFromUser(usersCache[m.uid]) : 'unknown';
+          const meta = el('div',{class:'meta'}, \`\${name} • \${new Date(m.ts).toLocaleTimeString()}\${m.edited ? ' • ' : ''}\`);
+          if(m.edited){
+            meta.appendChild(el('span',{class:'edited'}, '(edited)'));
+          }
+          wrapper.appendChild(meta);
+          const content = m.deleted ? 'Message deleted' : m.text;
+          wrapper.appendChild(el('div',{}, content));
+          if(mine && !m.deleted){
+            const controls = el('div',{class:'controls'});
+            const editBtn = el('button',{class:'ctrl-btn', onClick:()=> startEditMessage(key,m)}, 'Edit');
+            const delBtn = el('button',{class:'ctrl-btn', onClick:()=> deleteMessage(key)}, 'Delete');
+            controls.appendChild(editBtn); controls.appendChild(delBtn);
+            wrapper.appendChild(controls);
+          }
+          messagesEl.appendChild(wrapper);
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+        function replaceMessageDOM(dom, key, m){
+          dom.className = 'msg ' + ((m.uid === currentUser.uid) ? 'me' : '') + (m.deleted ? ' deleted' : '');
+          dom.innerHTML = '';
+          const name = (m.uid && usersCache[m.uid]) ? getDisplayNameFromUser(usersCache[m.uid]) : 'unknown';
+          const meta = el('div',{class:'meta'}, \`\${name} • \${new Date(m.ts).toLocaleTimeString()}\${m.edited ? ' • ' : ''}\`);
+          if(m.edited) meta.appendChild(el('span',{class:'edited'}, '(edited)'));
+          dom.appendChild(meta);
+          dom.appendChild(el('div',{}, m.deleted ? 'Message deleted' : m.text));
+          if(m.uid === currentUser.uid && !m.deleted){
+            const controls = el('div',{class:'controls'});
+            const editBtn = el('button',{class:'ctrl-btn', onClick:()=> startEditMessage(key,m)}, 'Edit');
+            const delBtn = el('button',{class:'ctrl-btn', onClick:()=> deleteMessage(key)}, 'Delete');
+            controls.appendChild(editBtn); controls.appendChild(delBtn);
+            dom.appendChild(controls);
+          }
+        }
+        let editingMessage = null; // {key, pathRef}
+        function startEditMessage(key, m){
+          if(!m || m.uid !== currentUser.uid) return alert('Cannot edit this message');
+          editingMessage = { key, mode: currentMode, channelId: currentChannelId };
+          messageInput.value = m.text;
+          messageInput.focus();
+          sendBtn.textContent = 'Save';
+          sendBtn.dataset.action = 'edit';
+        }
+        async function commitEdit(){
+          if(!editingMessage) return;
+          const newText = messageInput.value.trim();
+          if(newText.length === 0) return alert('Message cannot be empty');
+          const mode = editingMessage.mode;
+          let path = null;
+          if(mode.type === 'server') path = \`servers/\${mode.id}/channels/\${editingMessage.channelId || currentChannelId}/messages/\${editingMessage.key}\`;
+          else if(mode.type === 'global') path = \`globalChats/\${mode.id}/messages/\${editingMessage.key}\`;
+          else if(mode.type === 'dm') path = \`dms/\${mode.id}/messages/\${editingMessage.key}\`;
+          if(!path) { alert('Edit path not found'); return; }
+          await db.ref(path).update({ text: newText, edited: true, editedAt: Date.now() });
+          messageInput.value = '';
+          sendBtn.textContent = 'Send';
+          delete sendBtn.dataset.action;
+          editingMessage = null;
+        }
+        async function deleteMessage(key){
+          if(!confirm('Delete this message?')) return;
+          const mode = currentMode;
+          let path = null;
+          if(mode.type === 'server') path = \`servers/\${mode.id}/channels/\${currentChannelId}/messages/\${key}\`;
+          else if(mode.type === 'global') path = \`globalChats/\${mode.id}/messages/\${key}\`;
+          else if(mode.type === 'dm') path = \`dms/\${mode.id}/messages/\${key}\`;
+          if(!path) { alert('Delete path not found'); return; }
+          await db.ref(path).update({ deleted: true, text: '', deletedAt: Date.now() });
+        }
+        function setupSendForServer(){
+          sendBtn.onclick = async ()=>{
+            if(sendBtn.dataset.action === 'edit'){ await commitEdit(); return; }
+            const text = messageInput.value.trim();
+            if(!text || !currentServerId || !currentChannelId || !currentUser) return;
+            const msgRef = db.ref(\`servers/\${currentServerId}/channels/\${currentChannelId}/messages\`).push();
+            await msgRef.set({
+              text,
+              uid: currentUser.uid,
+              ts: Date.now()
+            });
+            messageInput.value = '';
+          };
+        }
+        function setupSendForGlobal(){
+          sendBtn.onclick = async ()=>{
+            if(sendBtn.dataset.action === 'edit'){ await commitEdit(); return; }
+            const text = messageInput.value.trim();
+            if(!text || !currentUser) return;
+            const msgRef = db.ref(\`globalChats/\${GLOBAL_CHAT_ID}/messages\`).push();
+            await msgRef.set({
+              text,
+              uid: currentUser.uid,
+              ts: Date.now()
+            });
+            messageInput.value = '';
+          };
+        }
+        function setupSendForDM(dmId){
+          sendBtn.onclick = async ()=>{
+            if(sendBtn.dataset.action === 'edit'){ await commitEdit(); return; }
+            const text = messageInput.value.trim();
+            if(!text || !currentUser) return;
+            await db.ref(\`dms/\${dmId}/messages\`).push({
+              text, uid: currentUser.uid, ts: Date.now()
+            });
+            messageInput.value = '';
+          };
+        }
+        messageInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter') sendBtn.click(); });
+        createServerBtn.addEventListener('click', async ()=>{
+          if(!currentUser) { alert('Sign in first'); return; }
+          const name = prompt('Server name? (e.g. My Server)');
+          if(!name) return;
+          const newRef = db.ref('servers').push();
+          const sid = newRef.key;
+          const payload = {
+            name,
+            createdAt: Date.now(),
+            channels: { general: { name: "general", createdAt: Date.now() } },
+            members: {}
+          };
+          payload.members[currentUser.uid] = { joinedAt: Date.now() };
+          await newRef.set(payload);
+          await db.ref(\`userServers/\${currentUser.uid}/\${sid}\`).set(true);
+          currentMode = { type: 'server', id: sid };
+          currentServerId = sid;
+          selectServer(sid);
+        });
+        btnNewChannel.addEventListener('click', async ()=>{
+          if(!currentServerId) return alert('Select a server first');
+          const cname = prompt('Channel name (no #):','new-channel');
+          if(!cname) return;
+          const chKey = cname.replace(/\\s+/g,'-').toLowerCase();
+          await db.ref(\`servers/\${currentServerId}/channels/\${chKey}\`).set({ name: cname, createdAt: Date.now() });
+          selectServer(currentServerId);
+          selectChannel(chKey);
+        });
+        function renderMemberList(){
+          memberListEl.innerHTML = '';
+          if(!currentServerId) return;
+          const s = serverSnapshot[currentServerId] || {};
+          const members = s.members || {};
+          for(const uid in members){
+            const u = usersCache[uid] || { displayName: '', email: '' };
+            const displayName = getDisplayNameFromUser(u);
+            const row = el('div',{class:'user-row'});
+            const av = el('div',{class:'avatar'}, (displayName[0] || '?').toUpperCase());
+            const online = isOnline(uid);
+            const statusDot = el('div',{class:'status ' + (online ? 'online' : 'offline')});
+            av.appendChild(statusDot);
+            const emailText = (currentUser && uid === currentUser.uid) ? (u.email || '') : '';
+            const lastSeenText = (!online && presenceSnapshot[uid] && presenceSnapshot[uid].lastChanged) ? formatLastSeen(presenceSnapshot[uid].lastChanged) : '';
+            const info = el('div',{}, el('div',{style:'font-weight:700'}, displayName), el('div',{style:'font-size:12px;color:var(--muted)'}, emailText || lastSeenText));
+            const actions = el('div',{class:'friend-actions'});
+            if(currentUser && uid !== currentUser.uid){
+              const dmBtn = el('button',{class:'small-btn', onClick:()=> openDMWith(uid)}, 'DM');
+              actions.appendChild(dmBtn);
+            }
+            row.appendChild(av); row.appendChild(info); row.appendChild(actions);
+            memberListEl.appendChild(row);
+          }
+        }
+        function updateProfileMiniStatus(){
+          if(!currentUser) return;
+          const elMini = profileMini.querySelector('.server-btn');
+          if(!elMini) return;
+          const status = elMini.querySelector('.status');
+          if(status){
+            status.className = 'status ' + (isOnline(currentUser.uid) ? 'online' : 'offline');
+          }
+        }
+        function renderFriends(friends){
+          friendListEl.innerHTML = '';
+          const list = friends || {};
+          for(const uid in list){
+            const u = usersCache[uid] || {};
+            const displayName = getDisplayNameFromUser(u);
+            const showEmail = currentUser && uid === currentUser.uid;
+            const emailText = showEmail ? (u.email || '') : '';
+            const online = isOnline(uid);
+            const lastSeenText = (!online && presenceSnapshot[uid] && presenceSnapshot[uid].lastChanged) ? formatLastSeen(presenceSnapshot[uid].lastChanged) : '';
+            const row = el('div',{class:'user-row'},
+              el('div',{class:'avatar'}, (displayName[0]||'?').toUpperCase()),
+              el('div',{}, el('div',{style:'font-weight:700'}, displayName), el('div',{style:'font-size:12px;color:var(--muted)'}, emailText || lastSeenText)),
+              (currentUser && uid !== currentUser.uid) ? el('button',{class:'small-btn', onClick:()=> openDMWith(uid)}, 'DM') : ''
+            );
+            const av = row.querySelector('.avatar');
+            const statusDot = el('div',{class:'status ' + (online ? 'online' : 'offline')});
+            av.appendChild(statusDot);
+            friendListEl.appendChild(row);
+          }
+        }
+        function renderRequests(reqs){
+          requestListEl.innerHTML = '';
+          reqs = reqs || {};
+          for(const fromUid in reqs){
+            const u = usersCache[fromUid] || {};
+            const displayName = getDisplayNameFromUser(u);
+            const showEmail = currentUser && fromUid === currentUser.uid;
+            const emailText = showEmail ? (u.email || '') : '';
+            const online = isOnline(fromUid);
+            const lastSeenText = (!online && presenceSnapshot[fromUid] && presenceSnapshot[fromUid].lastChanged) ? formatLastSeen(presenceSnapshot[fromUid].lastChanged) : '';
+            const row = el('div',{class:'user-row'}, el('div',{class:'avatar'}, (displayName[0]||'?').toUpperCase()),
+              el('div',{}, el('div',{style:'font-weight:700'}, displayName), el('div',{style:'font-size:12px;color:var(--muted)'}, emailText || lastSeenText)),
+              el('div',{class:'friend-actions'},
+                el('button',{class:'small-btn', onClick:()=> acceptRequest(fromUid)}, 'Accept'),
+                el('button',{class:'small-btn', onClick:()=> declineRequest(fromUid)}, 'Decline')
+              )
+            );
+            const av = row.querySelector('.avatar');
+            const statusDot = el('div',{class:'status ' + (online ? 'online' : 'offline')});
+            av.appendChild(statusDot);
+            requestListEl.appendChild(row);
+          }
+        }
+        sendRequestBtn.addEventListener('click', async ()=>{
+          const query = friendEmailInput.value.trim();
+          if(!query) return alert('Enter a display name or email to send a friend request.');
+          if(!currentUser) return alert('Sign in first.');
+          async function sendToUid(targetUid){
+            if(targetUid === currentUser.uid) return alert("You can't add yourself.");
+            await db.ref(\`friendRequests/\${targetUid}/\${currentUser.uid}\`).set(true);
+            alert('Friend request sent.');
+            friendEmailInput.value = '';
+          }
+          if(query.includes('@')){
+            const usersSnap = await db.ref('users').orderByChild('email').equalTo(query).once('value');
+            if(!usersSnap.exists()){
+              return alert('No user with that email found (they must sign up first).');
+            }
+            const usersData = usersSnap.val();
+            const targetUid = Object.keys(usersData)[0];
+            await sendToUid(targetUid);
+            return;
+          }
+          const byNameSnap = await db.ref('users').orderByChild('displayName').equalTo(query).once('value');
+          if(!byNameSnap.exists()){
+            return alert('No user with that display name found. Try asking them to sign up or confirm their display name.');
+          }
+          const matches = byNameSnap.val();
+          const uids = Object.keys(matches);
+          if(uids.length > 1){
+            if(!confirm(\`Multiple users found with that display name (\${uids.length}). Send request to the first match?\`)) return;
+          }
+          await sendToUid(uids[0]);
+        });
+        async function acceptRequest(fromUid){
+          if(!currentUser) return alert('Sign in first.');
+          await db.ref(\`friends/\${currentUser.uid}/\${fromUid}\`).set(true);
+          await db.ref(\`friends/\${fromUid}/\${currentUser.uid}\`).set(true);
+          await db.ref(\`friendRequests/\${currentUser.uid}/\${fromUid}\`).remove();
+          alert('Friend request accepted.');
+        }
+        async function declineRequest(fromUid){
+          if(!currentUser) return alert('Sign in first.');
+          await db.ref(\`friendRequests/\${currentUser.uid}/\${fromUid}\`).remove();
+        }
+        btnLogout.addEventListener('click', async ()=> {
+          if(!currentUser){
+            showAuthModal(true);
+            return;
+          }
+          if(!confirm('Log out?')) return;
+          try{
+            try { db.ref().off(); } catch(e) {}
+            await db.ref(\`presence/\${currentUser.uid}\`).set({ state: 'offline', lastChanged: Date.now() }).catch(()=>{});
+            await auth.signOut();
+            showAuthModal(true);
+            renderSignedOutView();
+          }catch(err){
+            console.error('Error signing out', err);
+            alert('Failed to sign out: ' + (err.message || err));
+          }
+        });
+        if(!auth.currentUser) { setTimeout(()=> showAuthModal(true), 400); }
+      `;
+      contentDisplay.appendChild(script);
+    });
+// Insert this at the end of your main <script>, before loadHomePage();
+// --- HTML Games "local" page loader ---
+
+const htmlGamesLocalHTML = `
+  <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #000000;
+    min-height: 100vh;
+    color: #e5e7eb;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Animated background */
+.background-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #000000 0%, #0a0015 50%, #000000 100%);
+    z-index: 0;
+}
+
+.stars {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 60px 70px, white, transparent),
+        radial-gradient(1px 1px at 50px 50px, white, transparent),
+        radial-gradient(1px 1px at 130px 80px, white, transparent),
+        radial-gradient(2px 2px at 90px 150px, white, transparent);
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    opacity: 0.4;
+    animation: starsMove 100s linear infinite;
+    z-index: 1;
+}
+
+@keyframes starsMove {
+    from { transform: translateY(0); }
+    to { transform: translateY(-200px); }
+}
+
+/* Purple glow orbs */
+.orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.1;
+    z-index: 2;
+    animation: float 20s ease-in-out infinite;
+}
+
+.orb-1 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #6b21a8, transparent);
+    top: -100px;
+    left: -100px;
+    animation-duration: 25s;
+}
+
+.orb-2 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, #4a0080, transparent);
+    bottom: -100px;
+    right: -100px;
+    animation-duration: 30s;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(50px, -50px) scale(1.1); }
+    66% { transform: translate(-50px, 50px) scale(0.9); }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.5);
+}
+
+.header {
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.subtitle {
+    color: #c4b5fd;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.subtitle a {
+    color: #a78bfa;
+    text-decoration: none;
+    transition: color 0.3s;
+    border-bottom: 1px solid transparent;
+}
+
+.subtitle a:hover {
+    color: #c4b5fd;
+    border-bottom-color: #a78bfa;
+}
+
+.search-container {
+    max-width: 600px;
+    margin: 0 auto 20px;
+    position: relative;
+}
+
+.search-box {
+    width: 100%;
+    padding: 15px 50px 15px 20px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(139, 92, 246, 0.3);
+    border-radius: 30px;
+    color: #e5e7eb;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.search-box:focus {
+    border-color: #8b5cf6;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+}
+
+.search-box::placeholder {
+    color: #9ca3af;
+}
+
+.search-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px 30px 20px;
+    padding-top: 0;
+    position: relative;
+    z-index: 10;
+}
+
+.letter-section {
+    margin-bottom: 50px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.letter-section.hidden {
+    display: none;
+}
+
+.letter-header {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+    color: #a78bfa;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+    justify-items: stretch;
+}
+
+.game-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent, rgba(139, 92, 246, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+    border-color: #8b5cf6;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.game-card:hover::before {
+    opacity: 1;
+}
+
+.game-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #f9fafb;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.empty-section {
+    grid-column: span 3;
+    text-align: center;
+    color: #6b7280;
+    font-style: italic;
+    padding: 40px;
+}
+
+.no-results {
+    text-align: center;
+    padding: 60px;
+    color: #9ca3af;
+    font-size: 18px;
+}
+
+@media (max-width: 1200px) {
+    .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .letter-header {
+        font-size: 24px;
+    }
+}
+
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(139, 92, 246, 0.3);
+    border-radius: 50%;
+    border-top-color: #8b5cf6;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+    </style>
+<div class="header">
+  <h1>Unblocked HTML Files</h1>
+  <div class="subtitle">
+    Files from <a href="https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/" target="_blank">Ultimate Game Stash</a>
+    Some games may not work.
+  </div>
+  <div class="search-container">
+    <input type="text" class="search-box" id="searchBox" placeholder="Search for games...">
+    <span class="search-icon">🔍</span>
+  </div>
+</div>
+<div class="main-content">
+  <div id="sections-container"></div>
+  <div id="no-results" class="no-results" style="display:none">No games found matching your search.</div>
+</div>
+<script>
+ 
+   const files = ['cl1','cl100skibidistillwaterthosewhoknow','cl10bullets','cl10minutestildawn','cl12minibattles','cl1on1soccer','cl1on1tennis','cl1v1doubleimprettysureitsexactlythesameidk','cl1v1lol','cl1v1lolifnoaboutblank','cl1v1lolnoaboutblank','cl1v1maybeidk','cl2048','cl2048cupcakes','cl2doom','cl2dshooting(1)','cl2Dshooting','cl3dash','cl3pandas','cl3pandasbrazil','cl3pandasfantasy','cl3pandasnight','cl3slices2','cl40escape','cl40exescape','cl4thandgoal','cl60secondsburgerrun','cl60secondssantarun','cl60secsantarun','cl8ballclassic','cl8ballpool','cl9007199254740992','cl99balls','clabandoned','clabandoned3','clabandoned32','clabsolutemadness','claceattorernefgsdg','clacecombat2','clacecombat3','clacegangstertaxi','clachievementunlocked','clachievmentunlocked','clachievmentunlocked2','clachievmentunlocked3','clachillies1fr','clachillies2','clADarkRoom','cladayintheoffice','clADOFAI','cladvancewars','cladvancewars2','cladventneon','clagariolite','clageofwar','clageofwar2','clagesofconflict','clahoysurvival','clai','clakoopasrevenge','clakoopasrevenge2','clakumanorgaiden','clalienhominid','clalienhominidgba','clalienskyinvasion','clalientransporter','clalienvspredator','clallocation','clamaze','clamidstthesky','clamigopancho','clamigopancho2','clamigopancho3','clamigopancho4','clamigopancho5','clamigopancho6','clamigopancho7','clamongus','clamorphous','clancientsins','clangrybirds','clangrybirdsshowdown','clangrybirdsspace','clanimalcrossingwildworld','clanotherworld','clapotris','clappleshooter','clappleworm','claquaparkio','clarceuslegend','clarcheryworldtour','clarewethereyet','clarmormayhem2','clarsonate','clascent','clasmallworldcup','classesmentexaminationque','clasteroids','clasteroidsALT','clattackhole','clavalanche','claviamasters','claviamastersbuggy','clAwesomePirates','clawesomeplanes','clawesometanks','clawesometanks2','clB3313','clbabeltower','clbabychiccoadventure','clbabykaizo','clbackrooms','clbackrooms2D','clbackyardbaseball','clbackyardbaseball09','clbackyardbaseball10','clbackyardsoccer','clbaconmaydie','clbadicecream','clbadmondaysimulator','clbadparenting','clbadpiggies','clbadtimesim','clbadtimesimulator','clbaldidecomp','clbaldisbasics','clbaldisbasicsremaster','clbaldisfunnewschoolultimate','clballblast','clballsandbricks','clballsandbricksgood','clbananasimulator','clbanditgunslingers','clbanjokazooie','clbanjotooie','clbankbreakout2','clbankrobbery2','clbarryhasasecret','clbas','clbaseballbros','clbasketballfrvr','clbasketballlegends','clbasketballlegendsgoodywoody','clbasketballstars','clbasketbattle','clbasketbros','clbasketrandom','clbasketrandomgood','clbasketslamdunk2','clbatterup','clbattlekarts','clbattles','clbattlesim','clbattlezone','clbazookaboy','clbeamrider','clbearbarians','clben10alienforce','clben10omniverse','clben10protector','clben10racing','clben10ultimatealien','clbergentruck201x','clbigicetowertinysquare','clbigneontowertinysquare','clbigshotboxing','clbigtowertinysquare','clbigtowertinysquare2','clbigtowertinysquare2good','clBig_Time_Butter_Baron','clbindingofisaccsheeptime','clbioevil4','clbitlife','clbitlifeencrypted','clbitplanes','clblackjack','clblackjackbattle','clblacksmithlab','clblastronaut','clblazedrifter','clblobsstory2','clblockblast','clblockcraftparkour','clblockcraftshooter','clblockpost','clblockthepig','clblockysnakes','clbloodmoney','clbloodtournament','clbloons','clbloons2','clbloonspp1','clbloonspp2','clbloonspp3','clbloonspp4','clbloonspp5','clBTD1','clbtts','clbtts2','clbubbleshooter','clbubbleshooterpirate','clbubbletanks','clbubbletanks2','clbubbletanks3','clbubbletanksarenas','clbubbletankstd','clbubsy','clbuckshotroulette','clbunnyland','clburgerandfrights','clburritobison','clburritobison2','clburritobisonlaunchalibre','clburritobisonrevenge','clbushidoblade','clcactusmccoy','clcactusmccoy2','clcannonballs3d','clcannonfodder','clcapybaraclicker','clcarcrash3','clcardrawing','clcareatscar2deluxe','clcarkingarena','clcarmods','clcarstuntsdriving','clCartoonNetworkTableTennisUltimateTournament','clcastlebloodline','clcastlecircleofmoon','clcastlevania','clcastlevania2','clcastlevania3','clcastlevaniaariaofsorrow','clcastlevanianes','clcastlewarsmodern','clcatmario','clcatmariogood','clcatslovecake2','clcavestory','clceleste','clceleste2','clcellardoor','clchaosfaction2','clcheckers','clcheesechompers3d','clcheshireinachatroom','clchess','clchessclassic','clchibiknight','clchickenscream','clchickenwar','clchipschallenge','clchoppyorc','clchronotrigger','clCircloO2','clciviballs','clciviballs2','clclashofvikings','clclassof09','clcleanupio','clclearvision','clclearvision2','clclearvision3','clclearvision4','clclearvision5','clclmadnessambulation','clclubbytheseal','clclusterrush','clcoalllcdemo','clcod4','clcodblackopp','clcodblackops','clcoddefiance','clcodenamegordon','clcodmodernwarfare','clcodworldatwar','clcoffeemaker','clcolorburst3d','clcolormatch','clcolorwatersort3d','clcombopool','clcommanderkeen4','clcommanderkeen5','clcommanderkeen6','clconkersbadfurday','clcontra','clcookieclicker','clcookieclickercool','clcookieclickergood','clcookingmama','clcookingmama2','clcookingmama3','clcoreball','clcotlk','clcountersnipe','clcrankit!','clcrashbandicoot','clcrashbandicoot2','clcrashteamracing','clcrazycars','clcrazycattle3d','clcrazychicken3D','clcreeperworld2','clcrossyroad','clcrunchball3000','clcs1.6','clcsds','clcsgoclicker','clctgpnitro','clcurveball','clcuttherope','clcuttheropetimetravel','clcyberbungracing','cldadnme','cldanktomb','cldborigins','cldborigins2','cldbsniper','cldbzattacksaiyans','cldbzdevolution','cldbzsuperwarriorssonic','cldeadestate','cldeadplate','cldeadzed','cldeadzed2','cldeathchase','cldeblob2','cldecision','cldecision2','cldecision3','cldecisionmedieval','cldeepersleep','cldeepestsword','cldeepsleep','cldefendyourcastle','cldefendyournuts','cldefendyournuts2','cldeltarune','cldementium','cldemolitionderbycrashracing','cldiablo','cldiamondhollow','cldiamondhollow2','cldiddykongracing','cldieinthedungeon','cldigdeep','cldigdug','cldigdug2','cldigdug26','cldigtochina','cldinodudes','cldiredecks','cldoblox','cldogeminer','cldogeminer2','cldokidokiliteratureclub','cldonkeykong','cldonkeykong64','cldonkeykongcountry','cldonkeykongcountry2','cldonkeykongcountry3','cldonkeykongnes','cldontescape','cldontescape2','cldontescape3','cldoodlejump','cldoodlejumpgoober','cldoom','cldoom2','cldoom3pack','cldoom64','cldoomemscripten','cldoomgallery','cldoomps','cldoompsalt','cldoomzio','cldouchebaglife','cldouchebagworkout','cldownthemountain','cldragonballadvance','clDragonBallZTheLegacyofGoku','clDragonQuestIX','cldrawclimber','cldrawtheline','cldreader','cldreadheadparkour','cldriftboss','cldrifthunters','cldrifthuntersmerge','cldrivemad','cldrivenwild','cldrmario','cldubstep','clduckhunt','clducklfe5','clducklife','clducklife2','clducklife3','clducklife4','clducklifebattle','clducklifespace','clducktales','cldud','cldukenukem3d','cldumpling','cldungeondeck','cldungeonraid','cldungeonsanddegenerategamblers','cldunkshot','clduskchild','cldyingdreams','cldynamiteheaddy','cleagleride','clearntodie','clearntodie2','clearthbound','clearthbound3','clearthboundsnes','clearthtaken','clearthtaken2','clearthtaken3','clearthwormjim','clearthwormjim2','cledelweiss','cledyscarsimulator','cleffinghail','cleffingmachines','cleffingworms','cleffingzombies','cleggycar','clelasticface','clelectricman2','clemulator','clenchain','clendlesswar4','clendlesswar5','clendlesswar5wow','clendlesswar7','clenduro','clepicbattlefantasy5','clescalatingduel','clescaperoad','clescaperoad2','clet','cletrianoddyssey','clevilglitch','clevolution','clexcitebike64','clextremerun3d','clfactoryballs','clfactoryballs2','clfactoryballs3','clfactoryballs4','clfairytalevsonepiece','clfamidash','clfancypantsadventure','clfancypantsadventure2','clfancypantsadventure3','clfancysnowboarding','clfashionbattle','clfattygenius','clfearstofathomhomealone','clfeedus','clfeedus2','clfeedus3','clfeedus4','clfeedus5','clFF3','clff6','clffmysticquest','clFFsonic1','clFFsonic2','clFFsonic3','clFFsonic4','clFFsonic5','clFFsonic61','clFFsonic62','clFIFA07','clFIFA10','clFIFA11','clFIFA2000(1)','clfifa2000','clFIFA99','clFIFAinternationalsoccer','clFIFAroadtoworldcup98','clFIFAsoccer06','clFIFAsoccer95','clFIFAsoccer96','clFIFAsoccer97','clFIFAstreet2','clfinalearth2','clfinalfantasy','clfinalfantasyII','clfinalfantasytactics','clfinalfantasyVI','clfinalfantasyVII','clfinalfantasyVIId2','clfinalfantasyVIId3','clfinalfantasyVIItheothertetrr','clfinalninja','clfireblob','clfireboyandwatergirl','clfireboyandwatergirl2','clfireboyandwatergirl3','clfireboyandwatergirl5','clfireboyandwatergirl6','clfireemblem','clfisquarium','clfivenightsatbaldisredone','clfivenightsatshrekshotel','clflappydunk','clfloodrunner','clfloodrunner2','clfloodrunner4','clfluidism','clfnac1','clfnac2','clFNAF','clFNAF2','clFNAF3','clFNAF4','clfnaf4halloween','clfnafanimatronics','clfnafps','clfnafsl','clfnafucn','clfnafworld','clfnafworldd','clfnfbside','clfnfhex','clfnfindiecross','clfnfmidfight','clfnfmiku','clfnfneo','clfnfsoft','clfnfsonicexe','clfnftricky','clfnfwhitty','clfocus','clfolderdungeon','clfootballbros','clfootballlegends','clforknsausage','clfortzone','clfpa4p1','clfpa4p2','clfreegemas','clfreerider','clfreerider2','clfreerider3','clfridaynightfunkin','clfromrusttoash','clfruitninja','clfunnybattle','clfunnybattle2','clfunnymadracing','clfunnyshooter2','clfunnyshooter22','clfzero','clfzerox','clgalaga','clgameandwatchcollection','clgangstabean','clgangstabean2','clgangsterbros','clgarcello','clgdlite','clgeneralchaos','clgenericfightermaybe','clgeometrydashlite','clgeometrydashscratch','clgeometryvibes','clgeorgeandtheprinter','clgetawayshootout','clgetontop','clGettothetopalthoughthereisnotop','clghosttrick','clgimmietheairpod','clgladdihoppers','clgloryhunters','clglover','clgoalsouthafrica','clgobble','clgoingballs','clgolddiggerfrvr','clgoldeneye007','clgoldensun','clgoldensunnds','clGoldenSunTheLostAge','clgolforbit','clgolfsunday','clgoodbigtowertinysquare','clgoodbigtowertinysquare2','clgoodboygalaxy','clgoodmonkeymart','clgooglebaseball','clgoogledino','clgorescriptclassic','clgrandtheftautoadvance','clgranny','clgranny2','clgranny22','clgranny3','clgranturismo2','clgravitymod','clgrey-box-testing','clgrimacebirthday','clgrindcraft','clgrn','clgta','clgta2','clgta22','clgta2alt','clgtaalt','clgtachina','clguesstheiranswer','clgunblood','clguncho','clgunknight','clgunmayhem','clgunmayhem2','clgunmayhem2goof','clgunmayhemredux','clgunnight','clgunsmoke','clgunspin','clgymstack','clhajimeippo','clhalflife','clhalocombatdevolved','clhandshakes','clhandulum','clhanger2','clhappyroom','clhappywheels','clhardwaretycoon','clHaroldsbadday','clharvestio','clharvestmoon','clharvestmoon64','clhauntthehouse','clhei$t','clhelixjump','clhelpnobrakes','clhero3flyingrobot','clhextris','clhighstakes','clhighwayracer2','clhighwaytraffic3d','clhillclimbracinglite','clHiNoHomo','clhipsterkickball','clhit8ox','clhitsinglereal','clhl2doom','clhobo','clhobo2','clhobo3','clhobo4','clhobo5','clhobo6','clhobo7','clhobovszombies','clholeio','clhollowknight','clhouseofhazards','clhoverracerdrive','clhumanexpenditureprogram','clhungryknight','clhungrylamu','clhyppersandbox','clicantbelievegoogleflaggedmeforthenameofthefilelol','clice age baby','clicedodo','clicypurplehead','clidlebreakout','clidledice','clidleidlegamedev','clidleminertycoon','clidleminorzamnshes12','climpossiblequiz (1)','climpossiblequiz','climpossiblequiz2','clinclementemerald','clindiantrucksimiulator','clinfinitecraft','clinnkeeper','clinsidestory','clinteractivebuddy','clintoruins','clintospace','clintospace2','clintospace3','clintothedeepweb','clintrusion','cliqball','clironsnout','clironsoldier','cljacksmith','cljacksmithencryptedorsmthn','cljailbreakobbbobob','cljefflings','cljellydrift','cljellytruck','cljellytruckgood','cljetforcegemini','cljetpackjoyride','cljetrush','cljetskiracing','cljohnnytrigger','cljohnnyupgrade','cljourneydownhill','clJUMP','cljumpingshell','cljustfalllol','cljusthitthebutton','cljustoneboss','clkaizomarioworld','clkalikan','clkaratebros','clkarlson','clkartbros','clKenGriffeyJrPresentsMajorLeagueBaseball','clkillerinstinct','clkillover','clkingdomheartsdays','clkingdomheartsrecoded','clkingdomheartsrecodedalt','clkirby64','clkirbyandtheamzingmirror','clkirbysadventure','clkirbysdreamland','clkirbysdreamland3','clkirbysqueaksquad','clkirbysuperstar','clkirbysuperstarultra','clkittencannon','clklifur','clknifehit','clknightmaretower','clkoopasrevenge','cllaceysflashgames','cllastfirered','cllasthorizon','cllaststand2','clleaderstrike','cllearntofly','cllearntofly2','cllearntofly3','cllearntoflyidle','cllegobatman','cllegobatman2superheroes','cllegoindianajones','cllegoindianajones2','cllegoninjago','cllegostarwars','cllemmings','clleveldevil','clleverwarriors','cllightitup','cllilrunmo','cllinerider','cllinktothepast','cllittlerunmo','cllockthedoor','clloderunner','cllonewolf','cllosangelesshark','cllowknight','clloz1','cllozlinkawakening','cllozminishcap','cllozoracleofseasons','cllozspirittracks','clluckyblocks','clmadalinstuntcars','clmadalinstuntcarsgood','clmadalinstuntcarsmultiplayerfixed','clmadden93','clmadden94','clmadden95','clmadden96','clmadden98','clmadden99','clmaddenfootball','clmaddenfootball64','clmaddennfl','clmaddennfl2000','clmaddennfl2001','clmaddennfl2002','clmadnessaccelerant','clmadnesscombatdefense','clmadnesscombatnexus','clmadnessgemini','clmadnesshydraulic','clmadnessoffcolor','clmadnesspremediation','clmadnessretaliation','clmadnesss2010','clmadnessstand','clmadskillsmotocross2','clmagictiles3','clmajorasmask','clmakesureitsclosed','clmanagod','clmario3','clmarioandluigisuperstarsaga','clmariocombat','clmariogolf','clMarioisMissingDoneRight','clmariokart64','clmariokartds','clmariokartsupercircuit','clmariominusrabbids','clmariopaint','clmarioparty','clmarioparty2','clmarioparty3','clmariopartyds','clmariosmysterymeat','clmariotennis','clmaskedforcesunlimited','clmastermindworldconquerer','clmatrixrampage','clmcfpsfbhd','clmcraerally','clmeatboy','clmeatboyflash','clmedalofhonor','clmedievalshark','clmegachess','clmegaman','clmegaman2','clmegaman2gba','clmegaman3','clmegaman4','clmegaman5','clmegaman6','clmegaman7','clmegaman8','clmegamanx','clmegamanx2','clmegamanx3','clmegamanx4','clmegamanzero','clmegamanzx','clmegaminer','clmelonplayground','clmergeroundracers','clmetalgear','clmetalgearsolid','clmetalgearsolidps','clmetalslugadvance','clmetalslugmission1','clmetalslugmission2','clMetalSonicHyperdrive','clmetroid','clmetroid2','clmetroidfusion','clmetroidzeromission','clmiamishark','clmicromages','clmightyknight','clmightyknight2','clmimic','clmindscape','clminecraft1-8-8','clminhero','clminicrossword','clminimart','clminishooters','clminitooth','clmiraginewar','clmisslecommand','clmk4ampedup','clmmwilywars','clmobcontrolhtml5','clmobiusrevolution','clmoneyrush','clmonkeymart','clmonkeymartenc','clmonstertracks','clmonstertruckportstunt','clmortalkombat','clmortalkombat2','clmortalkombat3','clmortalkombatadvance','clmortkom4','clmotherload','clmotoroadrash','clmotox3m','clmotox3m2','clmotox3m3','clmotox3mm','clmotox3mpoolparty','clmotox3mspookyland','clmotox3mwinter','clmountainbikeracer','clmrracer','clmspacman','clmultitask','clmutilate-a-doll','clmyfriendpedro','clmyfriendpedroarena','cln','clNBAhangtime','clNBAjam','clnbajamTE','clneonblaster','clneonrider','clnetattack','clnewgroundsrumble','clnewsupermariobros','clNewSuperMarioWorld2AroundtheWorld','clnewyorkshark','clnextdoor','clnflblitz','clnfscarbonowncity','clnfsmostwanted','clnfsporcheunleashed','clnfsunderground','clnfsunderground2','clngon','clnhl2002','clnhlhitz2003','clNicktoonsFreezeFrameFrenzy','clnightclubshowdown','clnightfire','clnightshade','clninjabrawl','clnintendogslab','clnintendoworldcup','clnitromemustdie','clnomoregameasdsadfagfggdfs','clnoobminer','clnotyourpawn','clnplus','clnubbysnumberfactory','clnullkevin','clNutsandBoltsScrewingPuzzle','clnzp','clobby-99-will-lose','clobbyonlyup','clobeythegame','clocarinaoftime','clofflineparadise','clomeganuggetclicker','clonebitadventure','clonenightasfreddy','clonepiece','clonepiecefighting','clonlyup','cloperius','cloppositeday','clopposumcountry','clorbofcreation','clordinarysonicromhack','clormmimastickwithclsoitcanberememberedoyeahclalienhominid','closu','clovo','clovo2','clovodimensions','clovofixed','clpacman','clpacmansuperfast','clpapabakeria','clpapadonut','clpapalouienighthunt2','clpapalouiewhenburgersattack','clpapalouiewhenpizzasattack','clpapalouiewhensundaesattack','clpapapizzagood','clpapapizzagoody','clpapapizzamamamia','clpapasburgerIIIAAAAA','clpapascheeseria','clpapascupcakeria','clpapasfreezeria','clpapashotdoggeria','clpapaspancakeria','clpapaspastaria','clpapasscooperia','clpapassushiria','clpapastacomia','clpapaswingeria','clpaperio','clpaperio3d','clpaperiomania','clpapermario','clpapermariopromode','clpapermariottyd','clparappatherapper','clparappatherapperalt','clparkingrush','clpartnersintime','clpeacekeeper','clpenaltykicks','clpenguindiner','clpenguinpass','clpepsiman','clpepsimanalt','clperfectdark','clperfecthotel','clpersona','clpersona2','clpersona2alt','clpersonaalt','clphasma','clpheonixjusticeforall','clpheonixtrialsandyeartrhfasd','clpico8','clpicodriller','clpicohot','clpicolife','clpiconightpunkin','clpicosschool','clpicovsbeardx','clpiecesofcake','clpikwip','clpingpongchaos','clpinkbike','clpitfall','clpixelbattlegroundsio','clpixelcombat2','clpixelquestlostidols','clpixelshooter','clpixelspeedrun','clpizzapapa','clpizzatower','clplangman','clplantsvszombies','clplazmaburst','clplinko','clplonky','clpogo3D','clpokebattlefact','clpokeblack','clpokeblack2.html','clpokeblack2alt','clpokeblackalt','clpokeblazeblack2redux','clpokeblue','clpokecrystalclear','clpokediamond','clpokeemeraldrandom','clpokeflora','clpokegaia','clpokeheartgold','clpokelightplatinum','clpokeliquidcrysta','clpokemegamoemon','clpokemonamnesia','clpokemonclover','clpokemoncrystal','clpokemonemerald','clpokemonemeraldcrest','clpokemonemeraldimperium','clpokemonemeraldkaizo','clpokemonemeraldmini','clPokemonemeraldrouge','clpokemonemeraldseaglass','clpokemonenergizedemerald','clpokemonevolvedsfdgsdfs','clpokemonfirered','clpokemonfireredandleafgreenplusedition','clpokemonfireredrandomized','clpokemongold','clpokemonleafgreen','clpokemonmysterydungeon','clpokemonquetzal','clPokemonrocketedition','clpokemonruby','clpokemonsapphire','clpokemonshinsigma','clpokemonsilver','clpokemonsnap','clpokemonstadium','clpokemontowerdefense','clpokemonultimatefusion','clpokemonunbound','clpokemonvega','clpokemysteryexplorersofsky','clpokepearl','clpokeplatinum','clpokeplatinumrandomized','clpokered','clpokerunandbun','clpokescorchedsilver','clpokeultraviolet','clpokevega','clpokevoltwhite2redux','clpokevoyager','clpokewhite','clpokewhite2','clpokewhite2alt','clpokeyellow','clPokémonstunningsteel','clpolytrack','clpolytrackalt','clpolytrackgood','clpolytrackworksnow','clporklike','clportal','clportal2d','clportaldefendersfastbreak','clportaldefendersTD','clportalflash','clporter','clpossessquest','clpotatomanseeksthetroof','clpou','clpraxisfighterx','clprebronzeage','clprecivilationbronzeage','clprehistoricshark','clprimary','clpullfrog','clpunchout','clpunchthedrump','clpuppethockey','clpushyourluck','clpuyopuyofever','clpvz','clpyrotoad','clqbert','clquake2','clquake3','clquake64','clquickieworld','clqwop','clracemaster3d','clracingarena','clradicalred','clradracer','clraftwars','clraftwars2','clragdollarchers','clragdollhit','clragdollio','clragdollsoccer','clrainbowsix','clrainbowsixalt','clray1','clray2','clrayman','clraze','clraze2','clraze3','clreachthecore','clrealflightsim','clrecoil','clredball','clredball2','clredball3','clredball4','clredball4vol2','clredball4vol3','clredhanded','clredtierunner','clredvsblue2','clredvsbluewar','clreignofcentipede','clrenegades','clresidentevil2','clresizer','clresortempire','clretrobowl','clretrobowlfixed','clretropingpong','clreturnman','clreturnman2','clreturntoriddleschool','clrevolutionidle','clrhythmheaven','clrhythymymheaven','clricochetkills2','clriddlemiddleschool','clriddleschool','clriddleschool2','clriddleschool3','clriddleschool445544444$$444$444','clriddletransfer','clriddletransfer2','clridgeracer','clroadoffury','clroadofthedead','clroadofthedead2','clrocketjump','clrocketknightadventures','clrocketleague','clrocketpult','clrocketsoccerderby','clrodha','clroguesoul','clroguesoul2','clrollerballer','clrollyvortex','clrooftopsnipers','clrooftopsnipers2','clroomclicker','clrotate','clrouletteknight','clruffle','clrun','clrun2','clrun3','clrussiancardriver','clsandboxcity','clsandboxels','clsandsofthecoliseum','clsandtris','clsaszombieassault2','clscrapmetal3','clscrapyarddog','clscribblenauts','clscubabear','clseamongrel','clsecretofmana','clsentryfortress','clservingupmadness','clsfk','clsfk2','clsfklaststand','clsfkleague','clshc1','clshc2','clshc3','clshift','clshift2','clshift3','clshinmegamitenseidevilsurvivor','clshortlife','clshredmill','clshrek2','clshwultimatem','clsidepocket','clsierra7','clsilenthill','clsilenthillalt','clsilk','clsiloshowdow','clsixwaystodie','clskateit','clskibididibidygyattohiorizzingallovertheplacestillwatermangotheoryfemboydrool','clskibidiinthebackrooms','clskyrace3d','clsliceitall','clslideinthewoods','clslimelabratory','clslipways','clslitherio','clslope','clslope2player','clslope3','clslopeplus','clslotornot','clslowroads','clsm63redux','clsmadvance2','clsmadvance3','clsmashkarts','clsmashremix','clsmbc','clsmbcrossover','clsnailbob','clsnakeis','clsnakelike','clsnipershot','clsniperv2','clsnowballio','clsnowrid','clsnowrideee','clsnowrider','clsnowridergoodygumdrops','clsnowriderrrr','clsnowroad','clsoccerbros','clsoccerrandom','clsoccerrandomgood','clsolarsmash','clsolitaire','clsonic1contemporary','clSonic1ScoreRush','clSonic2ScoreRush','clsonic3andknuckles','clsonic3complete','clsonic3dblastdx','clsonicadvance','clsonicadvance2','clsonicadvance2sp','clsonicadvance3','clsonicandashuro','clsonicandknuckles','clsonicbattle','clsoniccd','clsonicclassiccollection','clsonicclassicheroes','clsoniccolors','clsonicdeltaorigins','clSonicHellfireSaga','clsonicjam','clsonicmegamix','clsonicr','clsonicralt','clsonicrevert','clsonicrush','clsonicrushadventure','clsonicspinball','clsonicthehedgehog','clsonicthehedgehog2','clsonicthehedgehog3','clsonny2','clsouljumper','clspacebarclicker','clspacecompany','clspaceinvaders','clspaceiskey','clspaceiskey2','clspaceiskeyxmas','clspacewarsbattleground','clspacewaves','clspeedstars','clspewer','clspiralroll','clsprunked','clsprunki','clsprunkiclicker','clsquidplayground','clstackballio','clstacktris','clstackydash','clstarfox','clstarfox64','clstarraiders','clstateio','clstation141','clstealabrainrot','clstealabrainrotbutnotflaagedlololo','clstealthassassin','clstealthmaster','clsteelempire','clstickarchersbattle','clstickmanclash','clstickmanduel','clstickmangtacity','clstickmanhook','clStickmanKingdomclash','clstickmankombat2d','clstickmanstealingdiamond','clstickmerge','clstickminairship','clstickminbreakingbank','clstickminescapingprison','clstickminfleecomplex','clstickrpgcomplete','clstickslasher','clstickwar','clstickwar2','clstormthehouse','clstormthehouse3','clstrangejournet','clstreangeropepolice','clstreetfighter2','clstreetfighter2turbo','clstreetfighteralpha3','clstreetofrage','clstreetofrage2','clstreetofrage3','clstrikeforceheroes','clstrikeforceheroes2','clstrikeforceheroes3','clstylesavvy','clsubwaysurfersbarcelona','clsubwaysurfersbeijing','clsubwaysurfersberlin','clsubwaysurfersbuenosaires','clsubwaysurfershavana','clsubwaysurfershouston','clsubwaysurfersiceland','clsubwaysurferslondon','clsubwaysurfersmexico','clsubwaysurfersmiami','clsubwaysurfersmonaco','clsubwaysurfersneworleans','clsubwaysurferssanfrancisco(1)','clsubwaysurferssanfrancisco','clsubwaysurfersstpetersburg','clsubwaysurferswinterholiday','clsubwaysurferszurich','clsugarsugar','clsuika','clsuikapico','clsunandmoon','clsuperbomberman','clsuperbomberman2','clsuperbomberman3','clsuperbomberman4','clsuperbomberman5','clsupercarrush','clsupercastlevaniaVI','clsuperchibiknight','clsuperdarkdeception','clsuperdiagonalmario2','clsuperfighters','clsuperhot','clsuperhotlinemiami','clsuperhouseofdeadninjas','clsuperliquidsoccer','clsupermario','clsupermario63','clsupermario64','clsupermario64ds','clsupermarioallstars','clsupermariobros','clsupermariobros2','clsupermariobros2us','clsupermariobros3','clsupermariobros3real','clsupermariokart','clsupermarioland','clsupermarioland2','clsupermariomon','clsupermariorpg','clsupermarioworld','clsupermarioworld2','clSuperMarioWorldThe SecretOfThe7GoldenStatues','clsupermetroid','clsupermonkeyballjr','clsupernoahsark3D','clsuperoliverworld','clsuperpunchout','clsuperpuzzlefighter2turbo','clsuperpuzzlefighter2turboalt','clsuperscribblenauts','clsupersmashbros','clsupersmashflash','clsupersmashflash2','clsupersmashflash2butdifversion','clsupertiltbros','clsupitdept','clsupremeduelist','clsurvevio','clsurvivalracev2','clsushicat','clsushicat2','clsushiunroll','clswerve','clswitchblade','clswordandshieldultimateplus','clswordfight','clswordplay','clswordsandsandals','clswordsandsandals2','clswordsandsouls','clsydneyshark','cltabletanks','cltabletennisworldtour','cltag','clTaikonoTatsujin','cltaisei','cltakeover','cltallmanrun','cltankmayhem','cltankpixel','cltanukisunset','cltanukisunsetuhhhhhhhh','cltapper','cltaproad','cltastyplanet','cltboilambeternal','cltecmobowl','cltelephonetrouble','cltelocation','cltempest2000','cltempleofboom','cltemplerun2','cltempoverdose','clterra','clterritorialio','clterritorywar','cltetris','cltetrisattack','cltetrisgba','clthanksforremindingmeihadtofixthis','cltheclassroom','cltheclassroom2','cltheclassroom3','clthedeadseat','clthedeepestsleep','cltheenchantedcave2','cltheimpossiblegame','clthelaststand','clthelaststandunioncity (1)','clthelaststandunioncity','clthemaninthewindow','clthemepark','clthepit','clthereisnofile','clthermomorph','clthisistheonlylevel','clthisistheonlylevel2','clthisistheonlyleveltoo','clthreegoblets','clthrowapotato','clthrowapotatoagain','clthwack','cltimeshooter2','cltimeshooter3','cltimewarriors','cltinyfishing','cltmnt','cltoastarling','cltoasterball','cltombofthemask','cltombofthemass','cltomodachicollection','cltonyhawkproskater','cltonyhawkskater2','cltonyhawkskater4','cltonyhawksunderground','cltoomanytypes','cltopspeedracing3d','cltosstheturtle','cltowerblocks','cltowercrash3d','cltrace','cltrafficjam3d','cltrapthecat','cltripleplay2000','cltriviacrack','cltrollfacequest1','cltrollfacequest10','cltrollfacequest11','cltrollfacequest12','cltrollfacequest13','cltrollfacequest2','cltrollfacequest3','cltrollfacequest4','cltrollfacequest5','cltrollfacequest6','cltrollfacequest7','cltrollfacequest8','cltrollfacequest9','cltrucksim','cltubejumpers','cltunnelrush','cltunnelrushbetter','clturbostars','clturokdinosaurhunter','cltwistedmetal','cltwistedmetal2','cltwoball3d','clucds','cluckyblockobbyEUOPHRATESRIVER','clufoswampoddysey','clultimateassassian2','clultimateassassian3','clUltimatecardrivingsimulator','clultimatemortalkombat','clultimatemortalkombat3','clultrakill','clumstickmangameidkiforgor','cluncannycatgolf','clunderneath','clundertaleer','clundertaleyellow','clunfairmario','clunfairmarioworkquestionmark','clunfairundyne','clunicyclehero','cluno','clupgradecomplete','clupgradecomplete2','clupslash','clUZG','clvampiresurvivors','clvanguard','clvaportrails','clvex','clvex2','clvex3','clvex3xmas','clvex4','clvex5','clvex6','clvex7','clvex8','clvexchallenges','clvexx3m','clvexx3m2','clvillager','clvolleyrandom','clvollyballchallenge','clvvvvvv','clwaluigitacostand','clwarfare1944','clwarioland4','clwariowarediy','clwariowareinc','clwartheknight','clwaterpoolio','clwavedash','clwaverace64','clwaverun','clwebecomewhatwebehold','clwebfishing','clweltling','clwhackthetheif','clwhackyourboss','clwhackyourcomputer','clwheely','clwheely2','clwheely3','clwheely4','clwheely5','clwheely6','clwheely7','clwheely8','clwindowsdoors','clwinterfalling','clwipeout2097','clwipeout2097alt','clwitchcrafttd','clwolfenstein','clwolfenstein3d','clwoodworm','clwordle','clworldcup98','clworldshardestgame','clworldshardestgame2','clworldshardestgame3','clworldshardestgame4','clwrassling','clwrestlebros','clXevious','clyarsrevenge','clyellow','clYoshisStrangeQuest','clyouarelucky','clyouvs100skibidi','clyumenikki','clzelda2thelegendoflink','clzeldaminishcap','clzenword','clzombieexploder','clzombieroad','clzombiesatemyneighboors','clzombopaclypse2','clzombotron','clzombotron2','clzombotronreboot','clzrist','clzuma','clzumashooter','clÖoo','Dragonxclient','Eaglercraft-Alpha-1.2.6-Offline','Eaglercraft-Beta-1.3-Offline','Eaglercraft-Indev-Offline (1)','Eaglercraft-Indev-Offline','eaglercraft.1.5.2','EaglercraftL_1.9_v0_7_0_Offline_Signed','EaglercraftX 1.8.8(u29)','EaglercraftZ_1.11.2','marbleracer','mariobuilder64','Minceraft-I-NotMine_V6','mortalkombat4','polytrackbutnotflagged','rocketknight2','sandstone','snowbros','superdromebugs','vvvvvv','wilywars'];
+ 
+
+  function formatGameName(file) {
+    let name = file;
+    if (name.toLowerCase().startsWith('cl')) name = name.substring(2);
+    name = name.replace(/(ifnoaboutblank|noaboutblank|maybeidk|imprettysureitsexactlythesameidk)/gi, '');
+    name = name.replace(/[_\\-]+/g, ' ').replace(/\\((.*?)\\)/g, ' ').replace(/\\[(.*?)\\]/g, ' ').replace(/\\./g, ' ');
+    name = name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/([A-Za-z])(\\d)/g, '$1 $2').replace(/(\\d)([A-Za-z])/g, '$1 $2');
+    name = name.replace(/\\s+/g, ' ').trim();
+    name = name.replace(/\\b(\\d+)\\s*[vV]\\s*(\\d+)\\b/g, '$1v$2');
+    name = name.replace(/\\b(2|3)\\s*[dD]\\b/g, (_, d) => \`\${d}D\`);
+    name = name.replace(/\\b[vV][sS]\\b/g, 'vs');
+    name = name.replace(/\\b[xX]\\s*(\\d+)\\b/g, (m, n) => \`x\${n}\`);
+    const acronyms = new Set(['LOL','FIFA','NBA','NFL','NHL','MLB','IO','HD','DX','FX','XR','AR','VR','DS','GBA','GBC','GB','NES','SNES','N64','RPG','FPS','TD','USD','VS','XL','XXL','DX','3D','2D','II','III','IV','VI','VII','VIII','IX','X']);
+    const lowers = new Set(['of','the','and','a','an','in','on','to','for','at','by','from','or']);
+    const words = name.split(' ').map((w) => {
+      const upper = w.toUpperCase();
+      const lower = w.toLowerCase();
+      if (acronyms.has(upper)) return upper;
+      if (lowers.has(lower)) return lower;
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    });
+    if (words.length > 0) {
+      const first = words[0];
+      words[0] = first.charAt(0).toUpperCase() + first.slice(1);
+    }
+    return words.join(' ').replace(/\\s+/g, ' ').trim();
+  }
+  function generateAllSections() {
+    const allChars = [...'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
+    const filesByChar = {};
+    allChars.forEach(char => filesByChar[char] = []);
+    files.forEach(file => {
+      const lower = file.toLowerCase();
+      let firstChar;
+      if (lower.startsWith('cl')) {
+        const afterCl = lower.substring(2);
+        if (afterCl.length > 0) firstChar = afterCl[0].toUpperCase();
+      } else firstChar = lower[0].toUpperCase();
+      if (firstChar && filesByChar[firstChar]) filesByChar[firstChar].push(file);
+    });
+    allChars.forEach(char =>
+      filesByChar[char].sort((a,b) => formatGameName(a).toLowerCase().localeCompare(formatGameName(b).toLowerCase())));
+    const container = document.getElementById('sections-container');
+    container.innerHTML = '';
+    allChars.forEach(char => {
+      const section = document.createElement('div');
+      section.className = 'letter-section';
+      section.id = 'section-' + char;
+      const header = document.createElement('div');
+      header.className = 'letter-header';
+      header.textContent = char;
+      section.appendChild(header);
+      if (filesByChar[char].length > 0) {
+        const gamesGrid = document.createElement('div');
+        gamesGrid.className = 'games-grid';
+        filesByChar[char].forEach(file => {
+          const card = document.createElement('div');
+          card.className = 'game-card';
+          card.setAttribute('data-game-name', formatGameName(file).toLowerCase());
+          card.setAttribute('data-file-name', file);
+          const title = document.createElement('div');
+          title.className = 'game-title';
+          title.textContent = formatGameName(file);
+          card.appendChild(title);
+          card.onclick = function() {
+            fetch(\`https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile/\${file}.html?t=\${Date.now()}\`)
+              .then(response => response.text())
+              .then(text => {
+                const newWin = window.open("about:blank", "_blank");
+                if (newWin) {
+                  newWin.document.open();
+                  newWin.document.write(text);
+                  newWin.document.close();
+                }
+              });
+          };
+          gamesGrid.appendChild(card);
+        });
+        section.appendChild(gamesGrid);
+      } else {
+        const emptyMsg = document.createElement('div');
+        emptyMsg.className = 'empty-section';
+        emptyMsg.textContent = 'No games available';
+        section.appendChild(emptyMsg);
+      }
+      container.appendChild(section);
+    });
+  }
+  function setupSearch() {
+    const searchBox = document.getElementById('searchBox');
+    const noResults = document.getElementById('no-results');
+    searchBox.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      if (searchTerm === '') {
+        document.querySelectorAll('.letter-section').forEach(section => {
+          section.classList.remove('hidden');
+        });
+        document.querySelectorAll('.game-card').forEach(card => {
+          card.style.display = '';
+        });
+        noResults.style.display = 'none';
+      } else {
+        let hasResults = false;
+        document.querySelectorAll('.letter-section').forEach(section => {
+          section.classList.add('hidden');
+        });
+        document.querySelectorAll('.game-card').forEach(card => {
+          const gameName = card.getAttribute('data-game-name');
+          const fileName = card.getAttribute('data-file-name').toLowerCase();
+          if (gameName.includes(searchTerm) || fileName.includes(searchTerm)) {
+            card.style.display = '';
+            card.closest('.letter-section').classList.remove('hidden');
+            hasResults = true;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+        noResults.style.display = hasResults ? 'none' : 'block';
+      }
+    });
+  }
+    generateAllSections();
+    setupSearch();
+<\/script>
+`;
+const linkedMore = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+    }
+    .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    .button:hover {
+      background-color: #4a148c;
+    }
+  </style>
+</head>
+<body>
+  <a id="button" class="button">Launch</a>
+  <script>
+    document.getElementById('button').addEventListener('click', launch);
+    function launch() {
+      const newWin = window.open("about:blank", "_blank");
+      if (!newWin) {
+        console.error("Popup blocked");
+        return;
+      }
+      fetch("https://cdn.jsdelivr.net/gh/shayderrr/676767/unblockedgames.html?t=" + Date.now())
+        .then(response => response.text())
+        .then(text => {
+          newWin.document.open();
+          newWin.document.write(text);
+          newWin.document.close();
+        })
+        .catch(err => {
+          console.error("Fetch error:", err);
+          newWin.close();
+        });
+    }
+  <\/script>
+</body>
+</html>
+
+`;
+
+function setContent(html) {
+  contentDisplay.innerHTML = html;
+  Array.from(contentDisplay.querySelectorAll('script')).forEach(old => {
+    const script = document.createElement('script');
+    Array.from(old.attributes).forEach(attr => script.setAttribute(attr.name, attr.value));
+    script.textContent = old.textContent;
+    old.parentNode.replaceChild(script, old);
+  });
+}
+
+document.getElementById('htmlGamesLocalLink').addEventListener('click', function(e){
+  e.preventDefault();
+  setContent(htmlGamesLocalHTML);
+  hamburger.classList.remove('active');
+  menu.classList.remove('open');
+});
+document.getElementById('moreGamesLink').addEventListener('click', function(e){
+  e.preventDefault();
+  setContent(linkedMore);
+  hamburger.classList.remove('active');
+  menu.classList.remove('open');
+});
+    loadHomePage();
+  </script>
+</body>
+</html>
