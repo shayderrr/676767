@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Tutorial - The Game Vault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --purple-900: #1a0033;
+            --purple-800: #2d0052;
+            --purple-700: #4a0080;
+            --purple-600: #6b21a8;
+            --purple-500: #8b5cf6;
+            --purple-400: #a78bfa;
+            --purple-300: #c4b5fd;
+            --purple-200: #e9d5ff;
+            --purple-100: #f3e8ff;
+            --black: #000000;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .background-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #0a0015 50%, #000000 100%);
+            z-index: 0;
+        }
+
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, white, transparent),
+                radial-gradient(2px 2px at 60px 70px, white, transparent),
+                radial-gradient(1px 1px at 50px 50px, white, transparent),
+                radial-gradient(1px 1px at 130px 80px, white, transparent),
+                radial-gradient(2px 2px at 90px 150px, white, transparent);
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.4;
+            animation: starsMove 100s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes starsMove {
+            from { transform: translateY(0); }
+            to { transform: translateY(-200px); }
+        }
+
+        /* Purple glow orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.1;
+            z-index: 2;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--purple-600), transparent);
+            top: -100px;
+            left: -100px;
+            animation-duration: 25s;
+        }
+
+        .orb-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--purple-700), transparent);
+            bottom: -100px;
+            right: -100px;
+            animation-duration: 30s;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-50px, 50px) scale(0.9); }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+        }
+
+        .time-display {
+            display: inline-block;
+            font-size: 0.875rem;
+            color: var(--purple-300);
+            background: rgba(139, 92, 246, 0.1);
+            padding: 0.5rem 1.25rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* Page title */
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            text-align: center;
+        }
+
+        .page-title .title-text {
+            background: linear-gradient(135deg, var(--white) 0%, var(--purple-300) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.25rem;
+            color: var(--purple-200);
+            margin-bottom: 3rem;
+            font-weight: 400;
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--purple-500), transparent);
+            margin: 2.5rem 0;
+            opacity: 0.3;
+        }
+
+        /* Content card */
+        .content-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                0 0 100px rgba(139, 92, 246, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, var(--purple-600), var(--purple-700));
+            border-radius: 0.75rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .tutorial-text {
+            font-size: 1.0625rem;
+            line-height: 1.8;
+            color: var(--purple-100);
+            margin-bottom: 1.5rem;
+        }
+
+        .tutorial-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+
+        .tutorial-list li {
+            font-size: 1.0625rem;
+            line-height: 1.8;
+            color: var(--purple-100);
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .tutorial-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--purple-400);
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        /* Image placeholder */
+        .image-placeholder {
+            width: 100%;
+            max-width: 700px;
+            height: 400px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 2px dashed rgba(139, 92, 246, 0.3);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem auto;
+            color: var(--purple-300);
+            font-size: 1rem;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .tutorial-image {
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            border-radius: 1rem;
+            margin: 2rem auto;
+            display: block;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2);
+        }
+
+        /* Warning box */
+        .warning-box {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-left: 4px solid var(--purple-500);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .warning-box-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .warning-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--purple-400);
+        }
+
+        .warning-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--purple-200);
+        }
+
+        /* Back button */
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--purple-200);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .nav-button:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateX(-3px);
+        }
+
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        /* Status badge */
+.status-badge {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.2));
+    color: #6ee7b7;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    display: flex;
+    justify-content: center; /* centers content inside badge */
+    font-size: 0.875rem;
+    max-width: 250px;
+    font-weight: 600;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    margin: 0 auto 2rem; /* <-- this centers the badge itself */
+}
+
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .content-card {
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .page-subtitle {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .tutorial-text,
+            .tutorial-list li {
+                font-size: 1rem;
+            }
+
+            .image-placeholder {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.75rem;
+            }
+
+            .content-card {
+                padding: 1.25rem;
+            }
+
+            .image-placeholder {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background elements -->
+    <div class="background-gradient"></div>
+    <div class="stars"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <!-- Main content -->
+    <div class="container">
+        <header class="header">
+            <div class="time-display" id="currentTime"></div>
+        </header>
+
+        <main>
+            <h1 class="page-title"><span class="title-text">Roblox Tutorial</span> 🤫</h1>
+            <p class="page-subtitle">
+                How to get Roblox on your Chromebook in school tutorial
+            </p>
+
+            <div class="status-badge">
+                ✓ Unpatched as of 11/11/25
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Tutorial Content -->
+            <div class="content-card">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    How to get Roblox working
+                </h2>
+
+                <div class="warning-box">
+                    <div class="warning-box-title">
+                        <svg class="warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Important Note</span>
+                    </div>
+                    <p class="warning-text">
+                        To access NowGG, use your home internet or connect through your phone's hotspot, 
+                        as ContentKeeper blocks it on the school network.
+                    </p>
+                </div>
+
+                <ul class="tutorial-list">
+                    <li>
+                        First, make sure you're connected to your home internet or your phone's hotspot 
+                        (school networks block NowGG).
+                    </li>
+                    <li>
+                        Navigate to NowGG and type 'Roblox' into the search bar.
+                    </li>
+                    <li>
+                        Click on the Roblox game from the search results.
+                    </li>
+                    <li>
+                        If prompted, create an account on NowGG—just avoid using your school Gmail.
+                    </li>
+                    <li>
+                        That's it! You're ready to enjoy playing Roblox.
+                    </li>
+                </ul>
+
+                <!-- Image Placeholder - Replace this div with an img tag when you have your image -->
+                <div class="image-placeholder">
+<img src="https://cdn.mos.cms.futurecdn.net/Z9iQvAjGVk9uZ6jBLpWaAC-1200-80.jpg" width="725px" height="400px" style="border-radius: 8px;">
+                </div>
+                
+                <!-- Example of how to add your image (uncomment and add your image URL):
+                <img src="your-image-url.jpg" alt="Roblox Tutorial Screenshot" class="tutorial-image">
+                -->
+
+                <p class="tutorial-text">
+                    <strong>Pro Tip:</strong> Make sure to bookmark NowGG on your personal device so you can 
+                    easily access it whenever you want to play. Remember to always follow your school's 
+                    acceptable use policy.
+                </p>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Additional Info Card -->
+            <div class="content-card">
+                <h2 class="section-title">
+                    <span class="section-number">💡</span>
+                    Need Help?
+                </h2>
+                <p class="tutorial-text">
+                    If you're having trouble getting Roblox to work, make sure you've followed all the steps above. 
+                    The most common issue is trying to access NowGG while on the school network—remember to use 
+                    your personal hotspot or home internet instead!
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toUTCString();
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // Update time immediately and then every second
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
