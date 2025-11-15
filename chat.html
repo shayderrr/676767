@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>hi</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+<audio src="https://cdn.jsdelivr.net/gh/shayderrr/Static@main/Ambient-BreakcoreDnB-Mix-02.mp3" autoplay loop></audio>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+/* ---------- Theme / layout (adapted from your theme) ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #000;
+  --panel: rgba(255, 255, 255, 0.03);
+  --accent1: #6b21a8;
+  --accent2: #8b5cf6;
+  --accent3: #a78bfa;
+  --muted: #c4b5fd;
+  --purple-200: #e9d5ff;
+  --purple-100: #f3e8ff;
+  --white: #fff;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --danger: #ff5c5c;
+  --gold: #fbbf24;
+  --online: #34d399;
+  --offline: rgba(255,255,255,0.06);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(135deg, #000000 0%, #0a0015 50%, #000000 100%);
+  color: var(--white);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  min-height: 100vh;
+  align-items: stretch;
+  gap: 18px;
+  padding: 18px;
+  overflow: hidden;
+}
+
+/* animated orbs/stars */
+.stars {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.85), transparent),
+    radial-gradient(2px 2px at 60px 70px, rgba(255, 255, 255, 0.75), transparent),
+    radial-gradient(1px 1px at 50px 50px, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 90px 150px, rgba(255, 255, 255, 0.8), transparent);
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.4;
+  z-index: 0;
+  animation: starsMove 100s linear infinite;
+}
+
+@keyframes starsMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(-200px); }
+}
+
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.1;
+  z-index: 0;
+  animation: float 20s ease-in-out infinite;
+}
+
+.orb.a {
+  width: 400px;
+  height: 400px;
+  left: -100px;
+  top: -100px;
+  background: radial-gradient(circle, var(--accent1), transparent);
+  animation-duration: 25s;
+}
+
+.orb.b {
+  width: 350px;
+  height: 350px;
+  right: -100px;
+  bottom: -100px;
+  background: radial-gradient(circle, var(--accent2), transparent);
+  animation-duration: 30s;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(50px, -50px) scale(1.1); }
+  66% { transform: translate(-50px, 50px) scale(0.9); }
+}
+
+/* Main container layout */
+.app {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 72px 1fr 300px;
+  gap: 18px;
+  width: 100%;
+  align-items: stretch;
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* ------------- Left side: servers list ------------- */
+.servers {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  border-radius: 1.5rem;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  height: calc(100vh - 36px);
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#serverList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.servers::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+  border-radius: 1.5rem;
+  pointer-events: none;
+}
+
+.servers > div:first-child {
+  font-size: 0.7rem;
+  color: var(--accent3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  opacity: 0.8;
+  z-index: 1;
+  position: relative;
+}
+
+.server-btn {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  min-height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  border: 1px solid rgba(139, 92, 246, 0.08);
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--muted);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.server-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent2), transparent);
+  transition: width 0.3s ease, height 0.3s ease;
+  transform: translate(-50%, -50%);
+}
+
+.server-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.25);
+  border-color: rgba(139, 92, 246, 0.3);
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.server-btn:hover::before {
+  width: 100px;
+  height: 100px;
+}
+
+.server-btn.active {
+  background: var(--accent1);
+  color: white;
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.35);
+  border-color: transparent;
+}
+
+.add-server {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent3);
+  background: rgba(139, 92, 246, 0.05);
+  border-style: dashed;
+  border-width: 2px;
+}
+
+.add-server:hover {
+  color: var(--white);
+  border-style: solid;
+  background: rgba(139, 92, 246, 0.15);
+}
+
+/* Profile mini section (includes sign-in button when logged out) */
+#profileMini {
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid rgba(139, 92, 246, 0.1);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+#profileMini .server-btn {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05));
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  color: var(--purple-100);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+#profileMini .server-btn:hover {
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  color: white;
+  border-color: transparent;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+}
+
+/* Scrollbar styling for servers */
+.servers::-webkit-scrollbar {
+  width: 4px;
+}
+
+.servers::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.servers::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 2px;
+}
+
+.servers::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.5);
+}
+
+/* ------------- Middle: channels & chat ------------- */
+.main-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 36px);
+  overflow: hidden;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+  background: rgba(139, 92, 246, 0.02);
+  border-radius: 12px 12px 0 0;
+  margin: -12px -12px 0 -12px;
+  flex-shrink: 0;
+}
+
+.server-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--white) 0%, var(--muted) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.small-btn {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  padding: 8px 14px;
+  border-radius: 10px;
+  color: var(--purple-100);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+
+.small-btn:hover {
+  background: rgba(139, 92, 246, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+  color: var(--white);
+}
+
+.channels-and-chat {
+  display: flex;
+  flex: 1;
+  gap: 12px;
+  overflow: hidden;
+  padding-top: 16px;
+  min-height: 0;
+}
+
+.channels {
+  width: 230px;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(139, 92, 246, 0.05);
+  padding-right: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.channels h4 {
+  font-size: 0.75rem;
+  color: var(--accent3);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.channel-item {
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.channel-item:hover {
+  background: rgba(139, 92, 246, 0.05);
+  color: var(--purple-100);
+  transform: translateX(4px);
+}
+
+.channel-item.active {
+  color: var(--white);
+  background: rgba(139, 92, 246, 0.15);
+  border-left: 3px solid var(--accent2);
+  padding-left: 9px;
+}
+
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent2) transparent;
+}
+
+.messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background: var(--accent2);
+  border-radius: 3px;
+}
+
+.msg {
+  max-width: 70%;
+  padding: 12px 16px;
+  padding-top: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  color: var(--purple-100);
+  font-size: 0.95rem;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.msg:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1);
+}
+
+.msg.me {
+  margin-left: auto;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
+}
+
+.msg.deleted {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.01);
+  border-color: rgba(255, 255, 255, 0.02);
+}
+
+.msg .meta {
+  font-size: 0.75rem;
+  color: var(--accent3);
+  margin-bottom: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.msg.me .meta {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.msg .meta .edited {
+  font-size: 0.7rem;
+  color: var(--muted);
+  opacity: 0.7;
+  text-transform: lowercase;
+}
+
+.msg .controls {
+  position: absolute;
+  top: -12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  background: rgba(10, 0, 20, 0.9);
+  padding: 4px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.msg:hover .controls {
+  opacity: 1;
+}
+
+.ctrl-btn {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: var(--purple-100);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.ctrl-btn:hover {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+}
+
+.composer {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid rgba(139, 92, 246, 0.05);
+  background: rgba(139, 92, 246, 0.02);
+  border-radius: 0 0 12px 12px;
+  margin: 0 -12px -12px -12px;
+  flex-shrink: 0;
+}
+
+.composer input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--white);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.composer input:focus {
+  outline: none;
+  border-color: var(--accent2);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+}
+
+.composer input::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.composer button {
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: var(--accent1);
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.composer button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+/* ------------- Right: member / friends panel ------------- */
+.right-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 16px;
+  height: calc(100vh - 36px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 0.75rem;
+  color: var(--accent3);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.user-row:hover {
+  background: rgba(139, 92, 246, 0.05);
+  transform: translateX(4px);
+}
+
+/* Fix for avatar class to ensure consistent width */
+.avatar {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: var(--accent1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  position: relative; /* so status dot can be absolutely positioned */
+}
+
+/* status dot */
+.status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  border: 2px solid rgba(10,0,20,0.9);
+  box-sizing: content-box;
+}
+.status.online {
+  background: var(--online);
+  box-shadow: 0 0 6px rgba(52,211,153,0.35);
+}
+.status.offline {
+  background: var(--offline);
+}
+
+/* small text columns in user row */
+.user-row > div:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-row > div:nth-child(2) > div:first-child {
+  font-weight: 700;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-row > div:nth-child(2) > div:last-child {
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.friend-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Input styling in right panel */
+.right-panel input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--white);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.right-panel input:focus {
+  outline: none;
+  border-color: var(--accent2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.right-panel input::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  max-width: 90vw;
+  background: rgba(10, 0, 20, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 1.5rem;
+  padding: 28px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+  color: #fff;
+  z-index: 999;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.modal input {
+  width: 100%;
+  padding: 12px 16px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--white);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.modal input:focus {
+  outline: none;
+  border-color: var(--accent2);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+}
+
+.modal input::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+.modal label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 500;
+  display: block;
+  margin-top: 12px;
+}
+
+.form-row {
+  margin-bottom: 16px;
+}
+
+.auth-actions {
+  display: flex;
+  gap: 8px;
+}
+
+#authMsg {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .app {
+    grid-template-columns: 72px 1fr 280px;
+  }
+  
+  .right-panel {
+    width: 280px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .app {
+    grid-template-columns: 64px 1fr;
+  }
+  
+  .right-panel {
+    display: none;
+  }
+  
+  .channels {
+    width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .app {
+    grid-template-columns: 60px 1fr;
+    gap: 10px;
+  }
+  
+  .servers {
+    padding: 8px;
+    border-radius: 1rem;
+  }
+  
+  .server-btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  .main-panel {
+    border-radius: 1rem;
+  }
+  
+  .server-title {
+    font-size: 1.2rem;
+  }
+  
+  .channels {
+    display: none;
+  }
+  
+  .small-btn {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .msg {
+    max-width: 85%;
+  }
+  
+  .modal {
+    width: 95vw;
+    padding: 20px;
+  }
+}
+
+/* Ensure proper scrolling */
+.servers,
+.channels,
+.messages,
+.right-panel {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+}
+
+.servers::-webkit-scrollbar,
+.channels::-webkit-scrollbar,
+.messages::-webkit-scrollbar,
+.right-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.servers::-webkit-scrollbar-track,
+.channels::-webkit-scrollbar-track,
+.messages::-webkit-scrollbar-track,
+.right-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.servers::-webkit-scrollbar-thumb,
+.channels::-webkit-scrollbar-thumb,
+.messages::-webkit-scrollbar-thumb,
+.right-panel::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 3px;
+}
+
+.servers::-webkit-scrollbar-thumb:hover,
+.channels::-webkit-scrollbar-thumb:hover,
+.messages::-webkit-scrollbar-thumb:hover,
+.right-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.5);
+}
+  </style>
+  <!-- Firebase compat -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="orb a"></div>
+  <div class="orb b"></div>
+
+  <div class="app" id="app">
+    <!-- Left: Servers -->
+    <div class="servers" id="servers">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">SERVERS</div>
+      <div id="serverList"></div>
+      <div style="flex:1"></div>
+      <div title="Add server" class="server-btn add-server" id="createServerBtn">＋</div>
+      <div id="profileMini" style="margin-top:8px"></div>
+    </div>
+
+    <!-- Middle: Channels and Chat -->
+    <div class="main-panel">
+      <div class="header-row">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="server-title" id="serverTitle">Welcome</div>
+          <button class="small-btn" id="openGlobalBtn">General Chat</button>
+        </div>
+        <div>
+          <button class="small-btn" id="btnNewChannel">+ Channel</button>
+          <button class="small-btn" id="btnLogout">Log out</button>
+        </div>
+      </div>
+
+      <div class="channels-and-chat">
+        <div class="channels">
+          <h4>Channels</h4>
+          <div id="channelList"></div>
+        </div>
+
+        <div class="chat">
+          <div class="messages" id="messages"></div>
+          <div class="composer">
+            <input id="messageInput" placeholder="Message" autocomplete="off" />
+            <button id="sendBtn">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Members / Friends -->
+    <div class="right-panel">
+      <div class="section">
+        <div class="section-title">Members</div>
+        <div id="memberList"></div>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <div class="section">
+        <div class="section-title">Friends</div>
+        <div id="friendList"></div>
+        <div style="height:8px"></div>
+        <div style="display:flex;gap:8px">
+          <input id="friendEmail" placeholder="friend (email or display name)" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:var(--white)" />
+          <button id="sendRequestBtn" class="small-btn">Send</button>
+        </div>
+        <div style="height:12px"></div>
+        <div class="section-title">Requests</div>
+        <div id="requestList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auth modal -->
+  <div id="authModal" class="modal hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div style="font-family:'Space Grotesk';font-weight:700;font-size:1.1rem">Sign in / Sign up</div>
+      <div id="authClose" style="cursor:pointer;color:var(--muted)">✕</div>
+    </div>
+
+    <div class="form-row">
+      <label style="font-size:0.85rem;color:var(--muted)">Display name</label>
+      <input id="dispName" type="text" placeholder="nickname (shown to friends)" />
+    </div>
+    <div class="form-row">
+      <label style="font-size:0.85rem;color:var(--muted)">Email</label>
+      <input id="email" type="email" placeholder="you@example.com" />
+    </div>
+    <div class="form-row">
+      <label style="font-size:0.85rem;color:var(--muted)">Password</label>
+      <input id="password" type="password" placeholder="password (min 6)" />
+    </div>
+
+    <div style="display:flex;gap:8px;justify-content:space-between;align-items:center">
+      <div style="font-size:0.85rem;color:var(--muted)">Already have an account? <a href="#" id="toLogin" style="text-decoration: none; color: white;">Log in</a></div>
+      <div class="auth-actions">
+        <button id="signupBtn" class="small-btn">Sign up</button>
+        <button id="loginBtn" class="small-btn">Log in</button>
+      </div>
+    </div>
+
+    <div id="authMsg" style="margin-top:10px;color:var(--muted);font-size:0.9rem"></div>
+  </div>
+
+  <script>
+    /***************************
+     * Firebase config - replace with yours if needed
+     ***************************/
+    const firebaseConfig = {
+      apiKey: "AIzaSyAeU8eUerKxRSo4T_3Fc9uC9SnHeF-qZrI",
+      authDomain: "my-chat-project-112b9.firebaseapp.com",
+      databaseURL: "https://my-chat-project-112b9-default-rtdb.firebaseio.com",
+      projectId: "my-chat-project-112b9",
+      storageBucket: "my-chat-project-112b9.appspot.com",
+      messagingSenderId: "159419697275",
+      appId: "1:159419697275:web:c0c7c1555466aad80afade",
+      measurementId: "G-705X5D246R"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    /***************************
+     * App state
+     ***************************/
+    let currentUser = null;
+    let currentServerId = null;
+    let currentChannelId = null;
+    let currentMode = { type: 'server', id: null }; // {type: 'server'|'dm'|'global', id: id}
+    let serverSnapshot = {};
+    let usersCache = {};
+    let presenceSnapshot = {}; // holds presence/{uid}
+    let messagesRef = null;
+
+    /***************************
+     * DOM refs
+     ***************************/
+    const serverListEl = document.getElementById('serverList');
+    const serverTitleEl = document.getElementById('serverTitle');
+    const channelListEl = document.getElementById('channelList');
+    const messagesEl = document.getElementById('messages');
+    const memberListEl = document.getElementById('memberList');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const createServerBtn = document.getElementById('createServerBtn');
+    const btnNewChannel = document.getElementById('btnNewChannel');
+    const btnLogout = document.getElementById('btnLogout');
+    const profileMini = document.getElementById('profileMini');
+    const friendListEl = document.getElementById('friendList');
+    const requestListEl = document.getElementById('requestList');
+    const friendEmailInput = document.getElementById('friendEmail');
+    const sendRequestBtn = document.getElementById('sendRequestBtn');
+    const openGlobalBtn = document.getElementById('openGlobalBtn');
+
+    const authModal = document.getElementById('authModal');
+    const signupBtn = document.getElementById('signupBtn');
+    const loginBtn = document.getElementById('loginBtn');
+    const authClose = document.getElementById('authClose');
+    const authMsg = document.getElementById('authMsg');
+    const dispNameInput = document.getElementById('dispName');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    /***************************
+     * Utility
+     ***************************/
+    function el(tag, props={}, ...children){
+      const e = document.createElement(tag);
+      for(const k in props) {
+        if(k.startsWith('on')) {
+          // normalize event name (onClick, onclick -> "click")
+          const ev = k.substring(2).toLowerCase();
+          e.addEventListener(ev, props[k]);
+        } else if(k === 'html') e.innerHTML = props[k];
+        else e.setAttribute(k, props[k]);
+      }
+      for(const c of children) {
+        if(typeof c === 'string') e.appendChild(document.createTextNode(c));
+        else if(c) e.appendChild(c);
+      }
+      return e;
+    }
+    function uidShort(uid){ return uid ? uid.substring(0,6) : '' }
+
+    // Helper to normalize display names: if missing or empty -> 'unknown',
+    // and if exactly 'Unknown' -> 'unknown' (lowercase) per your request.
+    function getDisplayNameFromUser(u){
+      if(!u) return 'unknown';
+      const dn = (u.displayName || '').toString().trim();
+      if(!dn) return 'unknown';
+      return dn === 'Unknown' ? 'unknown' : dn;
+    }
+
+    function formatLastSeen(ts){
+      if(!ts) return '';
+      const diff = Date.now() - ts;
+      const s = Math.floor(diff/1000);
+      if(s < 60) return 'last seen just now';
+      const m = Math.floor(s/60);
+      if(m < 60) return `last seen ${m}m ago`;
+      const h = Math.floor(m/60);
+      if(h < 24) return `last seen ${h}h ago`;
+      const d = Math.floor(h/24);
+      return `last seen ${d}d ago`;
+    }
+
+    /***************************
+     * Init: ensure global "general" server and globalChat exist
+     ***************************/
+    const GLOBAL_GENERAL_ID = "server_general";
+    const GLOBAL_CHAT_ID = "global_chat_general";
+    function ensureGlobalNodes(){
+      // ensure general server exists
+      db.ref('servers/' + GLOBAL_GENERAL_ID).once('value').then(snap => {
+        if(!snap.exists()){
+          db.ref('servers/' + GLOBAL_GENERAL_ID).set({
+            name: "general",
+            createdAt: Date.now(),
+            channels: { general: { name: "general", createdAt: Date.now() } },
+            members: {}
+          });
+        }
+      });
+      // ensure global chat path exists (no special structure required)
+      db.ref('globalChats/' + GLOBAL_CHAT_ID + '/meta').once('value').then(snap => {
+        if(!snap.exists()){
+          db.ref('globalChats/' + GLOBAL_CHAT_ID + '/meta').set({ name: "General Chat", createdAt: Date.now() });
+        }
+      });
+    }
+    ensureGlobalNodes();
+
+    /***************************
+     * Auth flows
+     ***************************/
+    function showAuthModal(show=true){ authModal.classList.toggle('hidden', !show); }
+    authClose.addEventListener('click', ()=> showAuthModal(false));
+    document.getElementById('toLogin').addEventListener('click', (e)=>{
+      e.preventDefault();
+      authMsg.textContent = 'Use Log in to sign in if you have account.';
+    });
+
+    signupBtn.addEventListener('click', async ()=>{
+      const email = emailInput.value.trim();
+      const pass = passwordInput.value;
+      const displayName = dispNameInput.value.trim() || email.split('@')[0];
+      if(!email || pass.length < 6) { authMsg.textContent = 'Enter valid email and password (min 6).'; return; }
+      authMsg.textContent = 'Signing up...';
+      try{
+        const res = await auth.createUserWithEmailAndPassword(email, pass);
+        const user = res.user;
+        await user.updateProfile({ displayName });
+        // write user info to DB and add them to general server and to globalChat (no special membership needed)
+        const uref = db.ref('users/' + user.uid);
+        await uref.set({
+          displayName,
+          email,
+          createdAt: Date.now(),
+          lastSeen: Date.now()
+        });
+        // add to general server members
+        await db.ref(`servers/${GLOBAL_GENERAL_ID}/members/${user.uid}`).set({ joinedAt: Date.now() });
+        // add server membership for user
+        await db.ref(`userServers/${user.uid}/${GLOBAL_GENERAL_ID}`).set(true);
+        authMsg.textContent = 'Sign up complete! Joined general server and global chat.';
+        showAuthModal(false);
+      }catch(err){
+        authMsg.textContent = 'Error: ' + err.message;
+      }
+    });
+
+    loginBtn.addEventListener('click', async ()=>{
+      const email = emailInput.value.trim();
+      const pass = passwordInput.value;
+      if(!email || !pass) { authMsg.textContent = 'Enter email and password.'; return; }
+      authMsg.textContent = 'Logging in...';
+      try{
+        await auth.signInWithEmailAndPassword(email, pass);
+        authMsg.textContent = 'Logged in!';
+        showAuthModal(false);
+      }catch(err){
+        authMsg.textContent = 'Error: ' + err.message;
+      }
+    });
+
+    /***************************
+     * Presence: listen to presence/ node and expose helper
+     ***************************/
+    db.ref('presence').on('value', snap => {
+      presenceSnapshot = snap.val() || {};
+      // re-render places that show presence
+      renderMemberList();
+      renderFriends((document.querySelector('#friendList')) ? {} : {}); // safe noop - we call actual renderFriends when friend data changes too
+      renderRequests((document.querySelector('#requestList')) ? {} : {});
+      // update profile mini indicator
+      updateProfileMiniStatus();
+    });
+
+    function isOnline(uid){
+      return presenceSnapshot[uid] && presenceSnapshot[uid].state === 'online';
+    }
+
+    /***************************
+     * Auth state change: main entry
+     ***************************/
+    auth.onAuthStateChanged(async user => {
+      currentUser = user;
+      // toggle UI that depends on auth
+      setAuthDependentUI(!!user);
+
+      if(user){
+        // update lastSeen
+        db.ref('users/' + user.uid + '/lastSeen').set(Date.now());
+        // ensure user exists
+        const uref = db.ref('users/' + user.uid);
+        const snap = await uref.once('value');
+        if(!snap.exists()){
+          await uref.set({
+            displayName: user.displayName || user.email.split('@')[0],
+            email: user.email,
+            createdAt: Date.now(),
+            lastSeen: Date.now()
+          });
+          // add to general server membership & userServers
+          await db.ref(`servers/${GLOBAL_GENERAL_ID}/members/${user.uid}`).set({ joinedAt: Date.now() });
+          await db.ref(`userServers/${user.uid}/${GLOBAL_GENERAL_ID}`).set(true);
+        }
+
+        // Setup presence for this user: uses .info/connected and onDisconnect
+        const conRef = db.ref('.info/connected');
+        conRef.on('value', snapConn => {
+          if(snapConn.exists() && snapConn.val() === true){
+            const userPresenceRef = db.ref(`presence/${user.uid}`);
+            // on disconnect, mark offline with timestamp
+            userPresenceRef.onDisconnect().set({ state: 'offline', lastChanged: Date.now() }).catch(()=>{});
+            // set online now
+            userPresenceRef.set({ state: 'online', lastChanged: Date.now() }).catch(()=>{});
+          } else {
+            // if Firebase says disconnected, try to mark offline locally (best-effort)
+            db.ref(`presence/${user.uid}`).set({ state: 'offline', lastChanged: Date.now() }).catch(()=>{});
+          }
+        });
+        // reflect browser online/offline events too (works together with Firebase onDisconnect)
+        window.addEventListener('offline', ()=> {
+          if(currentUser) db.ref(`presence/${currentUser.uid}`).set({ state: 'offline', lastChanged: Date.now() }).catch(()=>{});
+        });
+        window.addEventListener('online', ()=> {
+          if(currentUser) db.ref(`presence/${currentUser.uid}`).set({ state: 'online', lastChanged: Date.now() }).catch(()=>{});
+        });
+
+        initAppForUser();
+      } else {
+        // show modal for sign up/login
+        showAuthModal(true);
+        renderSignedOutView();
+      }
+    });
+
+    function setAuthDependentUI(signedIn){
+      // show/hide logout button for clarity and prevent accidental calls
+      if(signedIn){
+        btnLogout.style.display = '';
+      } else {
+        btnLogout.style.display = 'none';
+      }
+    }
+
+    /***************************
+     * Render basic UI shell for signed-out state
+     ***************************/
+    function renderSignedOutView(){
+      serverListEl.innerHTML = '';
+      channelListEl.innerHTML = '';
+      messagesEl.innerHTML = '<div style="color:var(--muted);padding:12px">Sign in to start chatting.</div>';
+      profileMini.innerHTML = `<div class="server-btn" title="Sign in" onclick="document.getElementById('authModal').classList.remove('hidden')">Sign in</div>`;
+    }
+
+    /***************************
+     * Initialize app once user signed in
+     ***************************/
+    async function initAppForUser(){
+      // show profile mini
+      profileMini.innerHTML = '';
+      const initials = (currentUser.displayName || currentUser.email[0]).substring(0,2).toUpperCase();
+      const avatar = el('div',{class:'server-btn', title:'Profile'}, initials);
+      // add small status dot in profile mini
+      const status = el('div',{class:'status ' + (isOnline(currentUser.uid) ? 'online' : 'offline')});
+      avatar.style.position = 'relative';
+      avatar.appendChild(status);
+      profileMini.appendChild(avatar);
+      avatar.addEventListener('click', ()=> {
+        // Only show user's own email in a profile dialog (emails are private)
+        alert(`Signed in as ${currentUser.displayName || currentUser.email}\nUID: ${currentUser.uid}\nEmail: ${currentUser.email}`);
+      });
+
+      // load servers for user (their memberships)
+      db.ref('userServers/' + currentUser.uid).on('value', snap => {
+        const data = snap.val() || {};
+        // always include global general server
+        if(!data[GLOBAL_GENERAL_ID]) {
+          db.ref(`userServers/${currentUser.uid}/${GLOBAL_GENERAL_ID}`).set(true);
+          db.ref(`servers/${GLOBAL_GENERAL_ID}/members/${currentUser.uid}`).set({ joinedAt: Date.now() });
+        }
+        renderServerList(Object.keys(data));
+      });
+
+      // load server details whenever changed
+      db.ref('servers').on('value', snap => {
+        serverSnapshot = snap.val() || {};
+        // if no current server set, pick general
+        if(!currentServerId) {
+          if(serverSnapshot[GLOBAL_GENERAL_ID]) currentServerId = GLOBAL_GENERAL_ID;
+          else {
+            currentServerId = Object.keys(serverSnapshot)[0] || null;
+          }
+        }
+        renderServerList(Object.keys(serverSnapshot || {}), currentServerId);
+        if(currentServerId && currentMode.type === 'server') selectServer(currentServerId);
+      });
+
+      // listen for friend requests & friends
+      db.ref(`friendRequests/${currentUser.uid}`).on('value', snap => {
+        const reqs = snap.val() || {};
+        renderRequests(reqs);
+      });
+      db.ref(`friends/${currentUser.uid}`).on('value', snap => {
+        const friends = snap.val() || {};
+        renderFriends(friends);
+      });
+
+      updateUsersCache();
+      // default view: general server
+      currentMode = { type: 'server', id: GLOBAL_GENERAL_ID };
+      currentServerId = GLOBAL_GENERAL_ID;
+      selectServer(GLOBAL_GENERAL_ID);
+    }
+
+    /***************************
+     * Users cache (for names)
+     ***************************/
+    function updateUsersCache(){
+      db.ref('users').on('value', snap => {
+        usersCache = snap.val() || {};
+        // Re-render members/friends so names update when users arrive
+        renderMemberList();
+        renderFriends((document.querySelector('#friendList')) ? {} : {}); // safe noop to avoid unused variable
+      });
+    }
+
+    /***************************
+     * Render servers list
+     ***************************/
+    function renderServerList(serverIds=[], activeId){
+      serverListEl.innerHTML = '';
+      // ensure general always present
+      if(!serverIds.includes(GLOBAL_GENERAL_ID)) serverIds.unshift(GLOBAL_GENERAL_ID);
+      // unique
+      serverIds = Array.from(new Set(serverIds));
+      for(const sid of serverIds){
+        const s = serverSnapshot[sid] || { name: sid === GLOBAL_GENERAL_ID ? 'general' : sid };
+        const btn = el('div',{class:'server-btn ' + (sid === activeId ? 'active' : ''), title: s.name}, s.name[0].toUpperCase());
+        btn.addEventListener('click', ()=> {
+          currentMode = { type: 'server', id: sid };
+          currentServerId = sid;
+          selectServer(sid);
+        });
+        serverListEl.appendChild(btn);
+      }
+    }
+
+    /***************************
+     * Select server -> show channels & set up message listeners
+     ***************************/
+    function selectServer(sid){
+      currentServerId = sid;
+      currentMode = { type: 'server', id: sid };
+      const s = serverSnapshot[sid] || { name: 'Server' };
+      serverTitleEl.textContent = s.name || 'Server';
+      // load channels
+      const channels = s.channels || { general: { name: "general" } };
+      renderChannels(channels);
+      // default channel
+      const chId = Object.keys(channels)[0];
+      if(chId) selectChannel(chId);
+      renderMemberList();
+      // restore sendBtn default handler
+      setupSendForServer();
+    }
+
+    /***************************
+     * Render channels
+     ***************************/
+    function renderChannels(channels){
+      channelListEl.innerHTML = '';
+      for(const chId in channels){
+        const ch = channels[chId];
+        const elCh = el('div',{class:'channel-item ' + (chId===currentChannelId?'active':'')}, '# ' + (ch.name || chId));
+        elCh.addEventListener('click', ()=> {
+          currentMode = { type: 'server', id: currentServerId };
+          selectChannel(chId);
+        });
+        channelListEl.appendChild(elCh);
+      }
+    }
+
+    /***************************
+     * Select channel -> load messages
+     ***************************/
+    function selectChannel(chId){
+      currentChannelId = chId;
+      // switch active class
+      const items = channelListEl.querySelectorAll('.channel-item');
+      items.forEach(it => it.classList.remove('active'));
+      const found = Array.from(items).find(it => it.textContent.trim().toLowerCase().includes(chId));
+      if(found) found.classList.add('active');
+
+      // stop previous listener
+      if(messagesRef) messagesRef.off();
+
+      messagesEl.innerHTML = '';
+      if(!currentServerId || !currentChannelId) return;
+      messagesRef = db.ref(`servers/${currentServerId}/channels/${currentChannelId}/messages`);
+      messagesRef.limitToLast(200).on('child_added', snap => { appendMessage(snap.key, snap.val()); });
+      messagesRef.on('child_changed', snap => {
+        // update message DOM
+        const msgEl = document.getElementById('m_' + snap.key);
+        if(msgEl) replaceMessageDOM(msgEl, snap.key, snap.val());
+      });
+      messagesRef.on('child_removed', snap => {
+        // if you remove from DB entirely (we use soft-delete), handle accordingly
+        const msgEl = document.getElementById('m_' + snap.key);
+        if(msgEl) msgEl.remove();
+      });
+
+      setupSendForServer();
+    }
+
+    /***************************
+     * General chat open
+     ***************************/
+    openGlobalBtn.addEventListener('click', ()=>{
+      openGlobalChat();
+    });
+
+    function openGlobalChat(){
+      // detach previous listener
+      if(messagesRef) messagesRef.off();
+      currentMode = { type: 'global', id: GLOBAL_CHAT_ID };
+      serverTitleEl.textContent = 'General Chat';
+      channelListEl.innerHTML = `<div style="color:var(--muted);padding:6px">Global Chat (everyone)</div>`;
+      messagesEl.innerHTML = '';
+      messagesRef = db.ref(`globalChats/${GLOBAL_CHAT_ID}/messages`);
+      messagesRef.limitToLast(400).on('child_added', snap => appendMessage(snap.key, snap.val()));
+      messagesRef.on('child_changed', snap => {
+        const msgEl = document.getElementById('m_' + snap.key);
+        if(msgEl) replaceMessageDOM(msgEl, snap.key, snap.val());
+      });
+      setupSendForGlobal();
+    }
+
+    /***************************
+     * DMs: helper to open DMs (reuses messages area)
+     ***************************/
+    async function openDMWith(uid){
+      if(!currentUser) return alert('Sign in first to send DMs.');
+      if(uid === currentUser.uid) return;
+      const ids = [currentUser.uid, uid].sort();
+      const dmId = `dm_${ids.join('_')}`;
+      // create if not exist
+      const dmRef = db.ref(`dms/${dmId}`);
+      const snap = await dmRef.once('value');
+      if(!snap.exists()){
+        await dmRef.set({ participants: { [ids[0]]: true, [ids[1]]: true }, createdAt: Date.now() });
+      }
+      // attach listener
+      if(messagesRef) messagesRef.off();
+      messagesEl.innerHTML = '';
+      messagesRef = db.ref(`dms/${dmId}/messages`);
+      messagesRef.limitToLast(200).on('child_added', snap => appendMessage(snap.key, snap.val()));
+      messagesRef.on('child_changed', snap => {
+        const msgEl = document.getElementById('m_' + snap.key);
+        if(msgEl) replaceMessageDOM(msgEl, snap.key, snap.val());
+      });
+      serverTitleEl.textContent = 'Direct Message';
+      // use usersCache to display the other user's displayName (or 'unknown')
+      channelListEl.innerHTML = `<div style="color:var(--muted);padding:6px">DM with ${(usersCache[uid] && getDisplayNameFromUser(usersCache[uid])) || 'unknown'}</div>`;
+      currentMode = { type: 'dm', id: dmId, target: uid };
+      setupSendForDM(dmId);
+    }
+
+    /***************************
+     * Append message to DOM (handles deleted/edited)
+     *
+     * IMPORTANT:
+     * - We now ALWAYS resolve sender display name from usersCache (users DB),
+     *   and fall back to 'unknown' when displayName is missing or not available.
+     * - We do NOT rely on m.username to display the sender. This prevents
+     *   older stored "username" fields from leaking your raw username/email snippet.
+     ***************************/
+    function appendMessage(key, m){
+      if(!m) return;
+      const mine = currentUser && m.uid === currentUser.uid;
+      const wrapper = el('div',{class:'msg ' + (mine ? 'me' : '') + (m.deleted ? ' deleted' : ''), id:'m_' + key});
+
+      // Resolve display name from usersCache. If present, use getDisplayNameFromUser.
+      // If not present yet, show 'unknown' and when the usersCache updates we'll re-render/replace via child_changed events or user cache listener.
+      const name = (m.uid && usersCache[m.uid]) ? getDisplayNameFromUser(usersCache[m.uid]) : 'unknown';
+      const meta = el('div',{class:'meta'}, `${name} • ${new Date(m.ts).toLocaleTimeString()}${m.edited ? ' • ' : ''}`);
+      if(m.edited){
+        meta.appendChild(el('span',{class:'edited'}, '(edited)'));
+      }
+      wrapper.appendChild(meta);
+
+      // content
+      const content = m.deleted ? 'Message deleted' : m.text;
+      wrapper.appendChild(el('div',{}, content));
+
+      // controls (edit/delete) - show only for owner and not deleted
+      if(mine && !m.deleted){
+        const controls = el('div',{class:'controls'});
+        const editBtn = el('button',{class:'ctrl-btn', onClick:()=> startEditMessage(key,m)}, 'Edit');
+        const delBtn = el('button',{class:'ctrl-btn', onClick:()=> deleteMessage(key)}, 'Delete');
+        controls.appendChild(editBtn); controls.appendChild(delBtn);
+        wrapper.appendChild(controls);
+      }
+
+      messagesEl.appendChild(wrapper);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function replaceMessageDOM(dom, key, m){
+      dom.className = 'msg ' + ((m.uid === currentUser.uid) ? 'me' : '') + (m.deleted ? ' deleted' : '');
+      dom.innerHTML = '';
+
+      // Always resolve display name from usersCache (ignore m.username)
+      const name = (m.uid && usersCache[m.uid]) ? getDisplayNameFromUser(usersCache[m.uid]) : 'unknown';
+      const meta = el('div',{class:'meta'}, `${name} • ${new Date(m.ts).toLocaleTimeString()}${m.edited ? ' • ' : ''}`);
+      if(m.edited) meta.appendChild(el('span',{class:'edited'}, '(edited)'));
+      dom.appendChild(meta);
+      dom.appendChild(el('div',{}, m.deleted ? 'Message deleted' : m.text));
+      if(m.uid === currentUser.uid && !m.deleted){
+        const controls = el('div',{class:'controls'});
+        const editBtn = el('button',{class:'ctrl-btn', onClick:()=> startEditMessage(key,m)}, 'Edit');
+        const delBtn = el('button',{class:'ctrl-btn', onClick:()=> deleteMessage(key)}, 'Delete');
+        controls.appendChild(editBtn); controls.appendChild(delBtn);
+        dom.appendChild(controls);
+      }
+    }
+
+    /***************************
+     * Message editing
+     ***************************/
+    let editingMessage = null; // {key, pathRef}
+    function startEditMessage(key, m){
+      if(!m || m.uid !== currentUser.uid) return alert('Cannot edit this message');
+      editingMessage = { key, mode: currentMode, channelId: currentChannelId };
+      messageInput.value = m.text;
+      messageInput.focus();
+      sendBtn.textContent = 'Save';
+      sendBtn.dataset.action = 'edit';
+    }
+
+    async function commitEdit(){
+      if(!editingMessage) return;
+      const newText = messageInput.value.trim();
+      if(newText.length === 0) return alert('Message cannot be empty');
+      const mode = editingMessage.mode;
+      let path = null;
+      if(mode.type === 'server') path = `servers/${mode.id}/channels/${editingMessage.channelId || currentChannelId}/messages/${editingMessage.key}`;
+      else if(mode.type === 'global') path = `globalChats/${mode.id}/messages/${editingMessage.key}`;
+      else if(mode.type === 'dm') path = `dms/${mode.id}/messages/${editingMessage.key}`;
+      if(!path) { alert('Edit path not found'); return; }
+      await db.ref(path).update({ text: newText, edited: true, editedAt: Date.now() });
+      messageInput.value = '';
+      sendBtn.textContent = 'Send';
+      delete sendBtn.dataset.action;
+      editingMessage = null;
+    }
+
+    /***************************
+     * Message deleting (soft delete)
+     ***************************/
+    async function deleteMessage(key){
+      if(!confirm('Delete this message?')) return;
+      const mode = currentMode;
+      let path = null;
+      if(mode.type === 'server') path = `servers/${mode.id}/channels/${currentChannelId}/messages/${key}`;
+      else if(mode.type === 'global') path = `globalChats/${mode.id}/messages/${key}`;
+      else if(mode.type === 'dm') path = `dms/${mode.id}/messages/${key}`;
+      if(!path) { alert('Delete path not found'); return; }
+      await db.ref(path).update({ deleted: true, text: '', deletedAt: Date.now() });
+    }
+
+    /***************************
+     * Send message handlers for server/global/dm
+     *
+     * NOTE: we no longer store a "username" field on messages.
+     * We only store uid and ts + text. The UI resolves a sender's
+     * display name live from the users/ node to avoid leaking
+     * older stored username values in message objects.
+     ***************************/
+    function setupSendForServer(){
+      sendBtn.onclick = async ()=>{
+        if(sendBtn.dataset.action === 'edit'){ await commitEdit(); return; }
+        const text = messageInput.value.trim();
+        if(!text || !currentServerId || !currentChannelId || !currentUser) return;
+        const msgRef = db.ref(`servers/${currentServerId}/channels/${currentChannelId}/messages`).push();
+        await msgRef.set({
+          text,
+          uid: currentUser.uid,
+          ts: Date.now()
+        });
+        messageInput.value = '';
+      };
+    }
+    function setupSendForGlobal(){
+      sendBtn.onclick = async ()=>{
+        if(sendBtn.dataset.action === 'edit'){ await commitEdit(); return; }
+        const text = messageInput.value.trim();
+        if(!text || !currentUser) return;
+        const msgRef = db.ref(`globalChats/${GLOBAL_CHAT_ID}/messages`).push();
+        await msgRef.set({
+          text,
+          uid: currentUser.uid,
+          ts: Date.now()
+        });
+        messageInput.value = '';
+      };
+    }
+    function setupSendForDM(dmId){
+      sendBtn.onclick = async ()=>{
+        if(sendBtn.dataset.action === 'edit'){ await commitEdit(); return; }
+        const text = messageInput.value.trim();
+        if(!text || !currentUser) return;
+        await db.ref(`dms/${dmId}/messages`).push({
+          text, uid: currentUser.uid, ts: Date.now()
+        });
+        messageInput.value = '';
+      };
+    }
+
+    messageInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter') sendBtn.click(); });
+
+    /***************************
+     * Create server (simple prompt)
+     ***************************/
+    createServerBtn.addEventListener('click', async ()=>{
+      if(!currentUser) { alert('Sign in first'); return; }
+      const name = prompt('Server name? (e.g. My Server)');
+      if(!name) return;
+      const newRef = db.ref('servers').push();
+      const sid = newRef.key;
+      const payload = {
+        name,
+        createdAt: Date.now(),
+        channels: { general: { name: "general", createdAt: Date.now() } },
+        members: {}
+      };
+      payload.members[currentUser.uid] = { joinedAt: Date.now() };
+      await newRef.set(payload);
+      await db.ref(`userServers/${currentUser.uid}/${sid}`).set(true);
+      currentMode = { type: 'server', id: sid };
+      currentServerId = sid;
+      selectServer(sid);
+    });
+
+    /***************************
+     * Create channel under current server
+     ***************************/
+    btnNewChannel.addEventListener('click', async ()=>{
+      if(!currentServerId) return alert('Select a server first');
+      const cname = prompt('Channel name (no #):','new-channel');
+      if(!cname) return;
+      const chKey = cname.replace(/\s+/g,'-').toLowerCase();
+      await db.ref(`servers/${currentServerId}/channels/${chKey}`).set({ name: cname, createdAt: Date.now() });
+      selectServer(currentServerId);
+      selectChannel(chKey);
+    });
+
+    /***************************
+     * Member list
+     * Emails are restricted: only the current user sees their own email.
+     * Display name fallback: show "unknown" (lowercase) when displayName missing or set to "Unknown".
+     * Shows online/offline status via presenceSnapshot
+     ***************************/
+    function renderMemberList(){
+      memberListEl.innerHTML = '';
+      if(!currentServerId) return;
+      const s = serverSnapshot[currentServerId] || {};
+      const members = s.members || {};
+      for(const uid in members){
+        const u = usersCache[uid] || { displayName: '', email: '' };
+        const displayName = getDisplayNameFromUser(u);
+        const row = el('div',{class:'user-row'});
+        const av = el('div',{class:'avatar'}, (displayName[0] || '?').toUpperCase());
+        // status dot
+        const online = isOnline(uid);
+        const statusDot = el('div',{class:'status ' + (online ? 'online' : 'offline')});
+        av.appendChild(statusDot);
+
+        const emailText = (currentUser && uid === currentUser.uid) ? (u.email || '') : '';
+        const lastSeenText = (!online && presenceSnapshot[uid] && presenceSnapshot[uid].lastChanged) ? formatLastSeen(presenceSnapshot[uid].lastChanged) : '';
+        const info = el('div',{}, el('div',{style:'font-weight:700'}, displayName), el('div',{style:'font-size:12px;color:var(--muted)'}, emailText || lastSeenText));
+        const actions = el('div',{class:'friend-actions'});
+        if(currentUser && uid !== currentUser.uid){
+          const dmBtn = el('button',{class:'small-btn', onClick:()=> openDMWith(uid)}, 'DM');
+          actions.appendChild(dmBtn);
+        }
+        row.appendChild(av); row.appendChild(info); row.appendChild(actions);
+        memberListEl.appendChild(row);
+      }
+    }
+
+    function updateProfileMiniStatus(){
+      if(!currentUser) return;
+      const elMini = profileMini.querySelector('.server-btn');
+      if(!elMini) return;
+      const status = elMini.querySelector('.status');
+      if(status){
+        status.className = 'status ' + (isOnline(currentUser.uid) ? 'online' : 'offline');
+      }
+    }
+
+    /***************************
+     * Friends / Requests
+     ***************************/
+    function renderFriends(friends){
+      friendListEl.innerHTML = '';
+      const list = friends || {};
+      for(const uid in list){
+        const u = usersCache[uid] || {};
+        const displayName = getDisplayNameFromUser(u);
+        const showEmail = currentUser && uid === currentUser.uid;
+        const emailText = showEmail ? (u.email || '') : '';
+        const online = isOnline(uid);
+        const lastSeenText = (!online && presenceSnapshot[uid] && presenceSnapshot[uid].lastChanged) ? formatLastSeen(presenceSnapshot[uid].lastChanged) : '';
+        const row = el('div',{class:'user-row'}, 
+          el('div',{class:'avatar'}, (displayName[0]||'?').toUpperCase()),
+          el('div',{}, el('div',{style:'font-weight:700'}, displayName), el('div',{style:'font-size:12px;color:var(--muted)'}, emailText || lastSeenText)),
+          el('div',{class:'friend-actions'}, (currentUser && uid !== currentUser.uid) ? el('button',{class:'small-btn', onClick:()=> openDMWith(uid)}, 'DM') : '')
+        );
+        // attach status dot to avatar element
+        const av = row.querySelector('.avatar');
+        const statusDot = el('div',{class:'status ' + (online ? 'online' : 'offline')});
+        av.appendChild(statusDot);
+
+        friendListEl.appendChild(row);
+      }
+    }
+
+    function renderRequests(reqs){
+      requestListEl.innerHTML = '';
+      reqs = reqs || {};
+      for(const fromUid in reqs){
+        const u = usersCache[fromUid] || {};
+        const displayName = getDisplayNameFromUser(u);
+        const showEmail = currentUser && fromUid === currentUser.uid;
+        const emailText = showEmail ? (u.email || '') : '';
+        const online = isOnline(fromUid);
+        const lastSeenText = (!online && presenceSnapshot[fromUid] && presenceSnapshot[fromUid].lastChanged) ? formatLastSeen(presenceSnapshot[fromUid].lastChanged) : '';
+        const row = el('div',{class:'user-row'}, el('div',{class:'avatar'}, (displayName[0]||'?').toUpperCase()),
+          el('div',{}, el('div',{style:'font-weight:700'}, displayName), el('div',{style:'font-size:12px;color:var(--muted)'}, emailText || lastSeenText)),
+          el('div',{class:'friend-actions'},
+            el('button',{class:'small-btn', onClick:()=> acceptRequest(fromUid)}, 'Accept'),
+            el('button',{class:'small-btn', onClick:()=> declineRequest(fromUid)}, 'Decline')
+          )
+        );
+        // status
+        const av = row.querySelector('.avatar');
+        const statusDot = el('div',{class:'status ' + (online ? 'online' : 'offline')});
+        av.appendChild(statusDot);
+
+        requestListEl.appendChild(row);
+      }
+    }
+
+    sendRequestBtn.addEventListener('click', async ()=>{
+      const query = friendEmailInput.value.trim();
+      if(!query) return alert('Enter a display name or email to send a friend request.');
+      if(!currentUser) return alert('Sign in first.');
+
+      async function sendToUid(targetUid){
+        if(targetUid === currentUser.uid) return alert("You can't add yourself.");
+        await db.ref(`friendRequests/${targetUid}/${currentUser.uid}`).set(true);
+        alert('Friend request sent.');
+        friendEmailInput.value = '';
+      }
+
+      if(query.includes('@')){
+        const usersSnap = await db.ref('users').orderByChild('email').equalTo(query).once('value');
+        if(!usersSnap.exists()){
+          return alert('No user with that email found (they must sign up first).');
+        }
+        const usersData = usersSnap.val();
+        const targetUid = Object.keys(usersData)[0];
+        await sendToUid(targetUid);
+        return;
+      }
+
+      const byNameSnap = await db.ref('users').orderByChild('displayName').equalTo(query).once('value');
+      if(!byNameSnap.exists()){
+        return alert('No user with that display name found. Try asking them to sign up or confirm their display name.');
+      }
+      const matches = byNameSnap.val();
+      const uids = Object.keys(matches);
+      if(uids.length > 1){
+        if(!confirm(`Multiple users found with that display name (${uids.length}). Send request to the first match?`)) return;
+      }
+      await sendToUid(uids[0]);
+    });
+
+    async function acceptRequest(fromUid){
+      if(!currentUser) return alert('Sign in first.');
+      await db.ref(`friends/${currentUser.uid}/${fromUid}`).set(true);
+      await db.ref(`friends/${fromUid}/${currentUser.uid}`).set(true);
+      await db.ref(`friendRequests/${currentUser.uid}/${fromUid}`).remove();
+      alert('Friend request accepted.');
+    }
+    async function declineRequest(fromUid){
+      if(!currentUser) return alert('Sign in first.');
+      await db.ref(`friendRequests/${currentUser.uid}/${fromUid}`).remove();
+    }
+
+    /***************************
+     * Logout
+     ***************************/
+    btnLogout.addEventListener('click', async ()=> {
+      if(!currentUser){
+        showAuthModal(true);
+        return;
+      }
+      if(!confirm('Log out?')) return;
+      try{
+        try { db.ref().off(); } catch(e) {}
+        // set presence offline on explicit sign out
+        await db.ref(`presence/${currentUser.uid}`).set({ state: 'offline', lastChanged: Date.now() }).catch(()=>{});
+        await auth.signOut();
+        showAuthModal(true);
+        renderSignedOutView();
+      }catch(err){
+        console.error('Error signing out', err);
+        alert('Failed to sign out: ' + (err.message || err));
+      }
+    });
+
+    /***************************
+     * Basic startup
+     ***************************/
+    if(!auth.currentUser) { setTimeout(()=> showAuthModal(true), 400); }
+  </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
