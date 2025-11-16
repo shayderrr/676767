@@ -904,6 +904,7 @@
         <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@00bcaeec990381e630b1d736ba3cedbf7d6c8da4/text.html">Text Encryptor</div>
         <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@main/mp3.html">MP3 Downloader</div>
         <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@5e88925ee5112dc02c8699b6e0802545ef6ba2ee/youtube.html">YouTube 📺</div>
+        <div class="nav-link" id="operatingsystem">OS (OP!!)</div>
       </li>
       <li><div class="nav-category">Movies</div>
         <div class="nav-link" data-src="https://cdn.jsdelivr.net/gh/shayderrr/676767@befa172b2d7d5530d224617b9b4b2a696e86eebf/crunchy.html">CrunchyRoll</div>
@@ -2381,6 +2382,65 @@ const linkedMore = `
         return;
       }
       fetch("https://cdn.jsdelivr.net/gh/shayderrr/676767/unblockedgames.html?t=" + Date.now())
+        .then(response => response.text())
+        .then(text => {
+          newWin.document.open();
+          newWin.document.write(text);
+          newWin.document.close();
+        })
+        .catch(err => {
+          console.error("Fetch error:", err);
+          newWin.close();
+        });
+    }
+  <\/script>
+</body>
+</html>
+
+`;
+const linkedMore = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+    }
+    .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    .button:hover {
+      background-color: #4a148c;
+    }
+  </style>
+</head>
+<body>
+  <a id="button" class="button">Launch</a>
+  <script>
+    document.getElementById('button').addEventListener('click', launch);
+    function launch() {
+      const newWin = window.open("about:blank", "_blank");
+      if (!newWin) {
+        console.error("Popup blocked");
+        return;
+      }
+      fetch("https://cdn.jsdelivr.net/gh/shayderrr/676767@main/operating.html?t=" + Date.now())
         .then(response => response.text())
         .then(text => {
           newWin.document.open();
