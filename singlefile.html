@@ -2398,7 +2398,7 @@ const linkedMore = `
 </html>
 
 `;
-const linkedMore = `
+const oslink = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2477,6 +2477,12 @@ document.getElementById('htmlGamesLocalLink').addEventListener('click', function
 document.getElementById('moreGamesLink').addEventListener('click', function(e){
   e.preventDefault();
   setContent(linkedMore);
+  hamburger.classList.remove('active');
+  menu.classList.remove('open');
+});
+    document.getElementById('operatingsystem').addEventListener('click', function(e){
+  e.preventDefault();
+  setContent(oslink);
   hamburger.classList.remove('active');
   menu.classList.remove('open');
 });
