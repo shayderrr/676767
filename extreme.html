@@ -1,0 +1,3224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4QPXKLD48W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-4QPXKLD48W', {
+            page_title: document.title,
+            page_location: window.location.href
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas | College Courses</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+:root {
+    /* Purple Theme Color System */
+    --primary-purple: #8b5cf6;
+    --primary-purple-rgb: 139, 92, 246;
+    --primary-hover: #a78bfa;
+    --primary-light: rgba(139, 92, 246, 0.1);
+    --primary-lighter: rgba(139, 92, 246, 0.05);
+    
+    --accent-purple: #a78bfa;
+    --accent-light: rgba(167, 139, 250, 0.1);
+    --success: #10b981;
+    --warning: #f59e0b;
+    
+    /* Background Colors */
+    --dark-bg: #000000;
+    --bg-secondary: #0a0015;
+    --surface: rgba(255, 255, 255, 0.03);
+    --surface-hover: rgba(255, 255, 255, 0.05);
+    
+    /* Text Colors */
+    --light-text: #ffffff;
+    --text-muted: #c4b5fd;
+    --gray-text: #9ca3af;
+    
+    /* Borders */
+    --border: rgba(139, 92, 246, 0.2);
+    --border-light: rgba(139, 92, 246, 0.1);
+    
+    /* Glass Effects */
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-hover: rgba(255, 255, 255, 0.08);
+    
+    /* Shadows */
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.6), 0 1px 2px -1px rgb(0 0 0 / 0.6);
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.6);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.7), 0 4px 6px -4px rgb(0 0 0 / 0.7);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.8), 0 8px 10px -6px rgb(0 0 0 / 0.8);
+    --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.3);
+    
+    /* Border Radius */
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+    --gradient-surface: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+    --gradient-bg: linear-gradient(135deg, #000000 0%, #0a0015 50%, #000000 100%);
+    
+    /* Typography */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Global Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--dark-bg);
+    color: var(--light-text);
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Enhanced Background Effects */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-bg);
+    z-index: -2;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 60px 70px, white, transparent),
+        radial-gradient(1px 1px at 50px 50px, white, transparent);
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    opacity: 0.4;
+    animation: starsMove 100s linear infinite;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes starsMove {
+    from { transform: translateY(0); }
+    to { transform: translateY(-200px); }
+}
+
+/* Matrix Background Effect */
+#matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0;
+    background: linear-gradient(0deg, transparent 0%, rgba(139, 92, 246, 0.02) 100%);
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.container.slide-down {
+    transform: translateY(100%);
+}
+
+/* Header Section */
+header {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 0;
+    margin-bottom: 3rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-lg);
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.logo {
+    height: 100px;
+    width: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glow);
+    animation: logoPop 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+@keyframes logoPop {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.tagline {
+    color: var(--primary-purple);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(var(--primary-purple-rgb), 0.5);
+}
+
+/* Terminal Prompt Section */
+.terminal-prompt {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-lg);
+}
+
+.prompt-line {
+    margin: 0.75rem 0;
+    color: var(--primary-purple);
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+}
+
+.typing {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid var(--primary-purple);
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--primary-purple); }
+}
+
+/* Section Styles */
+section {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+/* Modern Heading Style */
+h2 {
+    color: var(--light-text);
+    margin: 2rem auto;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-align: center;
+    padding: 1rem 2rem;
+    position: relative;
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+h2::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+}
+
+/* Search Container */
+.search-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    position: relative;
+}
+
+.search-box {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1.5rem;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    color: var(--light-text);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
+}
+
+.search-box:focus {
+    background: var(--glass-hover);
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25), var(--shadow);
+    transform: translateY(-2px);
+}
+
+.search-box::placeholder {
+    color: var(--text-muted);
+}
+
+.search-icon {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-purple);
+    font-size: 1.2rem;
+    pointer-events: none;
+}
+
+/* Lessons Grid */
+.lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.lesson-card {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    box-shadow: var(--shadow);
+}
+
+.lesson-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(139, 92, 246, 0.1));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.lesson-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--primary-purple);
+    box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+    background: var(--glass-hover);
+}
+
+.lesson-card:hover::before {
+    opacity: 1;
+}
+
+.lesson-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--border);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lesson-card:hover .lesson-image {
+    transform: scale(1.05);
+}
+
+.lesson-title {
+    font-size: 1.25rem;
+    color: var(--light-text);
+    margin: 1rem;
+    font-weight: 600;
+}
+
+.lesson-desc {
+    color: var(--gray-text);
+    margin: 0 1rem 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.launch-command {
+    color: var(--primary-purple);
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin: 0 1rem 1rem;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: all 0.3s ease;
+}
+
+.lesson-card:hover .launch-command {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.nav-tab {
+    padding: 0.75rem 2rem;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    color: var(--primary-purple);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.nav-tab:hover {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: var(--primary-purple);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.nav-tab.active {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+}
+
+/* Partners Section */
+.partners-section {
+    display: none;
+}
+
+.partners-section.active {
+    display: block;
+}
+
+.partners-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.partner-card {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.partner-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-purple);
+    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.3);
+    background: var(--glass-hover);
+}
+
+.partner-image {
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-light);
+}
+
+.partner-title {
+    font-size: 1.3rem;
+    color: var(--light-text);
+    margin-bottom: 0.75rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.partner-desc {
+    color: var(--gray-text);
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.partner-buttons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.discord-btn {
+    padding: 0.625rem 1rem;
+    background: rgba(88, 101, 242, 0.15);
+    color: #7289da;
+    border: 1px solid rgba(88, 101, 242, 0.3);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.discord-btn:hover {
+    background: rgba(88, 101, 242, 0.25);
+    border-color: #7289da;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
+}
+
+.visit-btn {
+    flex: 1;
+    padding: 0.625rem 1rem;
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--primary-purple);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    text-align: center;
+}
+
+.visit-btn:hover {
+    background: rgba(139, 92, 246, 0.25);
+    border-color: var(--primary-purple);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+/* Button Styles */
+.btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--gradient-primary);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.btn:hover {
+    background: var(--gradient-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+/* Game Page */
+.game-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--dark-bg);
+    z-index: 1000;
+    display: none;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.game-page.active {
+    transform: translateY(0);
+    display: block;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 2rem;
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+}
+
+.game-title {
+    color: var(--primary-purple);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(var(--primary-purple-rgb), 0.3);
+}
+
+.game-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.game-container {
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+}
+
+.game-frame {
+    flex: 1;
+    width: 100%;
+    border: none;
+    background: var(--bg-secondary);
+}
+
+.game-frame.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+}
+
+/* Comments Section */
+.comments-section {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    position: relative;
+    box-shadow: var(--shadow);
+}
+
+.blur-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(15px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--radius-lg);
+}
+
+.blur-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.warning-content {
+    text-align: center;
+    max-width: 500px;
+    padding: 3rem 2.5rem;
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-xl);
+}
+
+.warning-title {
+    color: var(--primary-purple);
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.warning-text {
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    color: var(--gray-text);
+    font-size: 1rem;
+}
+
+.acknowledge-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.acknowledge-btn:hover {
+    background: var(--gradient-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+/* Social Icons */
+.social-icons {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    z-index: 10;
+}
+
+.social-icons a {
+    color: var(--primary-purple);
+    font-size: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0.5rem;
+    background: var(--glass);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+}
+
+.social-icons a:hover {
+    color: var(--accent-purple);
+    transform: translateY(-3px);
+    background: rgba(139, 92, 246, 0.15);
+    border-color: var(--primary-purple);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+/* Theme Toggle */
+.theme-toggle-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 100;
+}
+
+.theme-toggle-btn {
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    color: var(--primary-purple);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(139, 92, 246, 0.2);
+    transform: scale(1.1) rotate(180deg);
+    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 3rem 0 2rem;
+    margin-top: 4rem;
+    border-top: 1px solid var(--border);
+    color: var(--gray-text);
+    font-size: 0.9rem;
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+}
+
+.glow {
+    text-shadow: 0 0 10px currentColor;
+}
+
+/* Utility Classes */
+.no-results {
+    text-align: center;
+    color: var(--gray-text);
+    font-size: 1.1rem;
+    margin: 3rem 0;
+    padding: 2rem;
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+}
+
+.search-stats {
+    text-align: center;
+    color: var(--primary-purple);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-purple);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-purple);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        padding: 1.5rem 1rem;
+    }
+    
+    .lessons-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .partners-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .logo {
+        height: 80px;
+    }
+    
+    .terminal-prompt {
+        padding: 1rem;
+    }
+    
+    .game-controls {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .social-icons {
+        top: 1rem;
+        right: 1rem;
+    }
+    
+    .nav-tabs {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .nav-tab {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .search-container {
+        margin: 1.5rem auto;
+    }
+    
+    .lessons-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .partners-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem 0.75rem;
+    }
+    
+    .lessons-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.75rem;
+    }
+    
+    .lesson-card {
+        border-radius: var(--radius);
+    }
+    
+    .lesson-image {
+        height: 140px;
+    }
+    
+    .lesson-title {
+        font-size: 1.1rem;
+    }
+    
+    .theme-toggle-container {
+        bottom: 1rem;
+        right: 1rem;
+    }
+    
+    .theme-toggle-btn {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* Animation Classes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInScale {
+    from {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Additional Theme Support */
+.theme-toggle-container[data-theme="dark"] {
+    --primary-purple: #8b5cf6;
+}
+
+.theme-toggle-container[data-theme="light"] {
+    --primary-purple: #7c3aed;
+    --dark-bg: #f3f4f6;
+    --light-text: #1f2937;
+}
+
+/* Print Styles */
+@media print {
+    .theme-toggle-container,
+    .social-icons,
+    .nav-tabs,
+    .search-container,
+    .game-controls {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+}
+    </style>
+</head>
+
+<body>
+    <canvas id="matrix-bg"></canvas>
+    <div class="container" id="main-container">
+        <section id="lessons-section">
+            <h2>Popular</h2>
+            <div class="lessons-grid">
+                <div class="lesson-card" onclick="openLesson('Plants Vs Zombies 2', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/92.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/197.jpg" alt="Plants Vs Zombies 2" class="lesson-image">
+                    <h3 class="lesson-title">Plants Vs Zombies 2</h3>
+                    <p class="lesson-desc">Defend your lawn with crazy plants against fun-loving zombies across time</p>
+                    <span class="launch-command">LAUNCH: PVZ_2</span>
+                </div>
+                <div class="lesson-card" onclick="openLesson('Hotline Miami', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/16.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/22.jpg" alt="Hotline Miami" class="lesson-image">
+                    <h3 class="lesson-title">Hotline Miami</h3>
+                    <p class="lesson-desc">Fast-paced top-down action combat</p>
+                    <span class="launch-command">LAUNCH: HOTLINE_MIAMI</span>
+                </div>
+                <div class="lesson-card" onclick="openLesson('Balatro', 'https://thirstygithub.github.io/cool-math/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/195.jpg" alt="Balatro" class="lesson-image">
+                    <h3 class="lesson-title">Balatro</h3>
+                    <p class="lesson-desc">Build insane poker hands with special Joker cards</p>
+                    <span class="launch-command">LAUNCH: BALATRO</span>
+                </div>
+            </div>
+        </section>
+        <section id="all-lessons">
+            <h2>All Games</h2>
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-box" placeholder="> Search For Games..">
+                <div class="search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <div id="searchStats" class="search-stats"></div>
+            <div class="lessons-grid" id="allLessonsGrid">
+               <div class="lesson-card" onclick="openLesson('Daggerfall', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/136.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/252.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Daggerfall</h3>
+                    <p class="lesson-desc">Classic Elder Scrolls RPG with massive open world and deep character customization</p>
+                    <span class="launch-command">LAUNCH: DAGGERFALL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Portal', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/135.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/253.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Portal</h3>
+                    <p class="lesson-desc">Mind-bending puzzle game with portal gun mechanics and dark humor</p>
+                    <span class="launch-command">LAUNCH: PORTAL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Ice Dodo', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/134.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/254.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Ice Dodo</h3>
+                    <p class="lesson-desc">3D obstacle course game with simple controls but complex challenging maps</p>
+                    <span class="launch-command">LAUNCH: ICE_DODO</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Doom', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/133.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/255.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Doom</h3>
+                    <p class="lesson-desc">The original FPS that revolutionized gaming with fast-paced demon slaying action</p>
+                    <span class="launch-command">LAUNCH: DOOM</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Doom 2', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/131.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/257.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Doom 2</h3>
+                    <p class="lesson-desc">Sequel to the iconic FPS with new weapons, enemies, and hellish levels</p>
+                    <span class="launch-command">LAUNCH: DOOM_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Call of Duty: World at War', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/130.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/258.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Call of Duty: World at War</h3>
+                    <p class="lesson-desc">Intense DS version of the WWII FPS</p>
+                    <span class="launch-command">LAUNCH: COD_WORLD_AT_WAR</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Call of Duty 4: Modern Warfare', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/129.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/259.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Call of Duty 4: Modern Warfare</h3>
+                    <p class="lesson-desc">DS Version of the modern military shooter </p>
+                    <span class="launch-command">LAUNCH: COD_MODERN_WARFARE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Kart Bros', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/128.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/260.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Kart Bros</h3>
+                    <p class="lesson-desc">Free online kart racing game with wild antics, power-ups, and multiplayer action</p>
+                    <span class="launch-command">LAUNCH: KART_BROS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/127.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/251.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Peggle</h3>
+                    <p class="lesson-desc">Addictive physics puzzle game where you shoot balls to clear orange pegs with satisfying challenges</p>
+                    <span class="launch-command">LAUNCH: PEGGLE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/126.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/250.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Ace Attorny</h3>
+                    <p class="lesson-desc">Courtroom drama adventure where you investigate crimes and defend clients with evidence and logic</p>
+                    <span class="launch-command">LAUNCH: ACE_ATTORNY</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/125.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/249.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Agoti</h3>
+                    <p class="lesson-desc">Friday Night Funkin' mod featuring the popular OC character Agoti with original tracks</p>
+                    <span class="launch-command">LAUNCH: FNF_AGOTI</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/124.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/248.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Black Betrayal</h3>
+                    <p class="lesson-desc">FNF mod based on the Among Us mod with the black imposter going crazy</p>
+                    <span class="launch-command">LAUNCH: FNF_BLACK_BETRAYAL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/123.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/247.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF B-Side</h3>
+                    <p class="lesson-desc">FNF mod featuring remixed B-side versions of original tracks with new visuals</p>
+                    <span class="launch-command">LAUNCH: FNF_B-SIDE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/122.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/246.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Camellia</h3>
+                    <p class="lesson-desc">Challenging FNF mod featuring high-BPM tracks from artist Camellia</p>
+                    <span class="launch-command">LAUNCH: FNF_CAMELLIA</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/121.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/245.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Impostor V4</h3>
+                    <p class="lesson-desc">Among Us themed FNF mod with sus rhythms and impostor gameplay</p>
+                    <span class="launch-command">LAUNCH: FNF_IMPOSTOR_V4</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/120.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/244.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Indie Cross</h3>
+                    <p class="lesson-desc">Crossover FNF mod featuring characters from popular indie games</p>
+                    <span class="launch-command">LAUNCH: FNF_INDIE_CROSS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/119.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/243.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Kapi</h3>
+                    <p class="lesson-desc">FNF mod featuring the arcade-loving cat character Kapi with arcade-style tracks</p>
+                    <span class="launch-command">LAUNCH: FNF_KAPI</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/118.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/242.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Mario Madness</h3>
+                    <p class="lesson-desc">Mario-themed FNF mod with madness-induced versions of classic characters</p>
+                    <span class="launch-command">LAUNCH: FNF_MARIO_MADNESS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/117.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/241.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Pibby Apocalypse</h3>
+                    <p class="lesson-desc">FNF mod based on the Pibby corruption concept with glitch-themed horror</p>
+                    <span class="launch-command">LAUNCH: FNF_PIBBY_APOCALYPSE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/116.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/240.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Shaggy X Matt</h3>
+                    <p class="lesson-desc">FNF crossover mod featuring Shaggy and Matt from Wii Sports in musical battles</p>
+                    <span class="launch-command">LAUNCH: FNF_SHAGGY_X_MATT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/115.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/239.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Sonic.exe</h3>
+                    <p class="lesson-desc">Horror-themed FNF mod based on the Sonic.exe creepypasta with intense rhythms</p>
+                    <span class="launch-command">LAUNCH: FNF_SONIC.EXE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/114.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/238.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Garcello</h3>
+                    <p class="lesson-desc">Emotional FNF mod featuring the character Garcello with soulful tracks</p>
+                    <span class="launch-command">LAUNCH: FNF_GARCELLO</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/113.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/237.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNF Hit Single</h3>
+                    <p class="lesson-desc">FNF mod with that blue singing guy that everyone likes</p>
+                    <span class="launch-command">LAUNCH: FNF_HIT_SINGLE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/112.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/236.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Achillies 2</h3>
+                    <p class="lesson-desc">Sequel to the action-packed Achillies game with enhanced combat and story</p>
+                    <span class="launch-command">LAUNCH: ACHILLIES_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/111.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/235.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Russian Counter Strike</h3>
+                    <p class="lesson-desc">Counter-Strike inspired tactical shooter with Russian military themes</p>
+                    <span class="launch-command">LAUNCH: RUSSIAN_COUNTER_STRIKE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/110.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/234.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Deltarune</h3>
+                    <p class="lesson-desc">RPG from Undertale creator featuring Kris and Susie in a dark world adventure</p>
+                    <span class="launch-command">LAUNCH: DELTARUNE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/109.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/233.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Learn to Fly 3</h3>
+                    <p class="lesson-desc">Physics-based game where you help a penguin achieve flight through various methods</p>
+                    <span class="launch-command">LAUNCH: LEARN_TO_FLY_3</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/108.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/232.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Lego Batman 2</h3>
+                    <p class="lesson-desc">LEGO action-adventure featuring Batman and DC superheroes in Gotham City</p>
+                    <span class="launch-command">LAUNCH: LEGO_BATMAN_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/107.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/231.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Lego Starwars Complete Saga</h3>
+                    <p class="lesson-desc">Complete LEGO Star Wars experience covering all six episodes with humor and action</p>
+                    <span class="launch-command">LAUNCH: LEGO_STARWARS_SAGA</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/106.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/230.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Madness Interactive</h3>
+                    <p class="lesson-desc">Fast-paced stick figure combat game with intense action and ragdoll physics</p>
+                    <span class="launch-command">LAUNCH: MADNESS_INTERACTIVE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/105.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/229.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Tony Hawks Pro Skater</h3>
+                    <p class="lesson-desc">Classic skateboarding game with trick combos, iconic skaters, and great soundtrack</p>
+                    <span class="launch-command">LAUNCH: TONY_HAWKS_PRO_SKATER</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/104.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/228.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Postal</h3>
+                    <p class="lesson-desc">Controversial top-down shooter known for its dark humor and violent gameplay</p>
+                    <span class="launch-command">LAUNCH: POSTAL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/103.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/227.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Resident Evil 3</h3>
+                    <p class="lesson-desc">Survival horror game featuring Jill Valentine escaping Nemesis in Raccoon City</p>
+                    <span class="launch-command">LAUNCH: RESIDENT_EVIL_3</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/102.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/226.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Scribblenauts</h3>
+                    <p class="lesson-desc">Puzzle game where you solve challenges by summoning objects you write</p>
+                    <span class="launch-command">LAUNCH: SCRIBBLENAUTS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/101.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/225.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Sprunki</h3>
+                    <p class="lesson-desc">Basically a copy of Incredibox but with little furry creatures</p>
+                    <span class="launch-command">LAUNCH: SPRUNKI</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/100.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/224.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Strange Rope Police</h3>
+                    <p class="lesson-desc">Physics-based game with rope mechanics and law enforcement themes</p>
+                    <span class="launch-command">LAUNCH: STRANGE_ROPE_POLICE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/99.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/223.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Street Fighter III</h3>
+                    <p class="lesson-desc">Classic fighting game known for parry system and competitive gameplay</p>
+                    <span class="launch-command">LAUNCH: STREET_FIGHTER_III</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/98.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/222.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Super Liquid Soccer</h3>
+                    <p class="lesson-desc">Arcade soccer game with fluid physics and exaggerated gameplay mechanics</p>
+                    <span class="launch-command">LAUNCH: SUPER_LIQUID_SOCCER</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/97.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/221.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Tempoverdose</h3>
+                    <p class="lesson-desc">Rhythm game with intense tempo-based challenges and electronic music</p>
+                    <span class="launch-command">LAUNCH: TEMPOVERDOSE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/96.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/220.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Abandoned</h3>
+                    <p class="lesson-desc">Escape room type game where you need to figure out how to get out of each </p>
+                    <span class="launch-command">LAUNCH: ABANDONED</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/95.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/219.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Wolfenstein 3D</h3>
+                    <p class="lesson-desc">The pioneer FPS game where you battle Nazis as Allied spy B.J. Blazkowicz</p>
+                    <span class="launch-command">LAUNCH: WOLFENSTEIN_3D</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/94.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/218.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Zombotron Reboot</h3>
+                    <p class="lesson-desc">Action-packed platform shooter with physics-based combat in zombie-infested world</p>
+                    <span class="launch-command">LAUNCH: ZOMBOTRON_REBOOT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/93.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/fuckthis.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Mortal Kombat 4</h3>
+                    <p class="lesson-desc">Classic fighting game with brutal fatalities and iconic characters in fourth installment</p>
+                    <span class="launch-command">LAUNCH: MORTAL_KOMBAT_4</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/91.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/217.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Undertale</h3>
+                    <p class="lesson-desc">An RPG where you play as a human child who falls into an underground world of monsters, with the goal of getting back to the surface</p>
+                    <span class="launch-command">LAUNCH: UNDERTALE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/90.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/216.jpg" alt="TNoahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">The Legend of Zelda Majora's Mask</h3>
+                    <p class="lesson-desc">A dark adventure through a doomed world where you have only 3 days to prevent the moon from crashing</p>
+                    <span class="launch-command">LAUNCH: TLOZMM</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/89.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/215.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Cooking Mama 3</h3>
+                    <p class="lesson-desc">Cook delicious meals with Mama's guidance in this interactive culinary adventure</p>
+                    <span class="launch-command">LAUNCH: COOKING_MAMA_3</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/88.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/214.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Cooking Mama 2</h3>
+                    <p class="lesson-desc">Continue your cooking journey with new recipes and kitchen challenges</p>
+                    <span class="launch-command">LAUNCH: COOKING_MAMA_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/87.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/213.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Cooking Mama</h3>
+                    <p class="lesson-desc">Learn to cook various dishes with step-by-step instructions from Mama</p>
+                    <span class="launch-command">LAUNCH: COOKING_MAMA</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/86.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/212.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">BloodMoney</h3>
+                    <p class="lesson-desc">A gritty crime thriller about the consequences of choices in the criminal underworld</p>
+                    <span class="launch-command">LAUNCH: BLOODMONEY</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/85.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/211.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Big Shot Boxing</h3>
+                    <p class="lesson-desc">Rise through the ranks in this intense boxing simulation and become the champion</p>
+                    <span class="launch-command">LAUNCH: BIG_SHOT_BOXING</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/84.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/210.jpg" alt="Assessment Examination" class="lesson-image">
+                    <h3 class="lesson-title">Assessment Examination</h3>
+                    <p class="lesson-desc">A comprehensive test covering multiple subjects to evaluate academic progress and knowledge retention</p>
+                    <span class="launch-command">LAUNCH: AE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/83.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/209.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Schoolboy Runaway</h3>
+                    <p class="lesson-desc">A somewhat horror game where you control a schoolboy trying to escape his troubled home life</p>
+                    <span class="launch-command">LAUNCH: SCHOOLBOY_RUNAWAY</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/82.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/208.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Fears To Fathom: Home Alone</h3>
+                    <p class="lesson-desc">A horror game where you are home alone and must survive a stalker's terrifying visits</p>
+                    <span class="launch-command">LAUNCH: FEARS_TO_FATHOM_HA</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/81.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/207.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Dan The Man</h3>
+                    <p class="lesson-desc">A side-scrolling beat 'em up where you fight through hordes of enemies to save your friends</p>
+                    <span class="launch-command">LAUNCH: DAN_THE_MAN</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/80.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/205.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Resident Evil 2</h3>
+                    <p class="lesson-desc">Survival horror game where you fight zombies in a doomed police station</p>
+                    <span class="launch-command">LAUNCH: RESIDENT_EVIL_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/79.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/204.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Get Yoked</h3>
+                    <p class="lesson-desc">A fitness simulator where you lift weights and manage your gym</p>
+                    <span class="launch-command">LAUNCH: GET_YOKED</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/78.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/203.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Douche Bag Life</h3>
+                    <p class="lesson-desc">A satirical life simulator where you make terrible choices to become the ultimate bro</p>
+                    <span class="launch-command">LAUNCH: DOUCHE_BAG_LIFE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/77.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/202.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Donkey Kong</h3>
+                    <p class="lesson-desc">Classic arcade game where Jumpman must rescue his girlfriend from a giant ape</p>
+                    <span class="launch-command">LAUNCH: DONKEY_KONG</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/75.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/201.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Apple Worm</h3>
+                    <p class="lesson-desc">A retro arcade game where you guide a worm to eat apples and grow longer</p>
+                    <span class="launch-command">LAUNCH: APPLE_WORM</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/74.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/200.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Chess</h3>
+                    <p class="lesson-desc">A classic strategy game where two kings battle to the death</p>
+                    <span class="launch-command">LAUNCH: CHESS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/73.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/199.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Doki Doki Literature Club</h3>
+                    <p class="lesson-desc">A cute dating simulator where you write poems for your crush, but something is terribly wrong</p>
+                    <span class="launch-command">LAUNCH: DDLC</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/72.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/198.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Getting Over It</h3>
+                    <p class="lesson-desc">A frustrating climbing game where you use a hammer to scale a mountain of junk</p>
+                    <span class="launch-command">LAUNCH: GETTING_OVER_IT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://ud-gles3games.shared-osj.k8s.n2i.io/?deeplinksURI=null%3A%2F%2F&deeplinksApp=com.tocaboca.tocalifeworld&quotaBytes=89000000&naturalOrientation=portrait&invertNaturalOrientation&forcedNaturalOrientation&jitterBufferMin=0&deeplinksService=true&backOnDisconnected=true&disconnectedMessage=null&api=%7B%22back%22%3Afalse%7D&title=Toca+Boca+World')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/206.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Toca-Boca-World</h3>
+                    <p class="lesson-desc">A digital toy box where you create your own stories and worlds.</p>
+                    <span class="launch-command">LAUNCH: TOCA_BOCA_WORLD</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/71.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/196.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Tattletail</h3>
+                    <p class="lesson-desc">Feed and care for a creepy, talking toy that wanders your house at night</p>
+                    <span class="launch-command">LAUNCH: TATTLETAIL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/92.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/197.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Plants Vs Zombies 2</h3>
+                    <p class="lesson-desc">Defend your lawn with crazy plants against fun-loving zombies across time</p>
+                    <span class="launch-command">LAUNCH: PVZ_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://thirstygithub.github.io/cool-math/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/195.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Balatro</h3>
+                    <p class="lesson-desc">Build insane poker hands with special Joker cards</p>
+                    <span class="launch-command">LAUNCH: BALATRO</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/69.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/189.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Sonic the Hedgehog 3</h3>
+                    <p class="lesson-desc">Classic platformer with Sonic and Tails vs Dr. Robotnik</p>
+                    <span class="launch-command">LAUNCH: STH3</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/68.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/190.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Sonic the Hedgehog 2</h3>
+                    <p class="lesson-desc">Iconic sequel introducing Tails and spin dash move</p>
+                    <span class="launch-command">LAUNCH: STH2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/67.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/191.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Sonic Mania</h3>
+                    <p class="lesson-desc">Modern 2D Sonic with remixed classics and new zones</p>
+                    <span class="launch-command">LAUNCH: SONIC_MANIA</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/66.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/192.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Sonic CD</h3>
+                    <p class="lesson-desc">Time-travel adventure with past and future versions</p>
+                    <span class="launch-command">LAUNCH: SONIC_CD</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/70.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/193.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">War The Knights</h3>
+                    <p class="lesson-desc">Medieval knight battles and castle sieges</p>
+                    <span class="launch-command">LAUNCH: WAR_THE_KNIGHTS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/65.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/194.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Football Bros</h3>
+                    <p class="lesson-desc">Arcade football with simple controls and power-ups</p>
+                    <span class="launch-command">LAUNCH: FOOTBALL_BROS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/63.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/187.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Buckshot Roulette</h3>
+                    <p class="lesson-desc">Russian Roulette type game with a TWIST</p>
+                    <span class="launch-command">LAUNCH: BUCKSHOT_ROULETTE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Algebrudda-Calculator/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/188.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Cup Head</h3>
+                    <p class="lesson-desc">Fight a series of monsters to break your deal with the devil</p>
+                    <span class="launch-command">LAUNCH: CUP_HEAD</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/64.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/186.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Slime Rancher</h3>
+                    <p class="lesson-desc">Suck and collect slimes and raise them in a ranch</p>
+                    <span class="launch-command">LAUNCH: SLIME_RANCHER</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/1.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/1.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNAF: Pizza Sim</h3>
+                    <p class="lesson-desc">Manage your own pizzeria while surviving animatronic horrors</p>
+                    <span class="launch-command">LAUNCH: PIZZA_SIM</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/fantastic-octo-journey/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/2.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Baseball Bros</h3>
+                    <p class="lesson-desc">Engage in exciting baseball matches with strategic gameplay</p>
+                    <span class="launch-command">LAUNCH: BASEBALL_BROS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/3.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/3.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">A Dance of Fire and Ice</h3>
+                    <p class="lesson-desc">Rhythm game requiring perfect timing between two spheres</p>
+                    <span class="launch-command">LAUNCH: ADOFAI</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/upgraded-goggles/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/4.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Smashy Kart</h3>
+                    <p class="lesson-desc">High-speed kart racing with demolition derby elements</p>
+                    <span class="launch-command">LAUNCH: SMASHY_KART</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/studious-journey/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/5.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Golf Orbit</h3>
+                    <p class="lesson-desc">Miniature golf in space with gravity mechanics</p>
+                    <span class="launch-command">LAUNCH: GOLF_ORBIT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/expert-pancake/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/6.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">3D Free Kick</h3>
+                    <p class="lesson-desc">Soccer free kick simulator with realistic physics</p>
+                    <span class="launch-command">LAUNCH: 3D_FREE_KICK</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/4.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/7.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Retro Bowl College</h3>
+                    <p class="lesson-desc">College football management simulation</p>
+                    <span class="launch-command">LAUNCH: RB_COLLEGE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/legendary-octo-train/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/8.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Deepest Sword</h3>
+                    <p class="lesson-desc">Adventure game about retrieving the deepest sword</p>
+                    <span class="launch-command">LAUNCH: DEEPEST_SWORD</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/5.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/9.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Tomodachi Life</h3>
+                    <p class="lesson-desc">Life simulation with quirky island characters</p>
+                    <span class="launch-command">LAUNCH: TOMODACHI_LIFE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/6.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/10.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNAF: Sister Location</h3>
+                    <p class="lesson-desc">Survival horror in a high-tech facility</p>
+                    <span class="launch-command">LAUNCH: FNAF_SISTER_LOCATION</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/7.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/11.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Fallout</h3>
+                    <p class="lesson-desc">Post-apocalyptic RPG exploring wastelands</p>
+                    <span class="launch-command">LAUNCH: FALLOUT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/potential-meme/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/12.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Rocket League</h3>
+                    <p class="lesson-desc">Soccer with rocket-powered cars</p>
+                    <span class="launch-command">LAUNCH: ROCKET_LEAGUE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/scaling-goggles/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/13.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Street Fighter II</h3>
+                    <p class="lesson-desc">Classic fighting game with special moves</p>
+                    <span class="launch-command">LAUNCH: STREET_FIGHTER_II</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/8.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/14.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Super Star Car</h3>
+                    <p class="lesson-desc">Racing with customizable super cars</p>
+                    <span class="launch-command">LAUNCH: SUPER_STAR_CAR</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/9.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/15.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Steal a Brainrot Online</h3>
+                    <p class="lesson-desc">Multiplayer game about strategic theft</p>
+                    <span class="launch-command">LAUNCH: STEAL_A_BRAINROT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/10.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/16.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Bad Piggies</h3>
+                    <p class="lesson-desc">Physics puzzles building pig contraptions</p>
+                    <span class="launch-command">LAUNCH: BAD_PIGGIES</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://ud-gles3games.shared-osj.k8s.n2i.io/?deeplinksURI=null%3A%2F%2F&deeplinksApp=com.innersloth.spacemafia&naturalOrientation=landscape&forcedNaturalOrientation&autofitOnConnect&jitterBufferMin=0&deeplinksService=true&backOnDisconnected=true&disconnectedMessage=null&api=%7B%22back%22%3Afalse%7D&title=Among+Us')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/17.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Among Us (real)</h3>
+                    <p class="lesson-desc">Social deduction identifying impostors</p>
+                    <span class="launch-command">LAUNCH: AMONG_US</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/12.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/18.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Yandere Simulator</h3>
+                    <p class="lesson-desc">Stealth game eliminating rivals</p>
+                    <span class="launch-command">LAUNCH: YANDERE_SIM</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/13.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/19.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Twerk Race 3D</h3>
+                    <p class="lesson-desc">I dont even want to describe this game...</p>
+                    <span class="launch-command">LAUNCH: TWERK_RACE_3D</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/14.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/20.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Quake III</h3>
+                    <p class="lesson-desc">Classic arena shooter with fast combat</p>
+                    <span class="launch-command">LAUNCH: QUAKE_III</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/15.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/21.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">10 Minutes Till Dawn</h3>
+                    <p class="lesson-desc">Intense bullet hell survival game</p>
+                    <span class="launch-command">LAUNCH: 10_MIN_TILL_DAWN</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/16.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/22.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Hotline Miami</h3>
+                    <p class="lesson-desc">Fast-paced top-down action combat</p>
+                    <span class="launch-command">LAUNCH: HOTLINE_MIAMI</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/17.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/23.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Nubby's Number Factory</h3>
+                    <p class="lesson-desc">Mathematical puzzle challenges</p>
+                    <span class="launch-command">LAUNCH: NUBBYS_NUMBER_FACTORY</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/18.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/24.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Generic Fighter Maybe</h3>
+                    <p class="lesson-desc">Combat with fighting styles</p>
+                    <span class="launch-command">LAUNCH: GENERIC_FIGHTER_MAYBE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/19.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/25.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Death Run 3D</h3>
+                    <p class="lesson-desc">Treacherous obstacle course navigation</p>
+                    <span class="launch-command">LAUNCH: DEATH_RUN_3D</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/21.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/26.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Clash Royale</h3>
+                    <p class="lesson-desc">Strategic card-based battles</p>
+                    <span class="launch-command">LAUNCH: CLASH_ROYALE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/22.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/27.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">PaRappa The Rapper</h3>
+                    <p class="lesson-desc">Rhythm-based music game</p>
+                    <span class="launch-command">LAUNCH: PARAPPA_RAPPER</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/23.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/28.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Hollow Knight</h3>
+                    <p class="lesson-desc">Metroidvania in underground kingdom</p>
+                    <span class="launch-command">LAUNCH: HOLLOW_KNIGHT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/24.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/29.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Binding of Issac WOTL</h3>
+                    <p class="lesson-desc">Rogue-like dungeon crawler</p>
+                    <span class="launch-command">LAUNCH: BOI_WOTL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/25.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/30.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Blade Ball</h3>
+                    <p class="lesson-desc">Fast-paced ball throwing game</p>
+                    <span class="launch-command">LAUNCH: BLADE_BALL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/26.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/31.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Ages of Conflict</h3>
+                    <p class="lesson-desc">Historical strategy warfare game</p>
+                    <span class="launch-command">LAUNCH: AGES_OF_CONFLICT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/27.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/32.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Triva Crack</h3>
+                    <p class="lesson-desc">Addictive trivia knowledge challenge</p>
+                    <span class="launch-command">LAUNCH: TRIVA_CRACK</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/28.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/33.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Bow Masters</h3>
+                    <p class="lesson-desc">Precision archery physics game</p>
+                    <span class="launch-command">LAUNCH: BOW_MASTERS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/29.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/34.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Angry Birds</h3>
+                    <p class="lesson-desc">Classic physics puzzle destruction</p>
+                    <span class="launch-command">LAUNCH: ANGRY_BIRDS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/30.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/35.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNAF: World</h3>
+                    <p class="lesson-desc">RPG with FNAF characters</p>
+                    <span class="launch-command">LAUNCH: FNAF_WORLD</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/31.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/36.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Solar Smash</h3>
+                    <p class="lesson-desc">Planet destruction simulator</p>
+                    <span class="launch-command">LAUNCH: SOLAR_SMASH</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/sjsDjsaokdjsa/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/37.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Idle Mining Empire</h3>
+                    <p class="lesson-desc">Addictive mining clicker game</p>
+                    <span class="launch-command">LAUNCH: IDLE_MINING_EMPIRE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/32.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/38.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Highway Racers 2</h3>
+                    <p class="lesson-desc">High-speed racing action</p>
+                    <span class="launch-command">LAUNCH: HIGHWAY_RACERS_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/33.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/39.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Bounce Masters</h3>
+                    <p class="lesson-desc">Physics bouncing challenges</p>
+                    <span class="launch-command">LAUNCH: BOUNCE_MASTERS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/34.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/40.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">R.E.P.O</h3>
+                    <p class="lesson-desc">Stealth vehicle repossession</p>
+                    <span class="launch-command">LAUNCH: REPO</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/35.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/41.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Raft</h3>
+                    <p class="lesson-desc">Ocean survival building floating home</p>
+                    <span class="launch-command">LAUNCH: RAFT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/36.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/42.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Side Effects</h3>
+                    <p class="lesson-desc">Puzzle cause and effect relationships</p>
+                    <span class="launch-command">LAUNCH: SIDE_EFFECTS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/37.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/43.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Slender</h3>
+                    <p class="lesson-desc">Horror survival exploration game</p>
+                    <span class="launch-command">LAUNCH: SLENDER</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/38.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/44.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Line Rider</h3>
+                    <p class="lesson-desc">Creative physics track drawing</p>
+                    <span class="launch-command">LAUNCH: LINE_RIDER</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/39.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/45.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Kindergarten 3</h3>
+                    <p class="lesson-desc">Dark humor school adventure</p>
+                    <span class="launch-command">LAUNCH: KINDERGARTEN_3</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/40.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/46.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Kindergarten 2</h3>
+                    <p class="lesson-desc">Strange school comedy sequel</p>
+                    <span class="launch-command">LAUNCH: KINDERGARTEN_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/41.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/47.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Kindergarten</h3>
+                    <p class="lesson-desc">Strange school comedy sequel</p>
+                    <span class="launch-command">LAUNCH: KINDERGARTEN</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/ideal-parakeet/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/48.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Granny 3</h3>
+                    <p class="lesson-desc">Horror escape with new challenges</p>
+                    <span class="launch-command">LAUNCH: GRANNY_3</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Granny1/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/49.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title"></h3>
+                    <p class="lesson-desc">Sequel horror escape game</p>
+                    <span class="launch-command">LAUNCH: GRANNY_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/symmetrical-meme/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/50.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title"></h3>
+                    <p class="lesson-desc">Classic horror escape game</p>
+                    <span class="launch-command">LAUNCH: GRANNY</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/42.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/51.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Bad Parenting</h3>
+                    <p class="lesson-desc">Dark comedy parenting simulation</p>
+                    <span class="launch-command">LAUNCH: BAD_PARENTING</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/43.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/52.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Baldis Basics</h3>
+                    <p class="lesson-desc">Survival horror educational parody</p>
+                    <span class="launch-command">LAUNCH: BALDIS_BASICS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/44.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/53.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Bendy and the Ink Machine</h3>
+                    <p class="lesson-desc">Horror adventure in animation studio</p>
+                    <span class="launch-command">LAUNCH: BATIM</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/45.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/54.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Candy Crush</h3>
+                    <p class="lesson-desc">Addictive match-3 puzzle game</p>
+                    <span class="launch-command">LAUNCH: CANDY_CRUSH</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/46.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/55.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Geometry Dash</h3>
+                    <p class="lesson-desc">Rhythm-based platformer challenges</p>
+                    <span class="launch-command">LAUNCH: GEOMETRY_DASH</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/47.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/56.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">That's Not My Neighbor</h3>
+                    <p class="lesson-desc">Doorman identity verification game</p>
+                    <span class="launch-command">LAUNCH: TNMN</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/48.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/57.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">ULTRAKILL</h3>
+                    <p class="lesson-desc">Fast-paced retro-style shooter</p>
+                    <span class="launch-command">LAUNCH: ULTRAKILL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/49.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/58.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">WebFishing</h3>
+                    <p class="lesson-desc">Relaxing fishing simulation game</p>
+                    <span class="launch-command">LAUNCH: WEBFISHING</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/ASDOKAS/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/59.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Super Falling Fred</h3>
+                    <p class="lesson-desc">Endless falling obstacle avoidance</p>
+                    <span class="launch-command">LAUNCH: SUPER_FALLING_FRED</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/saJKLDPAW/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/60.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Timberman</h3>
+                    <p class="lesson-desc">Fast-paced tree chopping game</p>
+                    <span class="launch-command">LAUNCH: TIMBERMAN</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/ASJDIPAJ/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/61.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Stupid Zombies 2</h3>
+                    <p class="lesson-desc">Physics zombie shooting puzzles</p>
+                    <span class="launch-command">LAUNCH: Stupid Zombies 2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/ASLDO-PWA-/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/62.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Pokemon Emerald</h3>
+                    <p class="lesson-desc">Classic Pokemon RPG adventure</p>
+                    <span class="launch-command">LAUNCH: POKEMON EMERALD</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://xoriushourz.github.io/ImpossibleQuiz2/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/63.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Impossible Quiz 2</h3>
+                    <p class="lesson-desc">Tricky brain-teasing questions</p>
+                    <span class="launch-command">LAUNCH: IMPOSSIBLE_QUIZ_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://script.google.com/macros/s/AKfycbwSChHrprN7EV_1tBZU8Mi2KGB4uJX4PQOEf7xpPfo_iCvuojtCu7s0Mp8oRZJRPzZ7Og/exec')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/64.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Super Smash Flash 2</h3>
+                    <p class="lesson-desc">Platform fighting game</p>
+                    <span class="launch-command">LAUNCH: SMF2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/SKAODLMWASD/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/65.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Idle Breakout</h3>
+                    <p class="lesson-desc">Addictive brick breaking idle game</p>
+                    <span class="launch-command">LAUNCH: IDLE_BREAKOUT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/AKSPDL-MA-/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/66.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Gun Mayhem 2</h3>
+                    <p class="lesson-desc">Chaotic platform shooter battles</p>
+                    <span class="launch-command">LAUNCH: GUN_MAYHEM_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/SAKDOWPA/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/67.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Gun Mayhem</h3>
+                    <p class="lesson-desc">Original chaotic platform shooter</p>
+                    <span class="launch-command">LAUNCH: GUN_MAYHEM</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/odkoasdmlwa/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/68.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Big Tower Tiny Square</h3>
+                    <p class="lesson-desc">Precision platforming challenges</p>
+                    <span class="launch-command">LAUNCH: BIG_TOWER_TINY_SQUARE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/50.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/69.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Big Tower Tiny Square 2</h3>
+                    <p class="lesson-desc">Sequel precision platformer</p>
+                    <span class="launch-command">LAUNCH: BIG_TOWER_TINY_SQUARE_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/sdajoiASODhsa/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/70.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Unicycle Hero</h3>
+                    <p class="lesson-desc">Balancing unicycle stunt game</p>
+                    <span class="launch-command">LAUNCH: UNICYCLE_HERO</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/hjhjbjbjkbnlkhb/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/71.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Murder</h3>
+                    <p class="lesson-desc">Mystery deduction social game</p>
+                    <span class="launch-command">LAUNCH: MURDER</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/BIGBLACKNEGABALLS/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/72.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Pokemon Firered</h3>
+                    <p class="lesson-desc">Classic Pokemon adventure remake</p>
+                    <span class="launch-command">LAUNCH: POKEMON_FIRERED</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/ILOVEGAMBLING/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/73.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Stake Mines</h3>
+                    <p class="lesson-desc">Cryptocurrency mining strategy</p>
+                    <span class="launch-command">LAUNCH: STAKE_MINES</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/BlumgiSlime/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/74.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Blumgi Slime</h3>
+                    <p class="lesson-desc">Physics-based slime platformer</p>
+                    <span class="launch-command">LAUNCH: BLUMGI_SLIME</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/raft-wars-2/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/75.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Raft Wars 2</h3>
+                    <p class="lesson-desc">Strategic water balloon battles</p>
+                    <span class="launch-command">LAUNCH: RAFT_WARS_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/EarnToDie/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/76.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Earn to Die</h3>
+                    <p class="lesson-desc">Zombie apocalypse vehicle escape</p>
+                    <span class="launch-command">LAUNCH: EARN_TO_DIE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Lindy-Leighton-Reis/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/79.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">8Ball Pool</h3>
+                    <p class="lesson-desc">Realistic pool physics game</p>
+                    <span class="launch-command">LAUNCH: 8BALL_POOL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/PresidentSimulator/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/80.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">President Simulator</h3>
+                    <p class="lesson-desc">Political decision-making game</p>
+                    <span class="launch-command">LAUNCH: PRESIDENT_SIMULATOR</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/51.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/81.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Escape Road</h3>
+                    <p class="lesson-desc">Puzzle road navigation game</p>
+                    <span class="launch-command">LAUNCH: ESCAPE_ROAD</span>
+                </div>
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Uduak-Pitsiulaaq-Pusk-s/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/82.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">OvO</h3>
+                    <p class="lesson-desc">Minimalist platformer challenges</p>
+                    <span class="launch-command">LAUNCH: OVO</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Sophea-Vanja-Andrei/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/83.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Moving Truck</h3>
+                    <p class="lesson-desc">Physics-based truck loading</p>
+                    <span class="launch-command">LAUNCH: MOVING_TRUCK</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Wanangwa-Shaked-Aikawa/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/84.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Fruit Ninja</h3>
+                    <p class="lesson-desc">Slice flying fruit with precision</p>
+                    <span class="launch-command">LAUNCH: FRUIT_NINJA</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Dada-Ahmose-Acardi/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/85.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Ball Sort Puzzle</h3>
+                    <p class="lesson-desc">Color sorting puzzle challenge</p>
+                    <span class="launch-command">LAUNCH: BALL_SORT_PUZZLE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/52.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/86.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">They're Coming</h3>
+                    <p class="lesson-desc">Horror survival defense game</p>
+                    <span class="launch-command">LAUNCH: THEYRE_COMING</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Qinnuajuaq-Jindra-Rosenfeld/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/87.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Flappy Bird</h3>
+                    <p class="lesson-desc">Addictive timing-based flying</p>
+                    <span class="launch-command">LAUNCH: FLAPPY_BIRD</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://godlover89.github.io/Santana-Yannick-Pinto/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/88.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Recoil</h3>
+                    <p class="lesson-desc">Physics-based shooting game</p>
+                    <span class="launch-command">LAUNCH: RECOIL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://godlover89.github.io/Twitch-Tetris/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/89.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Twitch Tetris</h3>
+                    <p class="lesson-desc">Classic block stacking puzzle</p>
+                    <span class="launch-command">LAUNCH: TWITCH_TETRIS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Jimmie-Phuntso-Cuoco/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/90.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Ultimate Car Driving Game</h3>
+                    <p class="lesson-desc">Realistic driving simulation</p>
+                    <span class="launch-command">LAUNCH: ULTIMATE_DRIVING_GAME</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Ashton-Aston-Rowe/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/91.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Crazy Cattle 3D</h3>
+                    <p class="lesson-desc">Funny cattle herding game</p>
+                    <span class="launch-command">LAUNCH: CRAZY_CATTLE_3D</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://lekug.github.io/tn6pS9dCf37xAhkJv/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/92.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Run 3</h3>
+                    <p class="lesson-desc">Space tunnel running game</p>
+                    <span class="launch-command">LAUNCH: RUN_3</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Abioye-Temitope-Quaranta/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/93.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Vex 8</h3>
+                    <p class="lesson-desc">Challenging obstacle course platformer</p>
+                    <span class="launch-command">LAUNCH: VEX_8</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/imbouttokum/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/94.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Apple Shooter</h3>
+                    <p class="lesson-desc">Precision apple shooting game</p>
+                    <span class="launch-command">LAUNCH: APPLE_SHOOTER</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Akpofure-Thato-Dickens/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/95.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Running Fred</h3>
+                    <p class="lesson-desc">Endless running obstacle course</p>
+                    <span class="launch-command">LAUNCH: RUNNING_FRED</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Li-Min-Kron/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/96.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Hextrix</h3>
+                    <p class="lesson-desc">Hexagon-based puzzle game</p>
+                    <span class="launch-command">LAUNCH: HEXTRIX</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Vanna-Adisa-Allison/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/97.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Jelly Truck</h3>
+                    <p class="lesson-desc">Physics-based truck driving</p>
+                    <span class="launch-command">LAUNCH: JELLY_TRUCK</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Leofd-g-Lior-Maekawa/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/98.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Rooftop Snipers 2</h3>
+                    <p class="lesson-desc">2D shooter duel game</p>
+                    <span class="launch-command">LAUNCH: ROOFTOP_SNIPERS_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Lee-Kam-Lane/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/99.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Color Switch</h3>
+                    <p class="lesson-desc">Color-matching obstacle game</p>
+                    <span class="launch-command">LAUNCH: COLOR_SWITCH</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Mahpiya-D-lg-n-Coiro/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/100.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Hole.io</h3>
+                    <p class="lesson-desc">Black hole consuming game</p>
+                    <span class="launch-command">LAUNCH: HOLE.IO</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Avital-Passang-Hubert/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/101.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Color Tunnel 2</h3>
+                    <p class="lesson-desc">3D color tunnel runner</p>
+                    <span class="launch-command">LAUNCH: COLOR_TUNNEL_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Micajah-Sky-Pell-/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/102.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Wrassling</h3>
+                    <p class="lesson-desc">Comical wrestling game</p>
+                    <span class="launch-command">LAUNCH: WRASSLING</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/EASMEL/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/103.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Brain Test</h3>
+                    <p class="lesson-desc">Tricky puzzle brain teasers</p>
+                    <span class="launch-command">LAUNCH: BRAIN_TEST</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/53.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/104.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Hillclimb Racing</h3>
+                    <p class="lesson-desc">Physics-based hill climbing</p>
+                    <span class="launch-command">LAUNCH: HILLCLIMB_RACING</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/ChemistryHomeworkHero/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/105.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Level Devil</h3>
+                    <p class="lesson-desc">Challenging platformer levels</p>
+                    <span class="launch-command">LAUNCH: LEVEL_DEVIL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/MarketingStudyMate/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/106.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Temple Run 2</h3>
+                    <p class="lesson-desc">Endless running adventure</p>
+                    <span class="launch-command">LAUNCH: TEMPLE_RUN_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://dddavit.github.io/igra-fizika-boxa-2/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/107.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Boxing Physics 2</h3>
+                    <p class="lesson-desc">Physics-based boxing game</p>
+                    <span class="launch-command">LAUNCH: BOXING_PHYSICS_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', '')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/108.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Street Ball Jam</h3>
+                    <p class="lesson-desc">Urban basketball game</p>
+                    <span class="launch-command">LAUNCH: STREET_BALL_JAM</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/54.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/109.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Super Mario 64</h3>
+                    <p class="lesson-desc">Classic 3D platformer adventure</p>
+                    <span class="launch-command">LAUNCH: SM64</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://llerrah.com/https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/fruitmerge/index.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/110.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Fruit Merge</h3>
+                    <p class="lesson-desc">Merge fruit puzzle game</p>
+                    <span class="launch-command">LAUNCH: FRUIT_MERGE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/AccountingTutorPro/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/111.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Wheelie Bike 2</h3>
+                    <p class="lesson-desc">Motorcycle stunt game</p>
+                    <span class="launch-command">LAUNCH: WHEELIE_BIKE_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/ArchitectureTutoringPro/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/112.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Park Out</h3>
+                    <p class="lesson-desc">Challenging parking puzzle</p>
+                    <span class="launch-command">LAUNCH: PARK_OUT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/LawHomeworkHub/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/113.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Bloxorz</h3>
+                    <p class="lesson-desc">Block rolling puzzle game</p>
+                    <span class="launch-command">LAUNCH: BLOXORZ</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/MedicalSchoolHelper/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/114.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Save The Doge</h3>
+                    <p class="lesson-desc">Rescue puzzle challenges</p>
+                    <span class="launch-command">LAUNCH: SAVE_THE_DOGE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/FinanceHomeworkHelp/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/115.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Worlds Hardest Game</h3>
+                    <p class="lesson-desc">Extremely challenging puzzles</p>
+                    <span class="launch-command">LAUNCH: WORLDS_HARDEST_GAME</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/wonderoveryonder/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/116.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Idle Digging Tycoon</h3>
+                    <p class="lesson-desc">Mining empire building</p>
+                    <span class="launch-command">LAUNCH: IDLE_DIGGING_TYCOON</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/lemmegetuhhhh/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/117.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Impossible Quiz</h3>
+                    <p class="lesson-desc">Tricky question challenges</p>
+                    <span class="launch-command">LAUNCH: IMPOSSIBLE_QUIZ</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/smallasianman/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/118.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Stickman Hook</h3>
+                    <p class="lesson-desc">Swinging physics game</p>
+                    <span class="launch-command">LAUNCH: STICKMAN_HOOK</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/bustherdooniesdown/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/119.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Rio Rex</h3>
+                    <p class="lesson-desc">Dinosaur platformer adventure</p>
+                    <span class="launch-command">LAUNCH: RIO_REX</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/idle-tree-city/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/120.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Idle Tree City</h3>
+                    <p class="lesson-desc">Tree-growing idle game</p>
+                    <span class="launch-command">LAUNCH: IDLE_TREE_CITY</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/cansomeonegrabbomb/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/121.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Snake MLG</h3>
+                    <p class="lesson-desc">Classic snake with memes</p>
+                    <span class="launch-command">LAUNCH: SNAKE_MLG</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/mommahuevo/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/123.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Stacktris</h3>
+                    <p class="lesson-desc">Tetris-inspired stacking game</p>
+                    <span class="launch-command">LAUNCH: STACKTRIS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/whatsafather/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/124.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Stickman Ragdoll Crash</h3>
+                    <p class="lesson-desc">Physics ragdoll crashes</p>
+                    <span class="launch-command">LAUNCH: STICKMAN_RAGDOLL_CRASH</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/bug-free-pancake/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/125.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Plinko</h3>
+                    <p class="lesson-desc">Classic probability ball drop</p>
+                    <span class="launch-command">LAUNCH: PLINKO</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/poker/?&balance=null&theme=slate')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/126.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Gambling Table Games</h3>
+                    <p class="lesson-desc">Various casino games</p>
+                    <span class="launch-command">LAUNCH: GAMBLING_GAMES</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/AnatomyStudyAid/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/127.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Blocky Snakes</h3>
+                    <p class="lesson-desc">Block-based snake game</p>
+                    <span class="launch-command">LAUNCH: BLOCKY_SNAKES</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/EconomicsExamExpert/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/128.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Crossy Road</h3>
+                    <p class="lesson-desc">Endless road crossing</p>
+                    <span class="launch-command">LAUNCH: CROSSY_ROAD</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/OrganicChemHelper/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/129.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Happy Room</h3>
+                    <p class="lesson-desc">Weapons testing sandbox</p>
+                    <span class="launch-command">LAUNCH: HAPPY_ROOM</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/verbose-doodle/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/130.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Burrito Bison</h3>
+                    <p class="lesson-desc">Launching wrestling game</p>
+                    <span class="launch-command">LAUNCH: BURRITO_BISON</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/GermanGrammarGuide/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/131.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Zombocalypse</h3>
+                    <p class="lesson-desc">Zombie survival shooter</p>
+                    <span class="launch-command">LAUNCH: ZOMBOCALYPSE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/FrenchTutoringPro/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/133.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Pou</h3>
+                    <p class="lesson-desc">Virtual pet care game</p>
+                    <span class="launch-command">LAUNCH: POU</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/SpanishStudySupport/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/134.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Backrooms</h3>
+                    <p class="lesson-desc">Liminal space exploration</p>
+                    <span class="launch-command">LAUNCH: BACKROOMS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/GeographyGuruOnline/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/135.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Getaway Shootout</h3>
+                    <p class="lesson-desc">Chaotic platform shooter</p>
+                    <span class="launch-command">LAUNCH: GETAWAY_SHOOTOUT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/GeometryGeniusHelp/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/136.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Snow Rider 3D</h3>
+                    <p class="lesson-desc">Snowboarding trick game</p>
+                    <span class="launch-command">LAUNCH: SNOW_RIDER_3D</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/BiologyHomeworkHero/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/137.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Gladihoppers</h3>
+                    <p class="lesson-desc">Physics gladiator battles</p>
+                    <span class="launch-command">LAUNCH: GLADIHOPPERS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/CodingHomeworkHelp/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/138.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Paper.io 2</h3>
+                    <p class="lesson-desc">Territory conquest game</p>
+                    <span class="launch-command">LAUNCH: PAPER.IO_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/LiteratureLearningLab/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/139.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Poly Track</h3>
+                    <p class="lesson-desc">Geometric racing game</p>
+                    <span class="launch-command">LAUNCH: POLY_TRACK</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://play.cplegacy.com/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/140.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Club Penguin</h3>
+                    <p class="lesson-desc">Virtual world social game</p>
+                    <span class="launch-command">LAUNCH: CLUB_PENGUIN</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/GeekSquad/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/141.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Sausage Flip</h3>
+                    <p class="lesson-desc">Physics sausage flipping</p>
+                    <span class="launch-command">LAUNCH: SAUSAGE_FLIP</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/PhysicsProblemPro/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/142.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Ragdoll Hit</h3>
+                    <p class="lesson-desc">Ragdoll physics combat</p>
+                    <span class="launch-command">LAUNCH: RAGDOLL_HIT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/CalculusCoachHub/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/143.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Gun Spin</h3>
+                    <p class="lesson-desc">Weapon spinning challenge</p>
+                    <span class="launch-command">LAUNCH: GUN_SPIN</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/ScienceStudyBuddy/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/144.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Thorns and Balloons</h3>
+                    <p class="lesson-desc">Balloon popping game</p>
+                    <span class="launch-command">LAUNCH: THRONS_AND_BALLOONS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/GeologyAssignments/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/145.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Subway Surfers</h3>
+                    <p class="lesson-desc">Endless running adventure</p>
+                    <span class="launch-command">LAUNCH: SUBWAY_SURFERS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/MathMasteryOnline/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/146.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Block Blast</h3>
+                    <p class="lesson-desc">Block matching puzzle</p>
+                    <span class="launch-command">LAUNCH: BLOCK_BLAST</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/ScienceHelping/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/147.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Stack Bounce</h3>
+                    <p class="lesson-desc">Ball bouncing challenge</p>
+                    <span class="launch-command">LAUNCH: STACK BOUNCE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/56.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/148.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Plants Vs Zombies</h3>
+                    <p class="lesson-desc">Tower defense strategy</p>
+                    <span class="launch-command">LAUNCH: PLANTS_VS_ZOMBIES</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/EnglishHomeworkHelper/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/149.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Drive Mad</h3>
+                    <p class="lesson-desc">Crazy driving challenges</p>
+                    <span class="launch-command">LAUNCH: DRIVE_MAD</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/CellTheory/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/150.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Drift Boss</h3>
+                    <p class="lesson-desc">Precision drifting game</p>
+                    <span class="launch-command">LAUNCH: DRIFT_BOSS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/2/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/151.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Friday Night Funkin</h3>
+                    <p class="lesson-desc">Rhythm music battles</p>
+                    <span class="launch-command">LAUNCH: FRIDAY_NIGHT_FUNKIN</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/HistoryNatureVideos/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/152.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">COD Nazi Zombies Portable</h3>
+                    <p class="lesson-desc">Zombie survival shooter</p>
+                    <span class="launch-command">LAUNCH: COD_NAZI_ZOMBIES</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/SmartMoneyStudying/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/153.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Adventure Capitalist</h3>
+                    <p class="lesson-desc">Business idle clicker</p>
+                    <span class="launch-command">LAUNCH: ADVENTURE_CAPITALIST</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/VegetableVerbs/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/154.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">1v1.lol</h3>
+                    <p class="lesson-desc">Building and shooting battles</p>
+                    <span class="launch-command">LAUNCH: 1V1.LOL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/FilmCameraSale/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/155.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Ragdoll Archers</h3>
+                    <p class="lesson-desc">Physics archery combat</p>
+                    <span class="launch-command">LAUNCH: RAGDOLL_ARCHERS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/VegetarianBurger/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/156.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Dante</h3>
+                    <p class="lesson-desc">Action platformer adventure</p>
+                    <span class="launch-command">LAUNCH: DANTE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/ChemistyStudies/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/157.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Minecraft</h3>
+                    <p class="lesson-desc">Block building survival</p>
+                    <span class="launch-command">LAUNCH: MINECRAFT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/MathLover/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/158.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Retro Bowl</h3>
+                    <p class="lesson-desc">Football management game</p>
+                    <span class="launch-command">LAUNCH: RETRO_BOWL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/57.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/159.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Half Life</h3>
+                    <p class="lesson-desc">Sci-fi FPS adventure</p>
+                    <span class="launch-command">LAUNCH: HALF_LIFE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/saldw/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/160.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Jetpack Joyride</h3>
+                    <p class="lesson-desc">Endless flying adventure</p>
+                    <span class="launch-command">LAUNCH: JETPACK_JOYRIDE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://spew45.github.io/game-assets/btd4/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/161.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Bloons TD 4</h3>
+                    <p class="lesson-desc">Tower defense strategy</p>
+                    <span class="launch-command">LAUNCH: BLOONS_TD_4</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/AlgebraTutoring/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/162.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Sand Game<h/3>
+                    <p class="lesson-desc">Physics sand simulation</p>
+                    <span class="launch-command">LAUNCH: SAND_GAME</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/ChemistyNotes/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/163.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Stack Bump</h3>
+                    <p class="lesson-desc">Stacking puzzle game</p>
+                    <span class="launch-command">LAUNCH: STACK_BUMP</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/PsychologyStudyAid/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/164.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNAF</h3>
+                    <p class="lesson-desc">Original horror survival</p>
+                    <span class="launch-command">LAUNCH: FNAF</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/UDAGOASequel horror survival/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/165.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNAF 2</h3>
+                    <p class="lesson-desc">Sequel horror survival</p>
+                    <span class="launch-command">LAUNCH: FNAF_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/bug-free-memory/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/166.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNAF 3</h3>
+                    <p class="lesson-desc">Third installment horror</p>
+                    <span class="launch-command">LAUNCH: FNAF_3</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/crispy-telegram/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/167.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">FNAF 4</h3>
+                    <p class="lesson-desc">Nightmare horror survival</p>
+                    <span class="launch-command">LAUNCH: FNAF_4</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/BuisnessAssistance/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/168.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Madalin Stunt Cars 3</h3>
+                    <p class="lesson-desc">Car stunt driving</p>
+                    <span class="launch-command">LAUNCH: MADALIN_STUNT_CARS_3</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/GeometryWebAssistance/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/169.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Tiny Fishing</h3>
+                    <p class="lesson-desc">Relaxing fishing game</p>
+                    <span class="launch-command">LAUNCH: TINY_FISHING</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/OnlineHistoryHelper/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/170.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Chrome Dino</h3>
+                    <p class="lesson-desc">Endless running dinosaur</p>
+                    <span class="launch-command">LAUNCH: CHROME_DINO</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/dskadlwasdmw-a/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/171.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Dodge Ball</h3>
+                    <p class="lesson-desc">Dodgeball game I made (pretty fun)</p>
+                    <span class="launch-command">LAUNCH: DODGE_BALL</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/58.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/172.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Age of War 2</h3>
+                    <p class="lesson-desc">Evolution strategy game</p>
+                    <span class="launch-command">LAUNCH: AGE_OF_WAR_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/SocialAssistance/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/173.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Pandemic 2</h3>
+                    <p class="lesson-desc">Virus spread simulation</p>
+                    <span class="launch-command">LAUNCH: PANDEMIC_2</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/SocialStudies/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/174.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Happy Wheels</h3>
+                    <p class="lesson-desc">Physics obstacle course</p>
+                    <span class="launch-command">LAUNCH: HAPPY_WHEELS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Chikondi-Josey-Spitznageasd/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/175.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Slope</h3>
+                    <p class="lesson-desc">3D ball rolling game</p>
+                    <span class="launch-command">LAUNCH: SLOPE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/sprinter/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/176.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Sprinter</h3>
+                    <p class="lesson-desc">Track running simulation</p>
+                    <span class="launch-command">LAUNCH: SPRINTER</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/AKSDOAW/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/177.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Cookie Clicker</h3>
+                    <p class="lesson-desc">Addictive clicking game</p>
+                    <span class="launch-command">LAUNCH: COOKIE_CLICKER</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/60.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/178.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Bitlife</h3>
+                    <p class="lesson-desc">Life simulation game</p>
+                    <span class="launch-command">LAUNCH: BITLIFE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://webglmath.github.io/drift-hunters/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/179.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Drift Hunters</h3>
+                    <p class="lesson-desc">Realistic drifting simulation</p>
+                    <span class="launch-command">LAUNCH: DRIFT_HUNTERS</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/61.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/180.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Cut The Rope</h3>
+                    <p class="lesson-desc">Physics puzzle game</p>
+                    <span class="launch-command">LAUNCH: CUT_THE_ROPE</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/skdpiwjamoksld/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/181.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Sort The Court</h3>
+                    <p class="lesson-desc">Kingdom management game</p>
+                    <span class="launch-command">LAUNCH: SORT_THE_COURT</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/kdwajdskpwmasd/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/182.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Tomb of the Mask</h3>
+                    <p class="lesson-desc">Arcade maze game</p>
+                    <span class="launch-command">LAUNCH: TOMB_OF_THE_MASK</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://bosorioo.github.io/wordle-unlimited/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/183.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Wordle</h3>
+                    <p class="lesson-desc">Word guessing puzzle</p>
+                    <span class="launch-command">LAUNCH: WORDLE</span>
+                </div>
+
+                <head></head>
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/AmazingAlgebraHelper/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/184.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Monkey Mart</h3>
+                    <p class="lesson-desc">Store management tycoon</p>
+                    <span class="launch-command">LAUNCH: MONKEY_MART</span>
+                </div>
+
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/62.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/185.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
+                    <h3 class="lesson-title">Short Ride</h3>
+                    <p class="lesson-desc">Quick racing challenges</p>
+                    <span class="launch-command">LAUNCH: SHORT_RIDE</span>
+                </div>
+            </div>
+        </section>
+        <section id="partners-section" class="partners-section">
+            <h2>PARTNERS</h2>
+            <div class="partners-grid">
+                <div class="partner-card">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/reimagined-octo-winner@main/pictures/1.jpg" alt="Partner Logo" class="partner-image">
+                    <h3 class="partner-title">Bloxcraft UBG</h3>
+                    <p class="partner-desc">Ultimate UBG site with hundreds of lessons right on your fingertips! We got apps like GN-Math, Elite Gamez, and more to come!</p>
+                    <div class="partner-buttons">
+                        <button class="discord-btn" onclick="window.open('https://discord.gg/sqPFYEsz8F', '_blank')">
+                            <i class="fab fa-discord"></i>
+                        </button>
+                        <button class="visit-btn" onclick="window.open('https://bloxcraft-ubg.pages.dev/', '_blank')">VISIT SITE</button>
+                    </div>
+                </div>
+                <div class="partner-card">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/reimagined-octo-winner@main/pictures/2.jpg" alt="Partner Logo" class="partner-image">
+                    <h3 class="partner-title">Glacier Arcade</h3>
+                    <p class="partner-desc">Premium unblocked games with 400+ titles including Buckshot Roulette, Ultrakill, All FNAF games, and Minecraft. Smooth design, instant play.</p>
+                    <div class="partner-buttons">
+                        <button class="discord-btn" onclick="window.open('https://discord.gg/zfBZvZUHmR', '_blank')">
+                            <i class="fab fa-discord"></i>
+                        </button>
+                        <button class="visit-btn" onclick="window.open('https://glacierarcade.xyz/', '_blank')">VISIT SITE</button>
+                    </div>
+                </div>
+                <div class="partner-card">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/reimagined-octo-winner@main/pictures/3.jpg" alt="Partner Logo" class="partner-image">
+                    <h3 class="partner-title">Rosin</h3>
+                    <p class="partner-desc">Rosin, your one-stop for 567+ unblocked games with clean UI, accounts, and BYOD. All this and much more. Made with ❤️ for gamers everywhere.</p>
+                    <div class="partner-buttons">
+                        <button class="discord-btn" onclick="window.open('https://discord.gg/xzwUY9R8Tp', '_blank')">
+                            <i class="fab fa-discord"></i>
+                        </button>
+                        <button class="visit-btn" onclick="window.open('https://afcyqmpzsb.itafricagroup.com/', '_blank')">VISIT SITE</button>
+                    </div>
+                </div>
+                <div class="partner-card">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/reimagined-octo-winner@main/pictures/4.png" alt="Partner Logo" class="partner-image">
+                    <h3 class="partner-title">GN-Math</h3>
+                    <p class="partner-desc">Most popular UBG sites use my games!! (doge unblocker, frogies arcade, truffled, petezah and more)</p>
+                    <div class="partner-buttons">
+                        <button class="discord-btn" onclick="window.open('https://discord.gg/gn-math', '_blank')">
+                            <i class="fab fa-discord"></i>
+                        </button>
+                        <button class="visit-btn" onclick="window.open('https://gn-math.dev/', '_blank')">VISIT SITE</button>
+                    </div>
+                </div>
+                <div class="partner-card">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/reimagined-octo-winner@main/pictures/6.jpg" alt="Partner Logo" class="partner-image">
+                    <h3 class="partner-title">Truffled</h3>
+                    <p class="partner-desc">Join us so we can grow and hopefully be one of the biggest unblocked game sites ❤️</p>
+                    <div class="partner-buttons">
+                        <button class="discord-btn" onclick="window.open('https://discord.gg/truffled', '_blank')">
+                            <i class="fab fa-discord"></i>
+                        </button>
+                        <button class="visit-btn" onclick="window.open('https://truffled.lol/', '_blank')">VISIT SITE</button>
+                    </div>
+                </div>
+        </section>
+        </div>
+        <div class="game-page" id="gamePage">
+            <div class="game-header">
+                <div class="game-title" id="gameTitle">Game Title</div>
+                <div class="game-controls">
+                    <button class="btn" onclick="toggleFullscreen()">
+                        <i class="fas fa-expand"></i> Fullscreen
+                    </button>
+                    <button class="btn" onclick="downloadCurrentGame()">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <button class="btn" onclick="closeLesson()">
+                        <i class="fas fa-times"></i> Exit
+                    </button>
+                </div>
+            </div>
+            <div class="game-container">
+                <embed id="gameFrame" class="game-frame" frameborder="0" src=""/>
+            </div>
+        </div>
+        <script>
+            function trackEvent(category, action, label, value) {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', action, {
+                        'event_category': category,
+                        'event_label': label,
+                        'value': value
+                    });
+                }
+            }
+    
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'page_view', {
+                    'page_title': document.title,
+                    'page_location': window.location.href,
+                    'page_path': window.location.pathname
+                });
+            }
+    
+            const canvas = document.getElementById('matrix-bg');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const chars = '01';
+            const charArray = chars.split('');
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            for (let x = 0; x < columns; x++) {
+                drops[x] = 1;
+            }
+    
+            function drawMatrix() {
+                ctx.fillStyle = 'rgba(10, 10, 10, 0.04)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = window.matrixColor || '#c27c15';
+                ctx.font = fontSize + 'px monospace';
+                for (let i = 0; i < drops.length; i++) {
+                    const text = charArray[Math.floor(Math.random() * charArray.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            setInterval(drawMatrix, 35);
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+    
+            function openLesson(title, url) {
+                trackEvent('game_interaction', 'game_launch', title, 1);
+                
+                const timeOnSite = Math.round((Date.now() - window.pageLoadTime) / 1000);
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'timing_complete', {
+                        'name': 'time_to_first_game',
+                        'value': timeOnSite,
+                        'event_category': 'engagement'
+                    });
+                }
+                
+                document.getElementById('gameTitle').textContent = title;
+                document.getElementById('gameFrame').src = url;
+                document.getElementById('gamePage').classList.add('active');
+                document.getElementById('main-container').classList.add('slide-down');
+            }
+    
+            function closeLesson() {
+                trackEvent('game_interaction', 'game_exit', document.getElementById('gameTitle').textContent, 1);
+                document.getElementById('gamePage').classList.add('slide-down');
+                document.getElementById('main-container').classList.remove('slide-down');
+                setTimeout(function() {
+                    document.getElementById('gamePage').classList.remove('active', 'slide-down');
+                    document.getElementById('gameFrame').src = '';
+                    document.getElementById('gameFrame').classList.remove('fullscreen');
+                }, 500);
+            }
+    
+            async function initiateDownload(gameUrl, gameTitle) {
+        try {
+            const gameMatch = gameUrl.match(/games\/(\d+)\.html/);
+            if (!gameMatch) {
+                throw new Error('Could not extract game number from URL');
+            }
+            
+            const gameNumber = gameMatch[1];
+            
+            const jsDelivrUrl = `https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master/https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/${gameNumber}.html`;
+            
+            console.log('Downloading from:', jsDelivrUrl);
+            
+            const response = await fetch(jsDelivrUrl);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            
+            let gameContent = await response.text();
+            
+            const brandingElement = `
+            <div style="position:fixed;bottom:10px;right:10px;z-index:9999;">
+                <a href="https://noahs-calculus-tutor.pages.dev" target="_blank" 
+                   style="color:white;text-decoration:none;display:flex;align-items:center;gap:8px;font-size:12px;background:rgba(0,0,0,0.8);padding:8px 12px;border-radius:6px;font-family:Arial,sans-serif;">
+                    <span>Downloaded from Noah's Tutoring Hub</span>
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/reimagined-octo-winner@main/pictures/5.png" 
+                         style="height:18px;width:auto;">
+                </a>
+            </div>
+            `;
+            
+            if (gameContent.includes('</body>')) {
+                gameContent = gameContent.replace('</body>', brandingElement + '</body>');
+            } else {
+                gameContent += brandingElement;
+            }
+            
+            if (gameContent.includes('<title>')) {
+                gameContent = gameContent.replace(
+                    /<title>.*?<\/title>/i, 
+                    `<title>${gameTitle}</title>`
+                );
+            }
+            
+            const fileBlob = new Blob([gameContent], { type: 'text/html' });
+            const fileUrl = URL.createObjectURL(fileBlob);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = fileUrl;
+            downloadLink.download = `${gameTitle.replace(/[^a-z0-9]/gi, '_')}.html`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(fileUrl);
+            
+            trackEvent('game_interaction', 'download_success', gameTitle, 1);
+            
+        } catch (error) {
+            console.error('Download error:', error);
+            trackEvent('game_interaction', 'download_error', gameTitle, 1);
+            alert('Unable to download game. Please try again later.');
+        }
+    }
+            function downloadCurrentGame() {
+        const gameFrame = document.getElementById('gameFrame');
+        const gameUrl = gameFrame.src;
+        const gameTitle = document.getElementById('gameTitle').textContent;
+        
+        console.log('Download attempted for:', gameUrl, 'Title:', gameTitle);
+        
+        if (gameUrl && gameUrl.includes('https://raw.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/') && gameUrl.includes('.html')) {
+            trackEvent('game_interaction', 'download_attempt', gameTitle, 1);
+            initiateDownload(gameUrl, gameTitle);
+        } else {
+            trackEvent('game_interaction', 'download_failed', gameTitle, 1);
+            alert('Sorry, this game is not downloadable. Try another one.');
+        }
+    }
+    
+            function toggleFullscreen() {
+                const gameFrame = document.getElementById('gameFrame');
+                const isEnteringFullscreen = !gameFrame.classList.contains('fullscreen');
+                
+                trackEvent('game_interaction', isEnteringFullscreen ? 'fullscreen_enter' : 'fullscreen_exit', 
+                           document.getElementById('gameTitle').textContent, 1);
+                
+                if (document.fullscreenElement || document.webkitFullscreenElement || 
+                    document.msFullscreenElement || document.mozFullScreenElement) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    }
+                } else {
+                    if (gameFrame.requestFullscreen) {
+                        gameFrame.requestFullscreen();
+                    } else if (gameFrame.webkitRequestFullscreen) {
+                        gameFrame.webkitRequestFullscreen();
+                    } else if (gameFrame.msRequestFullscreen) {
+                        gameFrame.msRequestFullscreen();
+                    } else if (gameFrame.mozRequestFullScreen) {
+                        gameFrame.mozRequestFullScreen();
+                    }
+                }
+            }
+    
+            let searchTimer;
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const lessonCards = document.querySelectorAll('#allLessonsGrid .lesson-card');
+                let visibleCount = 0;
+                
+                lessonCards.forEach(card => {
+                    const title = card.querySelector('.lesson-title').textContent.toLowerCase();
+                    const desc = card.querySelector('.lesson-desc').textContent.toLowerCase();
+                    if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                const searchStats = document.getElementById('searchStats');
+                if (searchTerm.length > 0) {
+                    searchStats.textContent = `Found ${visibleCount} lesson${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
+                    
+                    clearTimeout(searchTimer);
+                    searchTimer = setTimeout(() => {
+                        trackEvent('search', 'search_performed', searchTerm, visibleCount);
+                    }, 1000);
+                } else {
+                    searchStats.textContent = '';
+                }
+            });
+    
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.lesson-card')) {
+                    const card = e.target.closest('.lesson-card');
+                    const title = card.querySelector('.lesson-title').textContent;
+                    const wasFromSearch = document.getElementById('searchInput').value.length > 0;
+                    
+                    if (wasFromSearch) {
+                        trackEvent('search', 'search_result_click', title, 1);
+                    }
+                }
+            });
+    
+            function hideWarning() {
+                trackEvent('ui_interaction', 'warning_acknowledged', 'comments_warning', 1);
+                document.getElementById('warningOverlay').classList.add('hidden');
+            }
+    
+            function switchTab(tabName) {
+                trackEvent('navigation', 'tab_switch', tabName, 1);
+                document.getElementById('lessonsTab').classList.toggle('active', tabName === 'lessons');
+                document.getElementById('partnersTab').classList.toggle('active', tabName === 'partners');
+                document.getElementById('lessons-section').style.display = tabName === 'lessons' ? 'block' : 'none';
+                document.getElementById('all-lessons').style.display = tabName === 'lessons' ? 'block' : 'none';
+                document.getElementById('partners-section').style.display = tabName === 'partners' ? 'block' : 'none';
+            }
+    
+            const themes = ['theme-amber', 'theme-rainbow', 'theme-cyber-green', 'theme-ice-blue', 'theme-solarized', 'theme-purple-haze'];
+            let currentThemeIndex = 0;
+    
+            function cycleTheme() {
+                trackEvent('ui_interaction', 'theme_change', themes[currentThemeIndex], 1);
+                
+                document.body.classList.remove(themes[currentThemeIndex]);
+                currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+                document.body.classList.add(themes[currentThemeIndex]);
+                const themeNames = ['Amber', 'Rainbow', 'Cyber Green', 'Ice Blue', 'Solarized', 'Purple Haze'];
+                document.getElementById('themeToggle').title = `Current: ${themeNames[currentThemeIndex]} - Click to cycle`;
+                updateMatrixColor();
+            }
+    
+            function updateMatrixColor() {
+                const matrixColors = {
+                    'theme-amber': '#8b5cf6',
+                    'theme-rainbow': '#8b5cf6',
+                    'theme-cyber-green': '#8b5cf6',
+                    'theme-ice-blue': '#8b5cf6',
+                    'theme-solarized': '#8b5cf6',
+                    'theme-purple-haze': '#8b5cf6'
+                };
+                window.matrixColor = matrixColors[themes[currentThemeIndex]];
+            }
+    
+            document.querySelectorAll('.social-icons a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const platform = this.querySelector('i').className.split(' ')[1].replace('fa-', '');
+                    trackEvent('social', 'social_click', platform, 1);
+                });
+            });
+    
+            let scrollDepthTracked = [25, 50, 75, 90];
+            window.addEventListener('scroll', function() {
+                const scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+                
+                scrollDepthTracked.forEach(depth => {
+                    if (scrollPercent >= depth) {
+                        trackEvent('engagement', 'scroll_depth', `${depth}%`, 1);
+                        scrollDepthTracked = scrollDepthTracked.filter(d => d !== depth);
+                    }
+                });
+            }, { passive: true });
+    
+            window.pageLoadTime = Date.now();
+            window.addEventListener('beforeunload', function() {
+                const sessionDuration = Math.round((Date.now() - window.pageLoadTime) / 1000);
+                trackEvent('engagement', 'session_duration', 'session_end', sessionDuration);
+            });
+    
+            document.getElementById('themeToggle').addEventListener('click', cycleTheme);
+            document.body.classList.add('theme-amber');
+            document.getElementById('themeToggle').title = 'Current: Amber - Click to cycle';
+            updateMatrixColor();
+    
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+            document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+    
+            function handleFullscreenChange() {
+                const gameFrame = document.getElementById('gameFrame');
+                const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || 
+                                    document.msFullscreenElement || document.mozFullScreenElement;
+                
+                if (isFullscreen) {
+                    gameFrame.classList.add('fullscreen');
+                } else {
+                    gameFrame.classList.remove('fullscreen');
+                }
+            }
+    
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const gameFrame = document.getElementById('gameFrame');
+                    if (gameFrame.classList.contains('fullscreen')) {
+                        toggleFullscreen();
+                    }
+                }
+            });
+        </script>
+</body>
+
+</html>

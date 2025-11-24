@@ -39,7 +39,7 @@
             position: relative;
             overflow-x: hidden;
         }
-s
+
         /* Animated background */
         .background-gradient {
             position: fixed;
@@ -174,9 +174,96 @@ s
         }
 
         .page-subtitle a {
-         text-decoration: none;
-         color: var(--purple-200);
-         }
+            text-decoration: none;
+            color: var(--purple-200);
+        }
+
+        /* SIMPLIFIED SEARCH SECTION */
+        .search-section {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 48px 14px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: rgba(196, 181, 253, 0.6);
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--purple-500);
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+        }
+
+        .search-button {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--purple-400);
+            cursor: pointer;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+
+        .search-button:hover {
+            color: var(--purple-300);
+        }
+
+        .search-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Quick filters - cleaner design */
+        .quick-filters {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 8px;
+            color: var(--purple-300);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .filter-btn:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: var(--purple-400);
+            color: var(--white);
+        }
 
         /* Divider */
         .divider {
@@ -254,7 +341,6 @@ s
 
         .game-rating {
             font-size: 1.25rem;
-            color: var(--gold);
             margin-bottom: 0.5rem;
             letter-spacing: 0.1em;
         }
@@ -469,6 +555,11 @@ s
                 font-size: 1rem;
             }
 
+            .search-input {
+                font-size: 0.9375rem;
+                padding: 12px 44px 12px 16px;
+            }
+
             .game-header {
                 flex-direction: column;
             }
@@ -493,6 +584,19 @@ s
         @media (max-width: 480px) {
             .page-title {
                 font-size: 2rem;
+            }
+
+            .search-input {
+                font-size: 0.875rem;
+            }
+
+            .quick-filters {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                font-size: 0.8125rem;
+                padding: 0.4rem 0.8rem;
             }
 
             .game-card {
@@ -529,63 +633,76 @@ s
 
         <main>
             <h1 class="page-title"><span class="title-text">The Game Vault</span> | 🕹️👾</h1>
-  <p class="page-subtitle">
-  Discover and play hundreds of fun, free online games — all in one place. 
-  Over 5,000 games are here! Join us on this exciting adventure. Games aren't for you? No need to fret, as this doesn't just have games, but exciting tools like Chat Room, LSB Stegography, and way more! Join us on this exciting adventure as we traverse school in a fun way.  
-  <a href="https://forms.gle/g6GjUZYHRLpRway36" target="_blank">Want to suggest games? Click here!</a>
-</p>
+            <p class="page-subtitle">
+                Discover and play hundreds of fun, free online games — all in one place. With over 7,000 games available, there's always something new to explore. Not into games? No problem — we also offer powerful tools like Chat Room, LSB Steganography, and much more. Join us on this adventure as we make school a little more fun.  
+                <a href="https://forms.gle/g6GjUZYHRLpRway36" target="_blank">Want to suggest games? Click here!</a>
+            </p>
 
-            <div class="footer-links">
-                <a href="https://sites.google.com/student.allenisd.org/the-game-vault/games/html-games" class="footer-link" target="_blank">
-                    <span>HTML Games</span>
-                </a>
-                <a href="https://sites.google.com/student.allenisd.org/the-game-vault/games/more-games" class="footer-link">
-                    <span>More Games</span>
-                </a>
+            <!-- Simplified Search Section -->
+            <div class="search-section">
+                <form id="searchForm">
+                    <div class="search-wrapper">
+                        <input 
+                            type="text" 
+                            class="search-input" 
+                            id="searchInput"
+                            placeholder="Search games, tools, or content..." 
+                            required
+                        >
+                        <button type="submit" class="search-button" aria-label="Search">
+                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+                <div class="quick-filters">
+                    <button type="button" class="filter-btn" data-search="Games">Games</button>
+                    <button type="button" class="filter-btn" data-search="HTML">HTML</button>
+                    <button type="button" class="filter-btn" data-search="Network">Network</button>
+                    <button type="button" class="filter-btn" data-search="AI">AI</button>
+                </div>
             </div>
 
             <div class="divider"></div>
 
             <!-- Games Section -->
             <section class="games-section">
-                <!-- Game 1: Wrestle Bros -->
+                <!-- Game 1: Basket Random -->
                 <div class="game-card">
                     <div class="game-header">
                         <div class="game-image-placeholder">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB7dT1-RPks-APl8EqwfGw_hW7G0ayB24QrQ&s" alt="Wrestle bros" width="210px" height="150px" style="border-radius: 4px;">
+                            <img src="https://play-lh.googleusercontent.com/6AN9KKe5M9udzoQA1J00dc6po5dNY9JInI_ewDKcPXocPjEHWTqJV0d2CwSWxYRhTh4=w526-h296-rw" alt="Basket Random" width="210px" height="150px" style="border-radius: 4px;">
                         </div>
-                        <div class="game-info">
-                            <h2 class="game-title">Wrestle Bros</h2>
-                            <div class="game-rating">⭐⭐⭐⭐☆</div>
-                        </div>
-                    </div>
-                    <p class="game-description">
-                        Fun, fast-paced browser wrestling game where you battle as cartoonish "bros" 
-                        in over-the-top matches. You can play solo, locally with a friend, or online 
-                        against others. The controls are simple, the action is chaotic and funny, and 
-                        the goal is to slam, flip, and out-wrestle your opponents to become the ultimate champ.
-                    </p>
-                    <div class="game-tags">
-                        <span class="game-tag">HTML Games</span>
-                    </div>
-                </div>
-
-                <!-- Game 2: 1v1.LOL -->
-                <div class="game-card">
-                    <div class="game-header">
-                        <div class="game-image-placeholder">
-                          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5e6EOAkvWDDrhDWLROtmsFOJwMjhAYYVF4g&s" alt="Wrestle bros" width="210px" height="150px" style="border-radius: 4px;">
-                        </div>
-                        <div class="game-info">
-                            <h2 class="game-title">1v1.LOL</h2>
+                        <div class="game-info" style="margin-top: 2rem;">
+                            <h2 class="game-title">Basket Random</h2>
                             <div class="game-rating">⭐⭐⭐⭐⭐</div>
                         </div>
                     </div>
                     <p class="game-description">
-                        An online third-person shooter and building game where players battle each other 
-                        in fast-paced 1v1 duels. You can build structures like ramps and walls (similar 
-                        to Fortnite), choose from different weapons, and test your aim and strategy in 
-                        team modes. It's free to play in your browser, focuses on matches and skill.
+                        Fun, fast-paced browser basketball game where you face off as wobbly, cartoonish players in unpredictable one-on-one matches. You can play solo, locally with a friend, or compete in crazy randomized courts. The controls are simple, the action is chaotic and silly, and the goal is to jump, tip, and out-score your opponent with wild physics to become the ultimate hoops champ.
+                    </p>
+                    <div class="game-tags">
+                        <span class="game-tag">HTML Games</span>
+                        <span class="game-tag">More Games</span>
+                    </div>
+                </div>
+
+                <!-- Game 2: Gunspin -->
+                <div class="game-card">
+                    <div class="game-header">
+                        <div class="game-image-placeholder">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdS20YMopMPcV7xgRlO_4aq33o6XUMavO5Hg&s" alt="Gunspin" width="210px" height="150px" style="border-radius: 4px;">
+                        </div>
+                        <div class="game-info" style="margin-top: 2rem;">
+                            <h2 class="game-title">Gunspin</h2>
+                            <div class="game-rating" style="color: var(--gold);">
+                                ⭐⭐⭐⭐<span style="filter: grayscale(100%) brightness(20%);">⭐</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="game-description">
+                        Fun, fast-paced browser arcade game where you launch your gun and fly through chaotic, physics-based runs. You can play solo, try to beat your best distance, or compete for high scores online. The controls are simple, the action is wild and unpredictable, and the goal is to shoot, chain, and out-fly your previous runs to become the ultimate champ.
                     </p>
                     <div class="game-tags">
                         <span class="game-tag">HTML Games</span>
@@ -607,7 +724,7 @@ s
                     <span>|</span>
                     <span>Other contributors:</span>
                     <span class="contributor">
-                        <span>? & bredcat</span>
+                        <span>? & Bredcat</span>
                         <span class="dizzy-icon">
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <!-- Shield/Badge outline (draws first) -->
@@ -659,6 +776,53 @@ s
         // Update time immediately and then every second
         updateTime();
         setInterval(updateTime, 1000);
+
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('searchInput');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            // Handle form submission
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const query = searchInput.value.trim();
+                if (query) {
+                    performSearch(query);
+                }
+            });
+
+            // Handle filter button clicks
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const searchTerm = this.getAttribute('data-search');
+                    searchInput.value = searchTerm;
+                    performSearch(searchTerm);
+                });
+            });
+
+            // Function to perform the search
+            function performSearch(query) {
+                // Construct the search URL
+                const searchUrl = `https://sites.google.com/search/student.allenisd.org/the-game-vault?query=${encodeURIComponent(query)}`;
+                
+                // Open in new tab
+                window.open(searchUrl, '_blank');
+                
+                // Optional: Clear the search input after search
+                // searchInput.value = '';
+            }
+
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl/Cmd + K to focus search
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    searchInput.focus();
+                    searchInput.select();
+                }
+            });
+        });
     </script>
 </body>
 </html>
