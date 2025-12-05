@@ -1013,7 +1013,6 @@
         <button class="preset" data-t="Google Drive" data-f="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png">Google Drive</button>
         <button class="preset" data-t="Dashboard" data-f="https://instructure-uploads.s3.amazonaws.com/account_30000000002042/attachments/80746393/favicon-16x16.png">Canvas</button>
         <button class="preset" data-t="Google" data-f="https://www.gstatic.com/images/branding/searchlogo/ico/favicon.ico">Google</button>
-        <button class="preset" data-t="Khan Academy" data-f="https://cdn.kastatic.org/images/favicon.ico?logo">Khan Academy</button>
       </div>
     </div>
     <div class="form-group">
@@ -1081,9 +1080,25 @@ function loadSavedDisguise() {
 }
 
 function setFavicon(url) {
-  let link = document.getElementById('dynamic-favicon');
-  if (!link) { link = document.createElement('link'); link.id = 'dynamic-favicon'; link.rel = 'icon'; document.head.appendChild(link); }
-  link.href = url;
+  function applyFavicon() {
+    try {
+      // Remove all existing favicons
+      const icons = document.querySelectorAll('link[rel*="icon"]');
+      icons.forEach(el => el.remove());
+      
+      // Create new favicon
+      const link = document.createElement('link');
+      link.rel = 'icon';
+      link.type = 'image/x-icon';
+      link.href = url;
+      document.head.appendChild(link);
+    } catch(e) { console.error(e); }
+  }
+  
+  applyFavicon();
+  setTimeout(applyFavicon, 100);
+  setTimeout(applyFavicon, 300);
+  setTimeout(applyFavicon, 600);
 }
 
 function applyDisguise(title, favicon) {
